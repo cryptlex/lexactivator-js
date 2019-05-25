@@ -23,6 +23,7 @@
         "object-curly-spacing": "off",
         "comma-dangle": "off",
         "max-len": "off",
-        "guard-for-in": "off"
+        "guard-for-in": "off",
+        "space-before-function-paren":"off"
     }
 }
