@@ -1,0 +1,24 @@
+{
+  "name": "@cryptlex/lexactivator",
+  "version": "3.0.0",
+  "description": "LexActivator API wrapper for Node.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cryptlex",
+    "lexactivator",
+    "licensing library"
+  ],
+  "author": "Cryptlex, LLC",
+  "license": "MIT",
+  "dependencies": {
+    "ffi": "^2.3.0",
+    "ref-wchar": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-google": "^0.12.0"
+  }
+}
