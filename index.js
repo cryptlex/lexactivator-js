@@ -1,4 +1,5 @@
 /* eslint-disable new-cap */
+const ref = require('ref');
 const { LexActivatorException } = require('./lib/lexactivator-exception');
 const { LexActivatorNative, LicenseCallback, SoftwareReleaseUpdateCallback, getStringBuffer, bufferToString } = require('./lib/lexactivator-native');
 
@@ -220,7 +221,7 @@ class LexActivator {
 	static GetProductMetadata(key) {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetProductMetadata(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -236,7 +237,7 @@ class LexActivator {
 	static GetLicenseMetadata(key) {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseMetadata(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -270,7 +271,7 @@ class LexActivator {
 	static GetLicenseKey() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseKey(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -304,7 +305,7 @@ class LexActivator {
 	static GetLicenseUserEmail() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseUserEmail(buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -319,7 +320,7 @@ class LexActivator {
 	static GetLicenseUserName() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseUserName(buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -334,7 +335,7 @@ class LexActivator {
 	static GetLicenseUserCompany() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseUserCompany(buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -350,7 +351,7 @@ class LexActivator {
 	static GetLicenseUserMetadata(key) {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseUserMetadata(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -365,7 +366,7 @@ class LexActivator {
 	static GetLicenseType() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetLicenseType(buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -381,7 +382,7 @@ class LexActivator {
 	static GetActivationMetadata(key) {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetActivationMetadata(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -434,7 +435,7 @@ class LexActivator {
 	static GetTrialActivationMetadata(key) {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetTrialActivationMetadata(key, buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);
@@ -468,7 +469,7 @@ class LexActivator {
 	static GetTrialId() {
 		const buffer = getStringBuffer(256);
 		const status = LexActivatorNative.GetTrialId(buffer, 256);
-		if (status != LA_OK) {
+		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
 		return bufferToString(buffer);

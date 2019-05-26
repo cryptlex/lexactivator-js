@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-const { LexActivator, LexStatusCodes, PermissionFlags } = require('../index');
+const { LexActivator, LexStatusCodes, PermissionFlags } = require('@cryptlex/lexactivator');
 
 function init() {
 	// LexActivator.SetProductFile("ABSOLUTE_PATH_OF_PRODUCT.DAT_FILE");
@@ -34,6 +34,7 @@ function activateTrial() {
 function main() {
 	try {
 		init();
+		// activate(); // call once to activate the license
 		LexActivator.SetLicenseCallback(function (status) {
 			console.log('License status:', status);
 		});
@@ -48,9 +49,9 @@ function main() {
 			const userName = LexActivator.GetLicenseUserName();
 			console.log('License user name: %s\n', userName);
 
-			// console.log("Checking for software release update...");
-			// LexActivator.CheckForReleaseUpdate("windows", "1.0.0", "stable", function(status){
-			//     console.log("Release status:", status);
+			// console.log('Checking for software release update...');
+			// LexActivator.CheckForReleaseUpdate('windows', '1.0.0', 'stable', function (status) {
+			// 	console.log('Release status:', status);
 			// });
 		} else if (LexStatusCodes.LA_EXPIRED == status) {
 			console.log('License is genuinely activated but has expired!');
@@ -80,3 +81,17 @@ function main() {
 }
 
 main();
+const readline = require('readline');
+
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
+
+rl.question('What do you think of Node.js? ', (answer) => {
+	// TODO: Log the answer in a database
+	console.log(`Thank you for your valuable feedback: ${answer}`);
+
+	rl.close();
+});
+
