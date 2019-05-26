@@ -169,7 +169,7 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static SetAppVersion(appVersion) {
-		const status = LexActivatorNative.SetNetworkProxy(appVersion);
+		const status = LexActivatorNative.SetAppVersion(appVersion);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
@@ -349,7 +349,7 @@ class LexActivator {
 	 */
 	static GetLicenseUserMetadata(key) {
 		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseUserCompany(key, buffer, 256);
+		const status = LexActivatorNative.GetLicenseUserMetadata(key, buffer, 256);
 		if (status != LA_OK) {
 			throw new LexActivatorException(status);
 		}
