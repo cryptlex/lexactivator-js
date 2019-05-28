@@ -956,4 +956,4 @@ const LexStatusCodes = {
 	LA_RELEASE_NO_UPDATE_AVAILABLE: 31
 };
 
-module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, PermissionFlags };
+module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, LexActivatorException, PermissionFlags };

@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-const { LexActivator, LexStatusCodes, PermissionFlags } = require('@cryptlex/lexactivator');
+const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
 
 function init() {
 	// LexActivator.SetProductFile("ABSOLUTE_PATH_OF_PRODUCT.DAT_FILE");
@@ -31,13 +31,27 @@ function activateTrial() {
 	}
 }
 
+function licenseCallback(status) {
+	try {
+		switch (status) {
+		case LexStatusCodes.LA_OK:
+		case LexStatusCodes.LA_EXPIRED:
+		case LexStatusCodes.LA_SUSPENDED:
+			console.log('License is genuinely activated!', status);
+			break;
+		default:
+			throw new LexActivatorException(status);
+		}
+	} catch (error) {
+		console.log(error.code, error.message);
+	}
+}
+
 function main() {
 	try {
 		init();
 		// activate(); // call once to activate the license
-		LexActivator.SetLicenseCallback(function (status) {
-			console.log('License status:', status);
-		});
+		LexActivator.SetLicenseCallback(licenseCallback);
 		const status = LexActivator.IsLicenseGenuine();
 		if (LexStatusCodes.LA_OK == status) {
 			console.log('License is genuinely activated!');
