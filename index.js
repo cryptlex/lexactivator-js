@@ -120,10 +120,14 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static SetLicenseCallback(licenseCallback) {
-		const status = LexActivatorNative.SetLicenseCallback(LicenseCallback(licenseCallback));
+		const callbackWrapper = LicenseCallback(licenseCallback);
+		const status = LexActivatorNative.SetLicenseCallback(callbackWrapper);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
+		process.on('exit', function() {
+			callbackWrapper;
+		});
 	}
 
 	/**
