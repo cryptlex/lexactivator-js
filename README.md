@@ -12,7 +12,7 @@ Additionally, you can offer trials, subscriptions, floating licenses and much mo
 
 Then you can include it in your code:
 
-	const { LexActivator, LexStatusCodes, PermissionFlags } = require('@cryptlex/lexactivator');
+	const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
 
 
 ## Usage
