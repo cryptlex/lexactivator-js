@@ -274,7 +274,7 @@ class LexActivator {
 	 */
 	static GetLicenseKey() {
 		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseKey(key, buffer, 256);
+		const status = LexActivatorNative.GetLicenseKey(buffer, 256);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
