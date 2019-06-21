@@ -8,7 +8,7 @@
     "clean": "node-gyp clean",
     "deploy": "npm publish --access public",
     "preinstall": "npm i --prefix bin && node bin/preinstall.js",
-    "postinstall": "npm rebuild"
+    "postinstall": "node-gyp rebuild"
   },
   "keywords": [
     "cryptlex",
