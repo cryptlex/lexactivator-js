@@ -7,7 +7,7 @@
     "build": "node-gyp rebuild",
     "clean": "node-gyp clean",
     "deploy": "npm publish --access public",
-    "preinstall": "node preinstall.js"
+    "preinstall": "node bin/preinstall.js"
   },
   "keywords": [
     "cryptlex",
@@ -18,9 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.5.0",
-    "node-addon-api": "^1.6.3",
-    "request": "^2.88.0",
-    "unzipper": "^0.10.1"
+    "node-addon-api": "^1.6.3"
   },
   "devDependencies": {
     "eslint": "^5.14.1",
