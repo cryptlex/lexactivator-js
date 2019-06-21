@@ -1,0 +1,23 @@
+{
+  "name": "lexactivator-preinstall",
+  "version": "1.0.0",
+  "description": "Lexactivator pre install script",
+  "main": "cryptlex_preinstall.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptlex/lexactivator-js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cryptlex/lexactivator-js/issues"
+  },
+  "homepage": "https://github.com/cryptlex/lexactivator-js#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "unzipper": "^0.10.1"
+  }
+}
