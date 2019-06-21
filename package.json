@@ -1,10 +1,12 @@
 {
   "name": "@cryptlex/lexactivator",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "LexActivator API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node-gyp rebuild",
+    "clean": "node-gyp clean",
+    "deploy": "npm publish --access public"
   },
   "keywords": [
     "cryptlex",
@@ -14,8 +16,8 @@
   "author": "Cryptlex, LLC",
   "license": "MIT",
   "dependencies": {
-    "ffi": "^2.3.0",
-    "ref-wchar": "^1.0.2"
+    "bindings": "^1.5.0",
+    "node-addon-api": "^1.6.3"
   },
   "devDependencies": {
     "eslint": "^5.14.1",
@@ -25,5 +27,6 @@
     "type": "git",
     "url": "https://github.com/cryptlex/lexactivator-js.git"
   },
-  "homepage": "https://cryptlex.com"
+  "homepage": "https://cryptlex.com",
+  "gypfile": true
 }

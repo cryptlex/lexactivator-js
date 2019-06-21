@@ -1,7 +1,6 @@
 /* eslint-disable new-cap */
-const ref = require('ref');
 const { LexActivatorException } = require('./lib/lexactivator-exception');
-const { LexActivatorNative, LicenseCallback, SoftwareReleaseUpdateCallback, getStringBuffer, bufferToString } = require('./lib/lexactivator-native');
+const { LexActivatorNative, arrayToString } = require('./lib/lexactivator-native');
 
 /**
  *  @class LicenseMeterAttribute
@@ -136,8 +135,8 @@ class LexActivator {
 	 * The metadata appears along with the activation details of the license in
 	 * dashboard.
 	 *
-	 * @param {string} key of maximum length 256 characters with utf-8 encoding.
-	 * @param {string} value of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} key of maximum length array.length characters with utf-8 encoding.
+	 * @param {string} value of maximum length array.length characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetActivationMetadata(key, value) {
@@ -153,8 +152,8 @@ class LexActivator {
 	 * The metadata appears along with the trial activation details of the product
 	 * in dashboard.
 	 *
-	 * @param {string} key of maximum length 256 characters with utf-8 encoding.
-	 * @param {string} value of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} key of maximum length array.length characters with utf-8 encoding.
+	 * @param {string} value of maximum length array.length characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetTrialActivationMetadata(key, value) {
@@ -170,7 +169,7 @@ class LexActivator {
 	 * The app version appears along with the activation details in dashboard. It is
 	 * also used to generate app analytics.
 	 *
-	 * @param {string} appVersion of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} appVersion of maximum length array.length characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetAppVersion(appVersion) {
@@ -223,12 +222,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetProductMetadata(key) {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetProductMetadata(key, buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetProductMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -239,12 +238,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMetadata(key) {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseMetadata(key, buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -255,12 +254,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMeterAttribute(name) {
-		const allowedUses = ref.alloc(ref.types.uint32);
-		const totalUses = ref.alloc(ref.types.uint32);
+		const allowedUses = new Uint32Array(1);
+		const totalUses = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseMeterAttribute(name);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return new LicenseMeterAttribute(name, allowedUses.getValue(), totalUses.getValue());
+			return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0]);
 		default:
 			throw new LexActivatorException(status);
 		}
@@ -273,12 +272,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseKey() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseKey(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseKey(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -288,11 +287,11 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseExpiryDate() {
-		const expiryDate = ref.alloc(ref.types.uint32);
+		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseExpiryDate(expiryDate);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return expiryDate.deref();
+			return expiryDate[0];
 		case LexStatusCodes.LA_FAIL:
 			return 0;
 		default:
@@ -307,12 +306,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserEmail() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseUserEmail(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseUserEmail(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -322,12 +321,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserName() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseUserName(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseUserName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -337,12 +336,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserCompany() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseUserCompany(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseUserCompany(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -353,12 +352,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserMetadata(key) {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseUserMetadata(key, buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseUserMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -368,12 +367,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseType() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetLicenseType(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseType(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -384,12 +383,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetActivationMetadata(key) {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetActivationMetadata(key, buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -400,11 +399,11 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetActivationMeterAttributeUses(name) {
-		const uses = ref.alloc(ref.types.uint32);
+		const uses = new Uint32Array(1);
 		const status = LexActivatorNative.GetActivationMeterAttributeUses(name, uses);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return uses.deref();
+			return uses[0];
 		default:
 			throw new LexActivatorException(status);
 		}
@@ -417,11 +416,11 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetServerSyncGracePeriodExpiryDate() {
-		const expiryDate = ref.alloc(ref.types.uint32);
+		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetServerSyncGracePeriodExpiryDate(expiryDate);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return expiryDate.deref();
+			return expiryDate[0];
 		case LexStatusCodes.LA_FAIL:
 			return 0;
 		default:
@@ -437,12 +436,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetTrialActivationMetadata(key) {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetTrialActivationMetadata(key, buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetTrialActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -452,11 +451,11 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetTrialExpiryDate() {
-		const expiryDate = ref.alloc(ref.types.uint32);
+		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetTrialExpiryDate(expiryDate);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return expiryDate.deref();
+			return expiryDate[0];
 		case LexStatusCodes.LA_FAIL:
 			return 0;
 		default:
@@ -471,12 +470,12 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetTrialId() {
-		const buffer = getStringBuffer(256);
-		const status = LexActivatorNative.GetTrialId(buffer, 256);
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetTrialId(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return bufferToString(buffer);
+		return arrayToString(array);
 	}
 
 	/**
@@ -486,11 +485,11 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLocalTrialExpiryDate() {
-		const expiryDate = ref.alloc(ref.types.uint32);
+		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLocalTrialExpiryDate(expiryDate);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return expiryDate.deref();
+			return expiryDate[0];
 		case LexStatusCodes.LA_FAIL:
 			return 0;
 		default:
