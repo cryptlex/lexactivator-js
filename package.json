@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node-gyp rebuild",
     "clean": "node-gyp clean",
-    "deploy": "npm publish --access public"
+    "deploy": "npm publish --access public",
+    "preinstall": "node preinstall.js"
   },
   "keywords": [
     "cryptlex",
@@ -17,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.5.0",
+    "download": "^7.1.0",
     "node-addon-api": "^1.6.3"
   },
   "devDependencies": {
