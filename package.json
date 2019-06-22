@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node-gyp rebuild",
     "clean": "node-gyp clean",
-    "deploy": "npm publish --access public",
+    "deploy": "npm publish --access public"
     
   },
   "keywords": [
