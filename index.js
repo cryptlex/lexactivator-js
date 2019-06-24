@@ -119,14 +119,10 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static SetLicenseCallback(licenseCallback) {
-		const callbackWrapper = LicenseCallback(licenseCallback);
-		const status = LexActivatorNative.SetLicenseCallback(callbackWrapper);
+		const status = LexActivatorNative.SetLicenseCallback(licenseCallback);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
-		process.on('exit', function() {
-			callbackWrapper;
-		});
 	}
 
 	/**
@@ -510,7 +506,7 @@ class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static CheckForReleaseUpdate(platform, version, channel, releaseCallback) {
-		const status = LexActivatorNative.CheckForReleaseUpdate(platform, version, channel, SoftwareReleaseUpdateCallback(releaseCallback));
+		const status = LexActivatorNative.CheckForReleaseUpdate(platform, version, channel, releaseCallback);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
