@@ -1,6 +1,8 @@
 #include "LexActivator.h"
 #include "CallbackWrapper.h"
 #include <string>
+#include <codecvt>
+#include <locale>
 #include <map>
 
 using namespace ::std;
@@ -23,7 +25,9 @@ map<STRING, CallbackWrapper*> ReleaseCallbacks;
 STRING toEncodedString(Napi::String input)
 {
 #ifdef _WIN32
-    return input.Utf16Value ()
+    u16string s = input.Utf16Value();
+    wstring_convert<codecvt_utf16<wchar_t, 0x10ffff, little_endian>,wchar_t> converter;
+    return converter.from_bytes(reinterpret_cast<const char*> (&s[0]), reinterpret_cast<const char*> (&s[0] + s.size()));
 #else
     return input;
 #endif
