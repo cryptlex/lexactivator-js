@@ -1,11 +1,55 @@
-#include "napi.h"
 #include "LexActivator.h"
+#include "CallbackWrapper.h"
 #include <string>
+#include <map>
 
 using namespace ::std;
 
+#ifdef _WIN32
+typedef wchar_t CHARTYPE;
+typedef wstring STRING;
+#else
+typedef char CHARTYPE;
+typedef string STRING;
+#endif
+
 const char *MISSING_ARGUMENTS = "Wrong number of arguments";
 const char *INVALID_ARGUMENT_TYPE = "Invalid argument type";
+const char *MISSING_LICENSE_KEY = "License key not set";
+
+map<STRING, CallbackWrapper*> LicenseCallbacks;
+map<STRING, CallbackWrapper*> ReleaseCallbacks;
+
+STRING toEncodedString(Napi::String input)
+{
+#ifdef _WIN32
+    return input.Utf16Value ()
+#else
+    return input;
+#endif
+}
+
+void licenseCallback(uint32_t status)
+{
+    CHARTYPE licenseKey[256];
+    if(GetLicenseKey(licenseKey, 256) != LA_OK)
+    {
+        return;
+    }
+    LicenseCallbacks[STRING(licenseKey)]->status = status;
+    LicenseCallbacks[STRING(licenseKey)]->Queue();
+}
+
+void softwareReleaseUpdateCallback(uint32_t status)
+{
+    CHARTYPE licenseKey[256];
+    if(GetLicenseKey(licenseKey, 256) != LA_OK)
+    {
+        return;
+    }
+    ReleaseCallbacks[STRING(licenseKey)]->status = status;
+    ReleaseCallbacks[STRING(licenseKey)]->Queue();
+}
 
 Napi::Value setProductFile(const Napi::CallbackInfo &info)
 {
@@ -20,7 +64,7 @@ Napi::Value setProductFile(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetProductFile(arg0.c_str()));
 }
 
@@ -37,7 +81,7 @@ Napi::Value setProductData(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetProductData(arg0.c_str()));
 }
 
@@ -59,7 +103,7 @@ Napi::Value setProductId(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     uint32_t arg1 = info[1].As<Napi::Number>().Uint32Value();
     return Napi::Number::New(env, SetProductId(arg0.c_str(), arg1));
 }
@@ -77,7 +121,7 @@ Napi::Value setLicenseKey(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetLicenseKey(arg0.c_str()));
 }
 
@@ -99,8 +143,8 @@ Napi::Value setLicenseUserCredential(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
-    string arg1 = info[1].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    STRING arg1 = toEncodedString(info[1].As<Napi::String>());
     return Napi::Number::New(env, SetLicenseUserCredential(arg0.c_str(), arg1.c_str()));
 }
 
@@ -117,8 +161,17 @@ Napi::Value setLicenseCallback(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    Napi::Function arg0 = info[0].As<Napi::Function>();
-    return Napi::Number::New(env, 0); //Napi::Number::New(env, SetLicenseCallback(arg0));
+    Napi::Function callback = info[0].As<Napi::Function>();
+    CHARTYPE licenseKey[256];
+    int status = GetLicenseKey(licenseKey, 256);
+    if(status != LA_OK)
+    {
+        Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    LicenseCallbacks[STRING(licenseKey)] = new CallbackWrapper(callback);
+    LicenseCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    return Napi::Number::New(env, SetLicenseCallback(licenseCallback));
 }
 
 Napi::Value setActivationMetadata(const Napi::CallbackInfo &info)
@@ -139,8 +192,8 @@ Napi::Value setActivationMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
-    string arg1 = info[1].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    STRING arg1 = toEncodedString(info[1].As<Napi::String>());
     return Napi::Number::New(env, SetActivationMetadata(arg0.c_str(), arg1.c_str()));
 }
 
@@ -162,8 +215,8 @@ Napi::Value setTrialActivationMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
-    string arg1 = info[1].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    STRING arg1 = toEncodedString(info[1].As<Napi::String>());
     return Napi::Number::New(env, SetTrialActivationMetadata(arg0.c_str(), arg1.c_str()));
 }
 
@@ -180,7 +233,7 @@ Napi::Value setAppVersion(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetAppVersion(arg0.c_str()));
 }
 
@@ -197,7 +250,7 @@ Napi::Value setNetworkProxy(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetNetworkProxy(arg0.c_str()));
 }
 
@@ -214,7 +267,7 @@ Napi::Value setCryptlexHost(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetCryptlexHost(arg0.c_str()));
 }
 
@@ -236,10 +289,10 @@ Napi::Value getProductMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg1 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetProductMetadata(arg0.c_str(), arg1, length));
 }
 
@@ -261,10 +314,10 @@ Napi::Value getLicenseMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg1 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseMetadata(arg0.c_str(), arg1, length));
 }
 
@@ -291,7 +344,7 @@ Napi::Value getLicenseMeterAttribute(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint32Array array1 = info[1].As<Napi::Uint32Array>();
     uint32_t *arg1 = reinterpret_cast<uint32_t *>(array1.ArrayBuffer().Data());
     Napi::Uint32Array array2 = info[2].As<Napi::Uint32Array>();
@@ -314,7 +367,7 @@ Napi::Value getLicenseKey(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseKey(arg0, length));
 }
 
@@ -351,7 +404,7 @@ Napi::Value getLicenseUserEmail(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserEmail(arg0, length));
 }
 
@@ -370,7 +423,7 @@ Napi::Value getLicenseUserName(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserName(arg0, length));
 }
 
@@ -389,7 +442,7 @@ Napi::Value getLicenseUserCompany(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserCompany(arg0, length));
 }
 
@@ -411,10 +464,10 @@ Napi::Value getLicenseUserMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg1 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserMetadata(arg0.c_str(), arg1, length));
 }
 
@@ -433,7 +486,7 @@ Napi::Value getLicenseType(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseType(arg0, length));
 }
 
@@ -455,10 +508,10 @@ Napi::Value getActivationMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg1 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetActivationMetadata(arg0.c_str(), arg1, length));
 }
 
@@ -480,7 +533,7 @@ Napi::Value getActivationMeterAttributeUses(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint32Array array = info[1].As<Napi::Uint32Array>();
     uint32_t *arg1 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetActivationMeterAttributeUses(arg0.c_str(), arg1));
@@ -522,10 +575,10 @@ Napi::Value getTrialActivationMetadata(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg1 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetTrialActivationMetadata(arg0.c_str(), arg1, length));
 }
 
@@ -562,7 +615,7 @@ Napi::Value getTrialId(const Napi::CallbackInfo &info)
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
     size_t length = array.ElementLength();
-    char *arg0 = reinterpret_cast<char *>(array.ArrayBuffer().Data());
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetTrialId(arg0, length));
 }
 
@@ -592,6 +645,11 @@ Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
         return env.Null();
     }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
     if (!info[1].IsString())
     {
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
@@ -602,21 +660,25 @@ Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    if (!info[3].IsString())
+    if (!info[3].IsFunction())
     {
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    if (!info[0].IsString())
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    STRING arg1 = toEncodedString(info[1].As<Napi::String>());
+    STRING arg2 = toEncodedString(info[2].As<Napi::String>());
+    Napi::Function callback = info[3].As<Napi::Function>();
+    CHARTYPE licenseKey[256];
+    int status = GetLicenseKey(licenseKey, 256);
+    if(status != LA_OK)
     {
-        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
-    string arg1 = info[1].As<Napi::String>();
-    string arg2 = info[2].As<Napi::String>();
-    string arg3 = info[3].As<Napi::String>();
-    return Napi::Number::New(env, 0); //Napi::Number::New(env, CheckForReleaseUpdate(arg0.c_str(), arg1.c_str(), arg2.c_str(), arg3));
+    ReleaseCallbacks[STRING(licenseKey)] = new CallbackWrapper(callback);
+    ReleaseCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    return Napi::Number::New(env, CheckForReleaseUpdate(arg0.c_str(), arg1.c_str(), arg2.c_str(), softwareReleaseUpdateCallback));
 }
 
 Napi::Value activateLicense(const Napi::CallbackInfo &info)
@@ -637,7 +699,7 @@ Napi::Value activateLicenseOffline(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, ActivateLicenseOffline(arg0.c_str()));
 }
 
@@ -654,7 +716,7 @@ Napi::Value generateOfflineActivationRequest(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, GenerateOfflineActivationRequest(arg0.c_str()));
 }
 
@@ -676,7 +738,7 @@ Napi::Value generateOfflineDeactivationRequest(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, GenerateOfflineDeactivationRequest(arg0.c_str()));
 }
 
@@ -708,7 +770,7 @@ Napi::Value activateTrialOffline(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, ActivateTrialOffline(arg0.c_str()));
 }
 
@@ -725,7 +787,7 @@ Napi::Value generateOfflineTrialActivationRequest(const Napi::CallbackInfo &info
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, GenerateOfflineTrialActivationRequest(arg0.c_str()));
 }
 
@@ -791,7 +853,7 @@ Napi::Value incrementActivationMeterAttributeUses(const Napi::CallbackInfo &info
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     uint32_t arg1 = info[1].As<Napi::Number>().Uint32Value();
     return Napi::Number::New(env, IncrementActivationMeterAttributeUses(arg0.c_str(), arg1));
 }
@@ -814,7 +876,7 @@ Napi::Value decrementActivationMeterAttributeUses(const Napi::CallbackInfo &info
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     uint32_t arg1 = info[1].As<Napi::Number>().Uint32Value();
     return Napi::Number::New(env, DecrementActivationMeterAttributeUses(arg0.c_str(), arg1));
 }
@@ -832,7 +894,7 @@ Napi::Value resetActivationMeterAttributeUses(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    string arg0 = info[0].As<Napi::String>();
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, ResetActivationMeterAttributeUses(arg0.c_str()));
 }
 
