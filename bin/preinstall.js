@@ -3,6 +3,7 @@ const unzipper = require('unzipper');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const execSync = require('child_process').execSync;
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
@@ -18,45 +19,49 @@ async function main() {
 		const arch = os.arch();
 		const plat = os.platform();
 
-		console.log(`Downloading Lexactivator library for ${plat} ${arch} ...`);
+		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
 
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
-		const version = 'v3.7.0';
+		const version = 'v3.7.1';
 
 		let url; let files;
 
 		switch (plat) {
-		case 'darwin': // OSX
-			files = ['libs/gcc/universal/libLexActivator.dylib'];
-			url = '/LexActivator-Mac.zip';
-			break;
-		case 'win32': // windows
-			files = ['libs/' + arch + '/LexActivator.dll', 'libs/' + arch + '/LexActivator.lib'];
-			url = '/LexActivator-Win.zip';
-			break;
-		case 'linux': // linux
-			url = '/LexActivator-Linux.zip';
-			let dir = '';
-			switch (arch) {
-			case 'arm':
-				dir = os.endianness() === 'LE' ? 'armle' : 'armhf';
+			case 'darwin': // OSX
+				files = ['libs/clang/x86_64/libLexActivator.dylib'];
+				url = '/LexActivator-Mac.zip';
 				break;
-			case 'arm64':
-				dir = 'arm64';
+			case 'win32': // windows
+				files = ['libs/vc14/' + arch + '/LexActivator.lib'];
+				url = '/LexActivator-Win.zip';
 				break;
-			case 'x64':
-				dir = 'amd64';
-				break;
-			case 'x32':
-				dir = 'i386';
+			case 'linux': // linux
+				url = '/LexActivator-Linux.zip';
+				let dir = '';
+				switch (arch) {
+					case 'arm':
+						dir = os.endianness() === 'LE' ? 'armle' : 'armhf';
+						break;
+					case 'arm64':
+						dir = 'arm64';
+						break;
+					case 'x64':
+						dir = 'amd64';
+						break;
+					case 'x32':
+						dir = 'i386';
+						break;
+					default:
+						throw Error('Unsupported Linux arch: ' + arch);
+				}
+				if (execSync('ldd --version').includes('musl')) {
+					files = ['libs/musl/' + dir + '/libLexActivator.so'];
+				} else {
+					files = ['libs/gcc/' + dir + '/libLexActivator.so'];
+				}
 				break;
 			default:
-				throw Error('Unsupported Linux arch: ' + arch);
-			}
-			files = ['libs/' + dir + '/libLexActivator.so'];
-			break;
-		default:
-			throw Error('Unsupported platform: ' + plat);
+				throw Error('Unsupported platform: ' + plat);
 		}
 
 		await download(baseUrl + version + url, files, './');
