@@ -8,7 +8,7 @@
             'include_dirs': ["<!@(node -p \"require('node-addon-api').include\")"],
             'dependencies': ["<!(node -p \"require('node-addon-api').gyp\")"],
             'conditions': [
-                ['OS != "win"', {'libraries': ["-Wl,-rpath,<(module_root_dir) -L<(module_root_dir) -lLexActivator"]}],
+                ['OS != "win"', {'libraries': ["-Wl,-rpath,<(module_root_dir),-rpath,./ -L<(module_root_dir) -lLexActivator"]}],
                 ['OS == "win"', {'libraries': ["<(module_root_dir)/LexActivator.lib"]}]
             ],
             'defines': ['NAPI_DISABLE_CPP_EXCEPTIONS'],
