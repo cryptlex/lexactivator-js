@@ -14,7 +14,7 @@ Then you can include it in your code:
 
 	const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
 
-*Note:* On Windows make sure you install the windows-build-tools package first:
+**Note:** On Windows make sure you install the windows-build-tools package first:
 
     npm install --global windows-build-tools --vs2015
 
