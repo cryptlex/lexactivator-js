@@ -3,3 +3,9 @@ examples/
 .vscode/
 build/
 bin/node_modules
+
+# libs
+LexActivator.dll
+LexActivator.lib
+libLexActivator.dylib
+libLexActivator.so
