@@ -40,7 +40,7 @@ async function main() {
 			url = '/LexActivator-Mac.zip';
 			break;
 		case 'win32': // windows
-			files = ['libs/vc14/' + arch + '/LexActivator.lib'];
+			files = ['libs/vc14/' + arch + '/LexActivator.lib', 'libs/vc14/' + arch + '/LexActivator.dll'];
 			url = '/LexActivator-Win.zip';
 			break;
 		case 'linux': // linux
