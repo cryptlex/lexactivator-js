@@ -1,5 +1,6 @@
 /* eslint-disable new-cap */
 const { LexActivatorException } = require('./lib/lexactivator-exception');
+const { LexStatusCodes } = require('./lib/lexstatus-codes');
 const { LexActivatorNative, arrayToString } = require('./lib/lexactivator-native');
 
 /**
@@ -905,54 +906,6 @@ const PermissionFlags = {
 	LA_USER: 1,
 	LA_SYSTEM: 2,
 	LA_IN_MEMORY: 4
-};
-
-const LexStatusCodes = {
-	/**
-	 * Success code.
-	 */
-	LA_OK: 0,
-
-	/**
-	 * Failure code.
-	 */
-	LA_FAIL: 1,
-
-	/**
-	 * The license has expired or system time has been tampered with. Ensure your date and time settings are correct.
-	 */
-	LA_EXPIRED: 20,
-
-	/**
-	 * The license has been suspended.
-	 */
-	LA_SUSPENDED: 21,
-
-	/**
-	 * The grace period for server sync is over.
-	 */
-	LA_GRACE_PERIOD_OVER: 22,
-
-	/**
-	 * The trial has expired or system time has been tampered with. Ensure your date and time settings are correct.
-	 */
-	LA_TRIAL_EXPIRED: 25,
-
-	/**
-	 * The local trial has expired or system time has been tampered
-	 * with. Ensure your date and time settings are correct.
-	 */
-	LA_LOCAL_TRIAL_EXPIRED: 26,
-
-	/**
-	 * A new update is available for the product. This means a new release has been published for the product.
-	 */
-	LA_RELEASE_UPDATE_AVAILABLE: 30,
-
-	/**
-	 *  No new update is available for the product. The current version is latest.
-	 */
-	LA_RELEASE_NO_UPDATE_AVAILABLE: 31
 };
 
 module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, LexActivatorException, PermissionFlags };
