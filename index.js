@@ -132,8 +132,8 @@ class LexActivator {
 	 * The metadata appears along with the activation details of the license in
 	 * dashboard.
 	 *
-	 * @param {string} key of maximum length array.length characters with utf-8 encoding.
-	 * @param {string} value of maximum length array.length characters with utf-8 encoding.
+	 * @param {string} key string of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetActivationMetadata(key, value) {
@@ -149,8 +149,8 @@ class LexActivator {
 	 * The metadata appears along with the trial activation details of the product
 	 * in dashboard.
 	 *
-	 * @param {string} key of maximum length array.length characters with utf-8 encoding.
-	 * @param {string} value of maximum length array.length characters with utf-8 encoding.
+	 * @param {string} key string of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetTrialActivationMetadata(key, value) {
@@ -166,7 +166,7 @@ class LexActivator {
 	 * The app version appears along with the activation details in dashboard. It is
 	 * also used to generate app analytics.
 	 *
-	 * @param {string} appVersion of maximum length array.length characters with utf-8 encoding.
+	 * @param {string} appVersion string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetAppVersion(appVersion) {
@@ -214,7 +214,7 @@ class LexActivator {
 	 *
 	 * This is available for trial as well as license activations.
 	 *
-	 * @param {string} key key to retrieve the value
+	 * @param {string} key metadata key to retrieve the value
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
@@ -230,7 +230,7 @@ class LexActivator {
 	/**
 	 * Gets the license metadata as set in the dashboard.
 	 *
-	 * @param {string} key key to retrieve the value
+	 * @param {string} key metadata key to retrieve the value
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
@@ -541,7 +541,7 @@ class LexActivator {
 	}
 
 	/**
-	 * Activates your application using the offline activation response file.
+	 * Activates the license using the offline activation response file.
 	 *
 	 * @param {string} filePath path of the offline activation response file.
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
@@ -567,7 +567,7 @@ class LexActivator {
 	 * Generates the offline activation request needed for generating offline
 	 * activation response in the dashboard.
 	 *
-	 * @param {string} filePath path of the file, needed to be created, for the offline request.
+	 * @param {string} filePath path of the file for the offline request.
 	 * @throws {LexActivatorException}
 	 */
 	static GenerateOfflineActivationRequest(filePath) {
@@ -606,7 +606,7 @@ class LexActivator {
 	 * A valid offline deactivation file confirms that the license has been
 	 * successfully deactivated on the user's machine.
 	 *
-	 * @param {string} filePath path of the file, needed to be created, for the offline deactivation request.
+	 * @param {string} filePath path of the file for the offline deactivation request.
 	 * @return {number} LA_OK, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
@@ -743,7 +743,7 @@ class LexActivator {
 	 * Generates the offline trial activation request needed for generating offline
 	 * trial activation response in the dashboard.
 	 *
-	 * @param {string} filePath path of the file, needed to be created, for the offline request
+	 * @param {string} filePath path of the file for the offline request
 	 * @throws {LexActivatorException}
 	 */
 	static GenerateOfflineTrialActivationRequest(filePath) {
@@ -761,7 +761,7 @@ class LexActivator {
 	 * This function must be called on every start of your program during the trial
 	 * period.
 	 *
-	 * @return {number} LA__OK, LA_TRIAL_EXPIRED, LA_FAIL
+	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
 	static IsTrialGenuine() {
@@ -785,7 +785,7 @@ class LexActivator {
 	 * the user's computer, ideally on a button click.
 	 *
 	 * @param {number} trialLength trial length in days
-	 * @return {number} LA__OK, LA_LOCAL_TRIAL_EXPIRED, LA_FAIL
+	 * @return {number} LA_OK, LA_LOCAL_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
 	static ActivateLocalTrial(trialLength) {

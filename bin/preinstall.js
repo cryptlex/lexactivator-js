@@ -3,7 +3,6 @@ const unzipper = require('unzipper');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const execSync = require('child_process').execSync;
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
@@ -30,7 +29,7 @@ async function main() {
 		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
 
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
-		const version = 'v3.7.1';
+		const version = 'v3.7.2';
 
 		let url; let files;
 
@@ -48,7 +47,7 @@ async function main() {
 			let dir = '';
 			switch (arch) {
 			case 'arm':
-				dir = os.endianness() === 'LE' ? 'armle' : 'armhf';
+				dir = os.endianness() === 'LE' ? 'armel' : 'armhf';
 				break;
 			case 'arm64':
 				dir = 'arm64';

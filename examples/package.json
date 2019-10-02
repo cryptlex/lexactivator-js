@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cryptlex/lexactivator": "~3.3.4"
+    "@cryptlex/lexactivator": "~3.4.0"
   }
 }
