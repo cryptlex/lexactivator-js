@@ -223,6 +223,23 @@ LEXACTIVATOR_API int LA_CC SetTrialActivationMetadata(CSTRTYPE key, CSTRTYPE val
 LEXACTIVATOR_API int LA_CC SetAppVersion(CSTRTYPE appVersion);
 
 /*
+    FUNCTION: SetOfflineActivationRequestMeterAttributeUses()
+
+    PURPOSE: Sets the meter attribute uses for the offline activation request.
+
+    This function should only be called before GenerateOfflineActivationRequest()
+    function to set the meter attributes in case of offline activation.
+
+    PARAMETERS:
+    * name - name of the meter attribute
+    * uses - the uses value
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY
+
+*/
+LEXACTIVATOR_API int LA_CC SetOfflineActivationRequestMeterAttributeUses(CSTRTYPE name, uint32_t uses);
+
+/*
     FUNCTION: SetNetworkProxy()
 
     PURPOSE: Sets the network proxy to be used when contacting Cryptlex servers.

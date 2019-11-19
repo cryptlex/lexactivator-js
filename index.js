@@ -177,6 +177,23 @@ class LexActivator {
 	}
 
 	/**
+	 * Sets the meter attribute uses for the offline activation request.
+	 *
+	 * This function should only be called before GenerateOfflineActivationRequest()
+     * function to set the meter attributes in case of offline activation.
+	 *
+	 * @param {string} name name of the meter attribute
+	 * @param {number} uses the uses value
+	 * @throws {LexActivatorException}
+	 */
+	static SetOfflineActivationRequestMeterAttributeUses(name, uses) {
+		const status = LexActivatorNative.SetOfflineActivationRequestMeterAttributeUses(name, uses);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Sets the network proxy to be used when contacting CryptLex servers.
 	 *
 	 * The proxy format should be: [protocol://][username:password@]machine[:port]

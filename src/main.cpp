@@ -224,6 +224,29 @@ Napi::Value setTrialActivationMetadata(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetTrialActivationMetadata(arg0.c_str(), arg1.c_str()));
 }
 
+Napi::Value setOfflineActivationRequestMeterAttributeUses(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 2)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[1].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    uint32_t arg1 = info[1].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetOfflineActivationRequestMeterAttributeUses(arg0.c_str(), arg1));
+}
+
 Napi::Value setAppVersion(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -917,6 +940,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetLicenseCallback"] = Napi::Function::New(env, setLicenseCallback);
     exports["SetActivationMetadata"] = Napi::Function::New(env, setActivationMetadata);
     exports["SetTrialActivationMetadata"] = Napi::Function::New(env, setTrialActivationMetadata);
+    exports["SetOfflineActivationRequestMeterAttributeUses"] = Napi::Function::New(env, setOfflineActivationRequestMeterAttributeUses);
     exports["SetAppVersion"] = Napi::Function::New(env, setAppVersion);
     exports["SetNetworkProxy"] = Napi::Function::New(env, setNetworkProxy);
     exports["SetCryptlexHost"] = Napi::Function::New(env, setCryptlexHost);
