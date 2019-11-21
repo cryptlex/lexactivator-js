@@ -29,7 +29,7 @@ async function main() {
 		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
 
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
-		const version = 'v3.8.0';
+		const version = 'v3.8.1';
 
 		let url; let files;
 
