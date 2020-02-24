@@ -4,6 +4,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+const version = 'v3.8.2';
+
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
 	for (let i = 0; i < files.length; i++) {
@@ -29,7 +31,6 @@ async function main() {
 		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
 
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
-		const version = 'v3.8.1';
 
 		let url; let files;
 

@@ -270,7 +270,7 @@ class LexActivator {
 	static GetLicenseMeterAttribute(name) {
 		const allowedUses = new Uint32Array(1);
 		const totalUses = new Uint32Array(1);
-		const status = LexActivatorNative.GetLicenseMeterAttribute(name);
+		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
 			return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0]);
