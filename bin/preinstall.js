@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const version = 'v3.8.2';
+const version = 'v3.8.3';
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
