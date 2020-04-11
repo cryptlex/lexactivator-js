@@ -38,14 +38,14 @@ async function main() {
 			url = '/LexActivator-Mac.zip';
 			break;
 		case 'win32': // windows
-			if (args.target_arch == 'ia32') {
+			if (args.arch == 'x86') {
 				arch = 'x86';
 			}
 			files = ['libs/vc14/' + arch + '/LexActivator.lib', 'libs/vc14/' + arch + '/LexActivator.dll'];
 			url = '/LexActivator-Win.zip';
 			break;
 		case 'linux': // linux
-			if (args.target_arch == 'ia32') {
+			if (args.arch == 'x86') {
 				arch = 'x32';
 			}
 			url = '/LexActivator-Linux.zip';

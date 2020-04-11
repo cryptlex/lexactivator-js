@@ -24,6 +24,15 @@ jobs:
         run: npm install --global windows-build-tools --vs2015
       - run: npm i
       - run: npm run s3-publish
+      - name: Download LexActivator x86 DLL
+        if: matrix.os == 'windows-2016'
+        run: npm run installx86
+      - name: Build windows x86
+        if: matrix.os == 'windows-2016'
+        run: npm i --target_arch=ia32
+      - name: Publish windows x86
+        if: matrix.os == 'windows-2016'
+        run: npm run s3-publish --target_arch=ia32
 
   publish-npm:
     needs: build

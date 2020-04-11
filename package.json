@@ -8,6 +8,7 @@
     "s3-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
     "deploy": "npm publish --access public",
     "install": "node preinstall.js",
+    "installx86": "node preinstall.js --arch=x86",
     "postinstall": "./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
   },
   "keywords": [
