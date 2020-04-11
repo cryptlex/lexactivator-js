@@ -16,6 +16,9 @@ async function download(url, files, destPath) {
 }
 
 function isMusl() {
+	if (os.platform() != 'linux') {
+		return false;
+	}
 	const output = require('child_process').spawnSync('ldd', ['--version']).stderr.toString('utf8');
 	if (output.indexOf('musl') > -1) {
 		return true;
