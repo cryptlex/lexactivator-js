@@ -8,7 +8,7 @@
     "clean": "node-gyp clean",
     "deploy": "npm publish --access public",
     "preinstall": "cd bin && npm i && cd .. && node bin/preinstall.js",
-    "install": "node-gyp rebuild"
+    "install": "./node_modules/.bin/node-pre-gyp install --fallback-to-build"
   },
   "keywords": [
     "cryptlex",
@@ -19,15 +19,27 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.5.0",
-    "node-addon-api": "^1.6.3"
+    "node-addon-api": "^1.6.3",
+    "node-pre-gyp": "^0.14.0"
   },
   "devDependencies": {
-    "eslint": "^5.14.1",
-    "eslint-config-google": "^0.12.0"
+    "aws-sdk": "^2.653.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cryptlex/lexactivator-js.git"
+  },
+  "binary": {
+    "module_name": "lexactivator",
+    "module_path": "./lib/binding/{platform}-{arch}/napi-v{napi_build_version}/",
+    "host": "https://dl.cryptlex.com",
+    "remote_path": "./nodejs/{module_name}/v{version}/",
+    "package_name": "{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
+    "napi_versions": [
+      3
+    ]
   },
   "homepage": "https://cryptlex.com",
   "gypfile": true
