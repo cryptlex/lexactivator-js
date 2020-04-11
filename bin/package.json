@@ -18,6 +18,7 @@
   "homepage": "https://github.com/cryptlex/lexactivator-js#readme",
   "dependencies": {
     "request": "^2.88.0",
-    "unzipper": "^0.10.1"
+    "unzipper": "^0.10.1",
+    "yargs": "^15.3.1"
   }
 }
