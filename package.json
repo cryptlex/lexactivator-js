@@ -7,8 +7,7 @@
     "build": "./node_modules/.bin/node-pre-gyp rebuild --msvs_version=2015",
     "s3-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
     "deploy": "npm publish --access public",
-    "preinstall": "cd bin && npm i && cd .. && node bin/preinstall.js",
-    "install": "./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
+    "install": "node preinstall.js && ./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
   },
   "keywords": [
     "cryptlex",
@@ -20,7 +19,10 @@
   "dependencies": {
     "bindings": "^1.5.0",
     "node-addon-api": "^1.6.3",
-    "node-pre-gyp": "^0.14.0"
+    "node-pre-gyp": "^0.14.0",
+    "request": "^2.88.2",
+    "unzipper": "^0.10.10",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "aws-sdk": "^2.653.0",
