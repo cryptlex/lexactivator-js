@@ -7,7 +7,8 @@
     "build": "./node_modules/.bin/node-pre-gyp rebuild --msvs_version=2015",
     "s3-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
     "deploy": "npm publish --access public",
-    "install": "node preinstall.js && ./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
+    "install": "node preinstall.js",
+    "postinstall": "./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
   },
   "keywords": [
     "cryptlex",

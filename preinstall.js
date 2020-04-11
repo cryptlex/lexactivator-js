@@ -32,7 +32,6 @@ async function main() {
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
 
 		let url; let files;
-
 		switch (plat) {
 		case 'darwin': // OSX
 			files = ['libs/clang/x86_64/libLexActivator.dylib'];
@@ -80,6 +79,7 @@ async function main() {
 		await download(baseUrl + version + url, files, './');
 
 		console.log(`Lexactivator library successfully downloaded!`);
+		process.exit(0);
 	} catch (error) {
 		console.error(error);
 	}
