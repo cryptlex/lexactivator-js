@@ -12,15 +12,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-16.04, macos-latest, windows-2016]
-        os: [windows-2016]
+        os: [ubuntu-16.04, macos-latest, windows-2019]
+        #os: [windows-2016]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - run: npm i -g node-pre-gyp
+      - run: node-pre-gyp unpublish
       - name: Install Windows 2015 build tools
-        if: matrix.os == 'windows-2016'
+        if: matrix.os == 'windows-2019'
         run: npm install --global windows-build-tools --vs2015
       - run: npm i
       - run: npm run s3-publish
@@ -28,14 +30,11 @@ jobs:
           node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
           node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
           node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
-      - name: Download LexActivator x86 DLL
-        if: matrix.os == 'windows-2016'
-        run: node preinstall.js --arch=x86
-      - name: Build windows x86
-        if: matrix.os == 'windows-2016'
-        run: npm run build --target_arch=ia32
+      - name: Build for windows x86
+        if: matrix.os == 'windows-2019'
+        run: node i --target_arch=ia32
       - name: Publish windows x86
-        if: matrix.os == 'windows-2016'
+        if: matrix.os == 'windows-2019'
         run: npm run s3-publish --target_arch=ia32
         env:
           node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}

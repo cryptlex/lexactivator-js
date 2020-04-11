@@ -3,8 +3,7 @@ const unzipper = require('unzipper');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const args = require('yargs').argv;
-
+const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
 const version = 'v3.9.0';
 
 async function download(url, files, destPath) {
@@ -27,8 +26,7 @@ function isMusl() {
 async function main() {
 	try {
 		let arch = os.arch();
-		const plat = os.platform();
-
+		const plat = args.target_platform || os.platform();
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
 
 		let url; let files;
@@ -38,14 +36,14 @@ async function main() {
 			url = '/LexActivator-Mac.zip';
 			break;
 		case 'win32': // windows
-			if (args.arch == 'x86') {
+			if (args.target_arch == 'ia32') {
 				arch = 'x86';
 			}
 			files = ['libs/vc14/' + arch + '/LexActivator.lib', 'libs/vc14/' + arch + '/LexActivator.dll'];
 			url = '/LexActivator-Win.zip';
 			break;
 		case 'linux': // linux
-			if (args.arch == 'x86') {
+			if (args.target_arch == 'ia32') {
 				arch = 'x32';
 			}
 			url = '/LexActivator-Linux.zip';
