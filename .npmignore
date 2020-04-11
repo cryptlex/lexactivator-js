@@ -4,6 +4,7 @@ examples/
 build/
 build*/
 bin/node_modules
+lib/binding/
 
 # libs
 LexActivator.dll
