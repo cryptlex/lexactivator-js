@@ -29,8 +29,6 @@ async function main() {
 		const arch = os.arch();
 		const plat = os.platform();
 
-		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
-
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
 
 		let url; let files;
@@ -78,7 +76,7 @@ async function main() {
 		default:
 			throw Error('Unsupported platform: ' + plat);
 		}
-
+		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
 		await download(baseUrl + version + url, files, './');
 
 		console.log(`Lexactivator library successfully downloaded!`);
