@@ -24,6 +24,10 @@ jobs:
         run: npm install --global windows-build-tools --vs2015
       - run: npm i
       - run: npm run s3-publish
+        env:
+          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
+          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
+          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
       - name: Download LexActivator x86 DLL
         if: matrix.os == 'windows-2016'
         run: node preinstall.js --arch=x86
@@ -33,6 +37,10 @@ jobs:
       - name: Publish windows x86
         if: matrix.os == 'windows-2016'
         run: npm run s3-publish --target_arch=ia32
+        env:
+          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
+          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
+          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
 
   publish-npm:
     needs: build
