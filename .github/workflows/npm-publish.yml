@@ -12,8 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, macos-latest, windows-2019]
-        #os: [windows-2016]
+        # os: [ubuntu-16.04, macos-latest, windows-2019]
+        os: [windows-2019]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -32,7 +32,7 @@ jobs:
           node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
       - name: Build for windows x86
         if: matrix.os == 'windows-2019'
-        run: node i --target_arch=ia32
+        run: npm i --target_arch=ia32
       - name: Publish windows x86
         if: matrix.os == 'windows-2019'
         run: npm run s3-publish --target_arch=ia32
