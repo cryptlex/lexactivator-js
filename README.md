@@ -1,3 +1,5 @@
+![Build @cryptlex/lexactivator package](https://github.com/cryptlex/lexactivator-js/workflows/Build%20@cryptlex/lexactivator%20package/badge.svg)
+
 # @cryptlex/lexactivator
 
 Cryptlex lets you license your software apps effortlessly. You can easily generate license keys using the REST API or Dashboard and validate the license keys in your software apps using LexActivator (Cryptlex client library).
