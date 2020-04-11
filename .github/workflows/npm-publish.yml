@@ -29,7 +29,7 @@ jobs:
         run: npm run installx86
       - name: Build windows x86
         if: matrix.os == 'windows-2016'
-        run: npm i --target_arch=ia32
+        run: npm run build --target_arch=ia32
       - name: Publish windows x86
         if: matrix.os == 'windows-2016'
         run: npm run s3-publish --target_arch=ia32

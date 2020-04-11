@@ -26,7 +26,7 @@ function isMusl() {
 
 async function main() {
 	try {
-		const arch = os.arch();
+		let arch = os.arch();
 		const plat = os.platform();
 
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
