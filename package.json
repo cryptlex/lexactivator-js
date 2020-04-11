@@ -4,8 +4,8 @@
   "description": "LexActivator API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
-    "build": "node-gyp rebuild",
-    "clean": "node-gyp clean",
+    "build": "./node_modules/.bin/node-pre-gyp rebuild",
+    "build-publish": "./node_modules/.bin/node-pre-gyp rebuild package unpublish publish info",
     "deploy": "npm publish --access public",
     "preinstall": "cd bin && npm i && cd .. && node bin/preinstall.js",
     "install": "./node_modules/.bin/node-pre-gyp install --fallback-to-build"
@@ -33,10 +33,10 @@
   },
   "binary": {
     "module_name": "lexactivator",
-    "module_path": "./lib/binding/{platform}-{arch}/napi-v{napi_build_version}/",
+    "module_path": "./lib/binding/{platform}-{arch}-napi-v{napi_build_version}-{libc}/",
     "host": "https://dl.cryptlex.com",
-    "remote_path": "./nodejs/{module_name}/v{version}/",
-    "package_name": "{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
+    "remote_path": "./downloads/nodejs/{module_name}/v{version}/",
+    "package_name": "{module_name}-{platform}-{arch}-napi-v{napi_build_version}-{libc}.tar.gz",
     "napi_versions": [
       3
     ]

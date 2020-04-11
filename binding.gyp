@@ -19,10 +19,34 @@
             ],
             "conditions": [
                 [
-                    "OS != 'win'",
+                    "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,<(module_root_dir),-rpath,./ -L<(module_root_dir) -lLexActivator"
+                            "-Wl,-rpath,<(module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                        ],
+                        "copies": [
+                            {
+                                "files": [
+                                    "<(module_root_dir)/libLexActivator.so"
+                                ],
+                                "destination": "<(module_path)"
+                            }
+                        ]
+                    }
+                ],
+                [
+                    "OS == 'mac'",
+                    {
+                        "libraries": [
+                            "-Wl,-rpath,<(module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                        ],
+                        "copies": [
+                            {
+                                "files": [
+                                    "<(module_root_dir)/libLexActivator.dylib"
+                                ],
+                                "destination": "<(module_path)"
+                            }
                         ]
                     }
                 ],
