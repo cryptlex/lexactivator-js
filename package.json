@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/node-pre-gyp rebuild",
-    "build-publish": "./node_modules/.bin/node-pre-gyp rebuild package unpublish publish info",
+    "build-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
     "deploy": "npm publish --access public",
     "preinstall": "cd bin && npm i && cd .. && node bin/preinstall.js",
     "install": "./node_modules/.bin/node-pre-gyp install --fallback-to-build"
