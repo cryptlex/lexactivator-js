@@ -2,6 +2,8 @@ name: Build and publish @cryptlex/lexactivator package
 
 on:
   push:
+    branches:
+    - develop
     tags:
     - '3.*'
 
@@ -10,13 +12,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, macos-latest, windows-2016]
+        # os: [ubuntu-16.04, macos-latest, windows-2016]
+        os: [windows-2016]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      # - run: npm config set msvs_version 2015
+      - run: npm config set msvs_version 2015
       - run: npm ci
       - run: npm run build-publish
 
