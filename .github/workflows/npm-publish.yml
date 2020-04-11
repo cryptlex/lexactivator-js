@@ -19,6 +19,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Install Windows 2015 build tools
+        if: matrix.os == 'windows-2016'
+        run: npm install --global windows-build-tools --vs2015
       - run: npm i
       - run: npm run s3-publish
 
