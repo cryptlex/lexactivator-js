@@ -26,7 +26,7 @@ jobs:
       - run: npm run s3-publish
       - name: Download LexActivator x86 DLL
         if: matrix.os == 'windows-2016'
-        run: npm run installx86
+        run: node preinstall.js --arch=x86
       - name: Build windows x86
         if: matrix.os == 'windows-2016'
         run: npm run build --target_arch=ia32
