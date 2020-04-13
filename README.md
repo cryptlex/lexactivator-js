@@ -23,7 +23,7 @@ Then you can include it in your code:
     npm install @cryptlex/lexactivator --target_arch=x64 --target_platform=darwin
     npm install @cryptlex/lexactivator --target_arch=x64 --target_platform=linux
 
-This would install the precompiled binaries for the targetted platforms.
+This would install the precompiled binaries for all the targetted platforms.
 
 
 ## Usage

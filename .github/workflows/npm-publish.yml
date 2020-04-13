@@ -2,6 +2,8 @@ name: Build @cryptlex/lexactivator package
 
 on:
   push:
+    branches:
+    - develop
     tags:
     - '3.*'
 
@@ -19,7 +21,7 @@ jobs:
       - name: Install Windows 2015 build tools
         if: matrix.os == 'windows-2019'
         run: npm i --global windows-build-tools --vs2015
-      - run: npm i --force_download
+      - run: npm i --build-from-source
       - run: npm run s3-publish
         env:
           node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
@@ -27,7 +29,7 @@ jobs:
           node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
       - name: Build for windows x86
         if: matrix.os == 'windows-2019'
-        run: npm i --target_arch=ia32 --force_download 
+        run: npm i --target_arch=ia32 --build-from-source 
       - name: Publish windows x86
         if: matrix.os == 'windows-2019'
         run: npm run s3-publish --target_arch=ia32

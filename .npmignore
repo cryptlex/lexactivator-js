@@ -1,6 +1,7 @@
 # Examples directory
 examples/
 .vscode/
+.github/
 build/
 build*/
 bin/node_modules

@@ -17,12 +17,15 @@
             "dependencies": [
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
+            'variables': {
+                'relative_module_path%' : "<!(node -p \"require('path').relative('./','<(module_path)')\")"
+            },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,<(module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,./<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {
@@ -38,7 +41,7 @@
                     "OS == 'mac'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,<(module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,./<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {

@@ -35,14 +35,14 @@ async function main() {
 		let url; let files;
 		switch (plat) {
 		case 'darwin': // OSX
-			if (args.force_download == null) {
+			if (args.buildFromSource == null) {
 				return;
 			}
 			files = ['libs/clang/x86_64/libLexActivator.dylib'];
 			url = '/LexActivator-Mac.zip';
 			break;
 		case 'win32': // windows
-			if (args.force_download == null) {
+			if (args.buildFromSource == null) {
 				return;
 			}
 			if (args.target_arch == 'ia32') {
@@ -65,7 +65,7 @@ async function main() {
 				dir = 'arm64';
 				break;
 			case 'x64':
-				if (args.force_download == null && !isMusl()) {
+				if (args.buildFromSource == null && !isMusl()) {
 					return;
 				}
 				dir = 'amd64';
