@@ -16,9 +16,14 @@ Then you can include it in your code:
 
 	const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
 
-**Note:** On Windows make sure you install the windows-build-tools package first:
+**Note:** In case you are building a cross platform **Electron** app, you should install LexActivator for all the targeted platforms:
 
-    npm install --global windows-build-tools --vs2015
+    npm install @cryptlex/lexactivator --target_arch=ia32 --target_platform=win32
+    npm install @cryptlex/lexactivator --target_arch=x64 --target_platform=win32
+    npm install @cryptlex/lexactivator --target_arch=x64 --target_platform=darwin
+    npm install @cryptlex/lexactivator --target_arch=x64 --target_platform=linux
+
+This would install the precompiled binaries for the targetted platforms.
 
 
 ## Usage
