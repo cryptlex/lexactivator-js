@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
-const version = 'v3.9.0';
+const version = 'v3.9.1';
 
 async function download(url, files, destPath) {
 	const directory = await unzipper.Open.url(request, url);
