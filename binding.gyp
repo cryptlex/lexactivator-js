@@ -18,14 +18,15 @@
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
             'variables': {
-                'relative_module_path%' : "<!(node -p \"require('path').relative('./','<(module_path)')\")"
+                'relative_module_path%' : "<!(node -p \"require('path').relative('./','<(module_path)')\")",
+                'node_module_path': "node_modules/@cryptlex/lexactivator"
             },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,<(node_module_path)/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {
@@ -41,7 +42,7 @@
                     "OS == 'mac'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,<(node_module_path)/<(relative_module_path),-rpath,@executable_path/../Resources/app/<(node_module_path)/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {
