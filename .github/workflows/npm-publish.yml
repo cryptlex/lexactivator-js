@@ -40,7 +40,7 @@ jobs:
 
   publish-npm:
     needs: build
-    if: contains(github.ref, "3.")
+    if: contains(github.ref, '3.')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
