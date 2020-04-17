@@ -25,7 +25,7 @@
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,./node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {
@@ -41,7 +41,7 @@
                     "OS == 'mac'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,./node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
+                            "-Wl,-rpath,node_modules/@cryptlex/lexactivator/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
                         ],
                         "copies": [
                             {
