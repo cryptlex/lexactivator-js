@@ -42,7 +42,7 @@
                     "OS == 'mac'",
                     {
                         "libraries": [
-                            "-Wl -L<(module_root_dir) -lLexActivator"
+                            "-Wl -L<(module_root_dir) -lLexActivator -framework CoreFoundation -framework SystemConfiguration -framework Security"
                         ]
                     }
                 ],
