@@ -2,8 +2,10 @@ name: Build @cryptlex/lexactivator package
 
 on:
   push:
+    branches:
+      - master
     tags:
-    - '3.*'
+      - '3.*'
 
 jobs:
   build:
@@ -38,7 +40,7 @@ jobs:
 
   publish-npm:
     needs: build
-    # if: github.event.base_ref == 'refs/heads/master'
+    if: contains(github.ref, "3.")
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
