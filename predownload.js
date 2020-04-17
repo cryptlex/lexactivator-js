@@ -38,8 +38,8 @@ async function main() {
 			if (args.buildFromSource == null) {
 				return;
 			}
-			files = ['libs/clang/x86_64/libLexActivator.dylib'];
-			url = '/LexActivator-Mac.zip';
+			files = ['libs/clang/x86_64/libLexActivator.a'];
+			url = '/LexActivator-Static-Mac.zip';
 			break;
 		case 'win32': // windows
 			if (args.buildFromSource == null) {

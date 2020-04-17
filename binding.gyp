@@ -42,15 +42,7 @@
                     "OS == 'mac'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,<(node_module_path)/<(relative_module_path),-rpath,@executable_path/../Resources/app/<(node_module_path)/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
-                        ],
-                        "copies": [
-                            {
-                                "files": [
-                                    "<(module_root_dir)/libLexActivator.dylib"
-                                ],
-                                "destination": "<(module_path)"
-                            }
+                            "-Wl -L<(module_root_dir) -lLexActivator"
                         ]
                     }
                 ],
