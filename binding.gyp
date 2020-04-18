@@ -18,23 +18,14 @@
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
             'variables': {
-                'relative_module_path%' : "<!(node -p \"require('path').relative('./','<(module_path)')\")",
-                'node_module_path': "node_modules/@cryptlex/lexactivator"
+                'ssl_dependencies%' : "<!(node -p \"require('detect-libc').isNonGlibcLinux ? '' : '-lssl3 -lnss3 -lnspr4'\")",
             },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-rpath,<(node_module_path)/<(relative_module_path),-rpath,./ -L<(module_path) -lLexActivator"
-                        ],
-                        "copies": [
-                            {
-                                "files": [
-                                    "<(module_root_dir)/libLexActivator.so"
-                                ],
-                                "destination": "<(module_path)"
-                            }
+                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexActivator -Wl,-Bdynamic -lpthread <(ssl_dependencies)"
                         ]
                     }
                 ],
