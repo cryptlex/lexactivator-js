@@ -3,6 +3,7 @@ const unzipper = require('unzipper');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const isNonGlibcLinux = require('detect-libc').isNonGlibcLinux;
 const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
 const version = 'v3.9.1';
 
@@ -19,8 +20,7 @@ function isMusl() {
 	if (os.platform() != 'linux') {
 		return false;
 	}
-	const output = require('child_process').spawnSync('ldd', ['--version']).stderr.toString('utf8');
-	if (output.indexOf('musl') > -1) {
+	if (isNonGlibcLinux) {
 		return true;
 	}
 	return false;
@@ -55,7 +55,7 @@ async function main() {
 			if (args.target_arch == 'ia32') {
 				arch = 'x32';
 			}
-			url = '/LexActivator-Linux.zip';
+			url = '/LexActivator-Static-Linux.zip';
 			let dir = '';
 			switch (arch) {
 			case 'arm':
@@ -77,9 +77,9 @@ async function main() {
 				throw Error('Unsupported Linux arch: ' + arch);
 			}
 			if (isMusl()) {
-				files = ['libs/musl/' + dir + '/libLexActivator.so'];
+				files = ['libs/musl/' + dir + '/libLexActivator.a'];
 			} else {
-				files = ['libs/gcc/' + dir + '/libLexActivator.so'];
+				files = ['libs/gcc/' + dir + '/libLexActivator.a'];
 			}
 			break;
 		default:

@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "bindings": "^1.5.0",
+    "detect-libc": "^1.0.3",
     "node-addon-api": "^1.6.3",
     "node-pre-gyp": "^0.14.0",
     "request": "^2.88.2",
