@@ -1,6 +1,9 @@
 #include "LexActivator.h"
 #include "CallbackWrapper.h"
 #include <string>
+#ifdef WIN32
+#include <codecvt>
+#endif
 #include <locale>
 #include <map>
 
