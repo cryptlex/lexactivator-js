@@ -12,3 +12,4 @@ LexActivator.dll
 LexActivator.lib
 libLexActivator.dylib
 libLexActivator.so
+libLexActivator.a

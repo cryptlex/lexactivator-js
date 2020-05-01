@@ -1,7 +1,6 @@
 #include "LexActivator.h"
 #include "CallbackWrapper.h"
 #include <string>
-#include <codecvt>
 #include <locale>
 #include <map>
 
