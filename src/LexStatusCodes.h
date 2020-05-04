@@ -101,7 +101,7 @@ enum LexStatusCodes
     /*
         CODE: LA_E_SYSTEM_PERMISSION
 
-        MESSAGE: Insufficent system permissions. Occurs when LA_SYSTEM flag is used
+        MESSAGE: Insufficient system permissions. Occurs when LA_SYSTEM flag is used
         but application is not run with admin privileges.
     */
     LA_E_SYSTEM_PERMISSION = 44,
