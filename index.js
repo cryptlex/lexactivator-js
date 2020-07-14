@@ -9,12 +9,15 @@ const { LexActivatorNative, arrayToString } = require('./lib/lexactivator-native
  *  @property {name} name The name of the meter attribute.
  *  @property {allowedUses} allowedUses The allowed uses of the meter attribute.
  *  @property {totalUses} totalUses The total uses of the meter attribute.
+ *  @property {grossUses} grossUses The gross uses of the meter attribute.
  */
 class LicenseMeterAttribute {
-	constructor(name, allowedUses, totalUses) {
+	constructor(name, allowedUses, totalUses, grossUses) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
+		this.totalUses = totalUses;
+		this.grossUses = grossUses;
 	}
 }
 /**
@@ -282,19 +285,20 @@ class LexActivator {
 	}
 
 	/**
-	 * Gets the license meter attribute allowed uses and total uses.
+	 * Gets the license meter attribute allowed, total and gross uses.
 	 *
 	 * @param {string} name name of the meter attribute
-	 * @return {LicenseMeterAttribute} values of meter attribute allowed and total uses
+	 * @return {LicenseMeterAttribute} values of meter attribute allowed, total and gross uses
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMeterAttribute(name) {
 		const allowedUses = new Uint32Array(1);
 		const totalUses = new Uint32Array(1);
-		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses);
+		const grossUses = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 		case LexStatusCodes.LA_OK:
-			return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0]);
+			return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
 		default:
 			throw new LexActivatorException(status);
 		}
