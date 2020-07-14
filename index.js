@@ -78,6 +78,27 @@ class LexActivator {
 	}
 
 	/**
+	 * In case you don't want to use the LexActivator's advanced
+     * device fingerprinting algorithm, this function can be used to set a custom
+     * device fingerprint.
+	 *
+	 * If you decide to use your own custom device fingerprint then this function must be
+     * called on every start of your program immediately after calling SetProductFile()
+     * or SetProductData() function.
+	 *
+	 * The license fingerprint matching strategy is ignored if this function is used.
+	 *
+	 * @param {string} fingerprint string of minimum length 64 characters and maximum length 256 characters
+	 * @throws {LexActivatorException}
+	 */
+	static SetCustomDeviceFingerprint(fingerprint) {
+		const status = LexActivatorNative.SetCustomDeviceFingerprint(fingerprint);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Sets the license key required to activate the license.
 	 *
 	 * @param {string} licenseKey a valid license key.
@@ -295,6 +316,44 @@ class LexActivator {
 	}
 
 	/**
+	 * Gets the allowed activations of the license.
+	 *
+	 * @return {number} the allowed activations
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseAllowedActivations() {
+		const allowedActivations = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseAllowedActivations(allowedActivations);
+		switch (status) {
+		case LexStatusCodes.LA_OK:
+			return allowedActivations[0];
+		case LexStatusCodes.LA_FAIL:
+			return 0;
+		default:
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Gets the total activations of the license.
+	 *
+	 * @return {number} the total activations
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseTotalActivations() {
+		const totalActivations = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseTotalActivations(totalActivations);
+		switch (status) {
+		case LexStatusCodes.LA_OK:
+			return totalActivations[0];
+		case LexStatusCodes.LA_FAIL:
+			return 0;
+		default:
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Gets the license expiry date timestamp.
 	 *
 	 * @return {number} the timestamp
@@ -509,6 +568,21 @@ class LexActivator {
 		default:
 			throw new LexActivatorException(status);
 		}
+	}
+
+	/**
+	 * Gets the version of this library.
+	 *
+	 * @return {string} the library version
+	 * @throws {LexActivatorException}
+	 */
+	static GetLibraryVersion() {
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLibraryVersion(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
 	}
 
 	/**

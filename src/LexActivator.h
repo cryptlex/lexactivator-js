@@ -2,6 +2,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 #include "LexStatusCodes.h"
 #ifdef _WIN32
     /*
@@ -128,6 +129,26 @@ LEXACTIVATOR_API int LA_CC SetProductData(CSTRTYPE productData);
 LEXACTIVATOR_API int LA_CC SetProductId(CSTRTYPE productId, uint32_t flags);
 
 /*
+    FUNCTION: SetCustomDeviceFingerprint()
+
+    PURPOSE: In case you don't want to use the LexActivator's advanced
+    device fingerprinting algorithm, this function can be used to set a custom
+    device fingerprint.
+
+    If you decide to use your own custom device fingerprint then this function must be
+    called on every start of your program immediately after calling SetProductFile()
+    or SetProductData() function.
+
+    The license fingerprint matching strategy is ignored if this function is used.
+
+    PARAMETERS:
+    * fingerprint - string of minimum length 64 characters and maximum length 256 characters.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_CUSTOM_FINGERPRINT_LENGTH
+*/
+LEXACTIVATOR_API int LA_CC SetCustomDeviceFingerprint(CSTRTYPE fingerprint);
+
+/*
     FUNCTION: SetLicenseKey()
 
     PURPOSE: Sets the license key required to activate the license.
@@ -182,8 +203,8 @@ LEXACTIVATOR_API int LA_CC SetLicenseCallback(CallbackType callback);
     in dashboard.
 
     PARAMETERS:
-    * key - string of maximum length 256 characters with utf-8 encoding.
-    * value - string of maximum length 256 characters with utf-8 encoding.
+    * key - string of maximum length 256 characters.
+    * value - string of maximum length 256 characters.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_METADATA_KEY_LENGTH,
     LA_E_METADATA_VALUE_LENGTH, LA_E_ACTIVATION_METADATA_LIMIT
@@ -199,8 +220,8 @@ LEXACTIVATOR_API int LA_CC SetActivationMetadata(CSTRTYPE key, CSTRTYPE value);
     in dashboard.
 
     PARAMETERS:
-    * key - string of maximum length 256 characters with utf-8 encoding.
-    * value - string of maximum length 256 characters with utf-8 encoding.
+    * key - string of maximum length 256 characters.
+    * value - string of maximum length 256 characters.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_METADATA_KEY_LENGTH,
     LA_E_METADATA_VALUE_LENGTH, LA_E_TRIAL_ACTIVATION_METADATA_LIMIT
@@ -216,7 +237,7 @@ LEXACTIVATOR_API int LA_CC SetTrialActivationMetadata(CSTRTYPE key, CSTRTYPE val
     is also used to generate app analytics.
 
     PARAMETERS:
-    * appVersion - string of maximum length 256 characters with utf-8 encoding.
+    * appVersion - string of maximum length 256 characters.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_APP_VERSION_LENGTH
 */
@@ -307,16 +328,17 @@ LEXACTIVATOR_API int LA_CC GetLicenseMetadata(CSTRTYPE key, STRTYPE value, uint3
 /*
     FUNCTION: GetLicenseMeterAttribute()
 
-    PURPOSE: Gets the license meter attribute allowed uses and total uses.
+    PURPOSE: Gets the license meter attribute allowed, total and gross uses.
 
     PARAMETERS:
     * name - name of the meter attribute
     * allowedUses - pointer to the integer that receives the value
     * totalUses - pointer to the integer that receives the value
+    * grossUses - pointer to the integer that receives the value
 
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_METER_ATTRIBUTE_NOT_FOUND
 */
-LEXACTIVATOR_API int LA_CC GetLicenseMeterAttribute(CSTRTYPE name, uint32_t *allowedUses, uint32_t *totalUses);
+LEXACTIVATOR_API int LA_CC GetLicenseMeterAttribute(CSTRTYPE name, uint32_t *allowedUses, uint32_t *totalUses, uint32_t *grossUses);
 
 /*
     FUNCTION: GetLicenseKey()
@@ -330,6 +352,30 @@ LEXACTIVATOR_API int LA_CC GetLicenseMeterAttribute(CSTRTYPE name, uint32_t *all
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_BUFFER_SIZE
 */
 LEXACTIVATOR_API int LA_CC GetLicenseKey(STRTYPE licenseKey, uint32_t length);
+
+/*
+    FUNCTION: GetLicenseAllowedActivations()
+
+    PURPOSE: Gets the allowed activations of the license.
+
+    PARAMETERS:
+    * allowedActivations - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseAllowedActivations(uint32_t *allowedActivations);
+
+/*
+    FUNCTION: GetLicenseTotalActivations()
+
+    PURPOSE: Gets the total activations of the license.
+
+    PARAMETERS:
+    * totalActivations - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseTotalActivations(uint32_t *totalActivations);
 
 /*
     FUNCTION: GetLicenseExpiryDate()
@@ -486,7 +532,7 @@ LEXACTIVATOR_API int LA_CC GetTrialExpiryDate(uint32_t *trialExpiryDate);
 
     PARAMETERS:
     * trialId - pointer to a buffer that receives the value of the string
-    * length - size of the buffer pointed to by the value parameter
+    * length - size of the buffer pointed to by the trialId parameter
 
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
     LA_E_BUFFER_SIZE
@@ -504,6 +550,19 @@ LEXACTIVATOR_API int LA_CC GetTrialId(STRTYPE trialId, uint32_t length);
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME_MODIFIED
 */
 LEXACTIVATOR_API int LA_CC GetLocalTrialExpiryDate(uint32_t *trialExpiryDate);
+
+/*
+    FUNCTION: GetLibraryVersion()
+
+    PURPOSE: Gets the version of this library.
+
+    PARAMETERS:
+    * libraryVersion - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the libraryVersion parameter
+
+    RETURN CODES: LA_OK, LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetLibraryVersion(STRTYPE libraryVersion, uint32_t length);
 
 /*
     FUNCTION: CheckForReleaseUpdate()

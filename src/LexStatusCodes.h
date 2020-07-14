@@ -314,6 +314,14 @@ enum LexStatusCodes
     LA_E_METER_ATTRIBUTE_USES_LIMIT_REACHED = 73,
 
     /*
+        CODE: LA_E_CUSTOM_FINGERPRINT_LENGTH
+
+        MESSAGE: Custom device fingerprint length is less than 64 characters
+        or more than 256 characters.
+    */
+    LA_E_CUSTOM_FINGERPRINT_LENGTH = 74,
+
+    /*
         CODE: LA_E_VM
 
         MESSAGE: Application is being run inside a virtual machine / hypervisor,
