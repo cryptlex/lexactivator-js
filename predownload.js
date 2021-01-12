@@ -38,7 +38,7 @@ async function main() {
 			if (args.buildFromSource == null) {
 				return;
 			}
-			files = ['libs/clang/x86_64/libLexActivator.a'];
+			files = ['libs/clang/universal/libLexActivator.a'];
 			url = '/LexActivator-Static-Mac.zip';
 			break;
 		case 'win32': // windows
