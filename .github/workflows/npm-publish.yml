@@ -35,7 +35,7 @@ jobs:
           git add package.json
           git config --local user.email "github-actions@users.noreply.github.com"
           git config --local user.name "github-actions"
-          git commit -m "updated version"
+          git commit -m "updated version" | exit 0
           git tag ${{ github.event.inputs.packageVersion }}    
       
       - name: Push Changes
