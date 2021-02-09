@@ -78,7 +78,6 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
-    if: contains(github.ref, '3.')
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
