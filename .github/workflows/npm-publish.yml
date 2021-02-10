@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
       
       - name: Update Library Version
         run: |
@@ -29,20 +27,15 @@ jobs:
         run: |
           sed -i '/"version":/!b;c \ \ "version": "${{ github.event.inputs.packageVersion }}",' package.json
      
-      - name: Commit and Tag
+      - name: Commit, Tag and Push
         run: |
           git add predownload.js
           git add package.json
-          git config --local user.email "github-actions@users.noreply.github.com"
-          git config --local user.name "github-actions"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git commit -m "updated version" | exit 0
-          git tag ${{ github.event.inputs.packageVersion }}    
-      
-      - name: Push Changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: true 
+          git tag ${{ github.event.inputs.packageVersion }}
+          git push --follow-tags 
      
   build:
     needs: update-version
@@ -52,6 +45,7 @@ jobs:
         os: [ubuntu-16.04, macos-latest, windows-2019]
     steps:
       - uses: actions/checkout@v2
+      - run: git pull origin master --ff-only
       - uses: actions/setup-node@v1
         with:
           node-version: 12
