@@ -4,7 +4,9 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const isNonGlibcLinux = require('detect-libc').isNonGlibcLinux;
-const args = require('yargs')(process.argv.slice(2).concat(JSON.parse(process.env.npm_config_argv).original)).argv;
+const platform = process.env.npm_config_target_platform || os.platform();
+const targetArch = process.env.npm_config_target_arch || null;
+const buildFromSource = process.env.npm_config_build_from_source != null;
 const version = "v3.14.4";
 
 async function download(url, files, destPath) {
@@ -29,30 +31,28 @@ function isMusl() {
 async function main() {
 	try {
 		let arch = os.arch();
-		const plat = args.target_platform || os.platform();
 		const baseUrl = 'https://dl.cryptlex.com/downloads/';
-
 		let url; let files;
-		switch (plat) {
+		switch (platform) {
 		case 'darwin': // OSX
-			if (args.buildFromSource == null) {
+			if (buildFromSource == false) {
 				return;
 			}
 			files = ['libs/clang/universal/libLexActivator.a'];
 			url = '/LexActivator-Static-Mac.zip';
 			break;
 		case 'win32': // windows
-			if (args.buildFromSource == null) {
+			if (buildFromSource == false) {
 				return;
 			}
-			if (args.target_arch == 'ia32') {
+			if (targetArch == 'ia32') {
 				arch = 'x86';
 			}
 			files = ['libs/vc14/' + arch + '/LexActivator.lib', 'libs/vc14/' + arch + '/LexActivator.dll'];
 			url = '/LexActivator-Win.zip';
 			break;
 		case 'linux': // linux
-			if (args.target_arch == 'ia32') {
+			if (targetArch == 'ia32') {
 				arch = 'x32';
 			}
 			url = '/LexActivator-Static-Linux.zip';
@@ -65,7 +65,7 @@ async function main() {
 				dir = 'arm64';
 				break;
 			case 'x64':
-				if (args.buildFromSource == null && !isMusl()) {
+				if (buildFromSource == false && !isMusl()) {
 					return;
 				}
 				dir = 'amd64';
@@ -83,9 +83,9 @@ async function main() {
 			}
 			break;
 		default:
-			throw Error('Unsupported platform: ' + plat);
+			throw Error('Unsupported platform: ' + platform);
 		}
-		console.log(`Downloading LexActivator library for ${plat} ${arch} ...`);
+		console.log(`Downloading LexActivator library for ${platform} ${arch} ...`);
 		await download(baseUrl + version + url, files, './');
 
 		console.log(`LexActivator library successfully downloaded!`);
