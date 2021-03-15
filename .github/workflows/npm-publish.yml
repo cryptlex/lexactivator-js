@@ -65,12 +65,12 @@ jobs:
       - name: Publish windows x86
         if: matrix.os == 'windows-2019'
         run: npm run s3-publish --target_arch=ia32
-      - name: Build for macOS arm64
-        if: matrix.os == 'macos-latest'
-        run: npm i --target_arch=arm64 --build-from-source 
-      - name: Publish macOS arm64
-        if: matrix.os == 'macos-latest'
-        run: npm run s3-publish --target_arch=arm64
+      # - name: Build for macOS arm64
+      #   if: matrix.os == 'macos-latest'
+      #   run: npm i --target_arch=arm64 --build-from-source 
+      # - name: Publish macOS arm64
+      #   if: matrix.os == 'macos-latest'
+      #   run: npm run s3-publish --target_arch=arm64
 
   publish-npm:
     needs: build
