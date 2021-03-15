@@ -39,6 +39,10 @@ jobs:
      
   build:
     needs: update-version
+    env:
+      node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
+      node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
+      node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -48,7 +52,7 @@ jobs:
       - run: git pull origin master --ff-only
       - uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 12
       - name: Install Windows 2015 build tools
         if: matrix.os == 'windows-2019'
         run: npm i --global windows-build-tools --vs2015
@@ -64,20 +68,12 @@ jobs:
       - name: Publish windows x86
         if: matrix.os == 'windows-2019'
         run: npm run s3-publish --target_arch=ia32
-        env:
-          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
-          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
-          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
       - name: Build for macOS arm64
         if: matrix.os == 'macos-latest'
         run: npm i --target_arch=arm64 --build-from-source 
       - name: Publish macOS arm64
         if: matrix.os == 'macos-latest'
         run: npm run s3-publish --target_arch=arm64
-        env:
-          node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
-          node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
-          node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
 
   publish-npm:
     needs: build
