@@ -43,6 +43,7 @@ jobs:
       node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
       node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
       node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
+      node_pre_gyp_region: 'us-east-1'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
