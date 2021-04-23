@@ -3,12 +3,9 @@ examples/
 .vscode/
 .github/
 build/
-build*/
-bin/node_modules
-lib/binding/
+node_modules/
 
 # libs
-LexActivator.dll
 LexActivator.lib
 libLexActivator.dylib
 libLexActivator.so
