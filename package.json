@@ -4,11 +4,8 @@
   "description": "LexActivator API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/node-pre-gyp rebuild --msvs_version=2015",
-    "s3-publish": "./node_modules/.bin/node-pre-gyp package unpublish publish info",
-    "deploy": "npm publish --access public",
-    "install": "node predownload.js",
-    "postinstall": "./node_modules/.bin/node-pre-gyp install --msvs_version=2015 --fallback-to-build"
+    "build": "node-gyp rebuild --msvs_version=2015",
+    "deploy": "npm publish --access public"
   },
   "keywords": [
     "cryptlex",
@@ -18,32 +15,17 @@
   "author": "Cryptlex, LLC",
   "license": "MIT",
   "dependencies": {
-    "bindings": "^1.5.0",
     "detect-libc": "^1.0.3",
-    "node-addon-api": "^1.6.3",
-    "node-pre-gyp": "^0.17.0",
-    "request": "^2.88.2",
-    "unzipper": "^0.10.11"
+    "node-addon-api": "^1.6.3"
   },
   "devDependencies": {
-    "aws-sdk": "^2.863.0",
-    "eslint": "^7.21.0",
+    "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cryptlex/lexactivator-js.git"
   },
-  "binary": {
-    "module_name": "lexactivator",
-    "module_path": "./lib/binding/{platform}-{arch}-napi-v{napi_build_version}-{libc}/",
-    "host": "https://dl.cryptlex.com",
-    "remote_path": "./downloads/nodejs/{module_name}/v{version}/",
-    "package_name": "{module_name}-{platform}-{arch}-napi-v{napi_build_version}-{libc}.tar.gz",
-    "napi_versions": [
-      3
-    ]
-  },
   "homepage": "https://cryptlex.com",
-  "gypfile": true
+  "gypfile": false
 }
