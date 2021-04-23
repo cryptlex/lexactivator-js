@@ -17,15 +17,12 @@
             "dependencies": [
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
-            'variables': {
-                'ssl_dependencies%' : "<!(node -p \"require('detect-libc').isNonGlibcLinux ? '' : '-lssl3 -lnss3 -lnspr4'\")",
-            },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexActivator -Wl,-Bdynamic -lpthread <(ssl_dependencies)"
+                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexActivator -Wl,-Bdynamic -lpthread"
                         ]
                     }
                 ],
@@ -55,28 +52,12 @@
                 ]
             ],
             "defines": [
-                "NAPI_DISABLE_CPP_EXCEPTIONS",
-                "NAPI_VERSION=<(napi_build_version)"
+                "NAPI_DISABLE_CPP_EXCEPTIONS"
             ],
             "xcode_settings": {
                 "CLANG_CXX_LIBRARY": "libc++",
-                "MACOSX_DEPLOYMENT_TARGET": "10.7"
+                "MACOSX_DEPLOYMENT_TARGET": "10.8"
             }
-        },
-        {
-            "target_name": "action_after_build",
-            "type": "none",
-            "dependencies": [
-                "<(module_name)"
-            ],
-            "copies": [
-                {
-                    "files": [
-                        "<(PRODUCT_DIR)/<(module_name).node"
-                    ],
-                    "destination": "<(module_path)"
-                }
-            ]
         }
     ]
 }
