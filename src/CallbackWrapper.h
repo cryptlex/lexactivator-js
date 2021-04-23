@@ -1,3 +1,6 @@
+#ifndef SIZE_MAX
+#define SIZE_MAX ((size_t)(-1))
+#endif
 #include "napi.h"
 
 class CallbackWrapper : public Napi::AsyncWorker

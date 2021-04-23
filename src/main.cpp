@@ -1,15 +1,13 @@
 #include "LexActivator.h"
 #include "CallbackWrapper.h"
 #include <string>
-#ifdef WIN32
-#include <codecvt>
-#endif
 #include <locale>
 #include <map>
 
 using namespace ::std;
 
 #ifdef _WIN32
+#include <codecvt>
 typedef wchar_t CHARTYPE;
 typedef wstring STRING;
 #else
