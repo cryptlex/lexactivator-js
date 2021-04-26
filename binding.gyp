@@ -17,12 +17,15 @@
             "dependencies": [
                 "<!(node -p \"require('node-addon-api').gyp\")"
             ],
+            'variables': {
+                'libcurl_dependency%' : "<!(node -p \"require('detect-libc').isNonGlibcLinux ? '-lcurl' : ''\")",
+            },
             "conditions": [
                 [
                     "OS == 'linux'",
                     {
                         "libraries": [
-                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexActivator -Wl,-Bdynamic -lpthread"
+                            "-Wl,-Bstatic  -L<(module_root_dir) -lLexActivator -Wl,-Bdynamic -lpthread <(libcurl_dependency)"
                         ]
                     }
                 ],
