@@ -8,7 +8,7 @@ Write-Host $url
 $output = ".\tmp\windows\LexActivator-Win.zip"
 (New-Object System.Net.WebClient).DownloadFile($url, $output)
 
-Expand-Archive ".\tmp\windows\LexActivator-Win.zip" -DestinationPath ".\tmp\windows\"
+Expand-Archive $output -DestinationPath ".\tmp\windows\LexActivator-Win"
 
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x64\LexActivator.lib" -Destination ".\"
 npm i
