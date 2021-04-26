@@ -1,9 +1,11 @@
 # Examples directory
 examples/
 .vscode/
+.git/
 .github/
 build/
 node_modules/
+scripts/
 
 # libs
 LexActivator.lib
