@@ -5,6 +5,7 @@ set -e
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
+source ~/.bashrc
 
 URL="https://dl.cryptlex.com/downloads/"
 VERSION="v3.14.7"
@@ -30,3 +31,4 @@ export CC=${CROSS_COMPILE}-gcc
 export CXX=${CROSS_COMPILE}-g++
 node-gyp rebuild --arch=armhf
 cp ./build/Release/lexactivator.node ./lib/bindings/linux/gcc/arm
+rm -f LexActivator-Static-Linux.zip
