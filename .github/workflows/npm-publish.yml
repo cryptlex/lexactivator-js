@@ -94,6 +94,8 @@ jobs:
 
       - name: 'Download artifacts'
         uses: actions/upload-artifact@v2
+        with:
+          path: ./lib/bindings
 
       - run: npm publish --dry-run --access public
         env:
