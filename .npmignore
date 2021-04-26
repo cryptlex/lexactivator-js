@@ -8,6 +8,7 @@ node_modules/
 scripts/
 
 # libs
+.gitkeep 
 LexActivator.lib
 libLexActivator.dylib
 libLexActivator.so
