@@ -42,14 +42,6 @@
                     {
                         "libraries": [
                             "<(module_root_dir)/LexActivator.lib"
-                        ],
-                        "copies": [
-                            {
-                                "files": [
-                                    "<(module_root_dir)/LexActivator.dll"
-                                ],
-                                "destination": "<(module_path)"
-                            }
                         ]
                     }
                 ]
