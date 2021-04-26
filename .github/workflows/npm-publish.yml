@@ -28,7 +28,6 @@ jobs:
      
       - name: Commit, Tag and Push
         run: |
-          git add predownload.js
           git add package.json
           git config user.name github-actions
           git config user.email github-actions@github.com
