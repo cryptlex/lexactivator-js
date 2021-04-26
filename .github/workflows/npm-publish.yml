@@ -35,42 +35,53 @@ jobs:
           git config user.email github-actions@github.com
           git commit -m "updated version" | exit 0
           git tag ${{ github.event.inputs.packageVersion }}
-          git push & git push --tags
+          
      
   build:
     needs: update-version
-    env:
-      node_pre_gyp_accessKeyId: ${{secrets.node_pre_gyp_accessKeyId}}
-      node_pre_gyp_secretAccessKey: ${{secrets.node_pre_gyp_secretAccessKey}}
-      node_pre_gyp_bucket: ${{secrets.node_pre_gyp_bucket}}
-      node_pre_gyp_region: 'us-east-1'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, macos-latest, windows-2019]
+        os: [ubuntu-latest, macos-latest, windows-2019]
     steps:
       - uses: actions/checkout@v2
+
       - run: git pull origin master --ff-only
+
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
+
       - name: Install Windows 2015 build tools
         if: matrix.os == 'windows-2019'
         run: npm i --global windows-build-tools --vs2015
-      - run: npm i --build-from-source
-      - run: npm run s3-publish
-      - name: Build for windows x86
+
+      - name: Build for Windows
         if: matrix.os == 'windows-2019'
-        run: npm i --target_arch=ia32 --build-from-source 
-      - name: Publish windows x86
-        if: matrix.os == 'windows-2019'
-        run: npm run s3-publish --target_arch=ia32
-      # - name: Build for macOS arm64
-      #   if: matrix.os == 'macos-latest'
-      #   run: npm i --target_arch=arm64 --build-from-source 
-      # - name: Publish macOS arm64
-      #   if: matrix.os == 'macos-latest'
-      #   run: npm run s3-publish --target_arch=arm64
+        run: |
+          npm i -g node-gyp@7
+
+      - name: Build for macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          npm i -g node-gyp@7
+          ./scripts/build-macos.sh
+
+      - name: Build for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          docker run -it -v $PWD:$PWD -w $PWD cryptlex/gcc-4.7:1 ./scripts/build-linux.sh
+          docker run -it -v $PWD:$PWD -w $PWD cryptlex/gcc-4.9-arm:1 ./scripts/build-linux-arm.sh
+          docker run -it -v $PWD:$PWD -w $PWD cryptlex/alpine-builder:2 ./scripts/build-linux-musl.sh
+
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            ./lib/bindings/linux/**/**/*.node
+            ./lib/bindings/macos/**/*.node
+            ./lib/bindings/windows/**/*.node
+          retention-days: 1
 
   publish-npm:
     needs: build
@@ -82,6 +93,10 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm publish --access public
+
+      - name: 'Download artifacts'
+        uses: actions/upload-artifact@v2
+
+      - run: npm publish --dry-run --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
