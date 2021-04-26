@@ -75,6 +75,7 @@ jobs:
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v2
         with:
+          name: artifacts
           path: |
             ./lib/bindings/linux/**/**/*.node
             ./lib/bindings/macos/**/*.node
@@ -96,6 +97,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: ./lib/bindings
+          name: artifacts
 
       - run: npm publish --dry-run --access public
         env:
