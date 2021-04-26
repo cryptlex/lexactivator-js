@@ -19,8 +19,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       
-      # - name: Update Library Version
-        # run: sed -i '/const version =/!b;cconst version = \"v${{ github.event.inputs.libraryVersion }}";' predownload.js    
+      - name: Update Library Version
+        run: sed -i '/VERSION=/!b;cVERSION=\"v${{ github.event.inputs.libraryVersion }}";' scripts/*.sh    
       
       - name: Update Package Version
         run: |
@@ -48,7 +48,7 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
 
       - name: Install Windows 2015 build tools
         if: matrix.os == 'windows-2019'
