@@ -56,8 +56,11 @@ jobs:
 
       - name: Build for Windows
         if: matrix.os == 'windows-2019'
+        shell: powershell
         run: |
           npm i -g node-gyp@7
+          .\scripts\build-windows.ps1
+
 
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
