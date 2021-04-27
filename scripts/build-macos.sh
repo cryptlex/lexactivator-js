@@ -16,7 +16,6 @@ npm i
 
 node-gyp rebuild 
 cp ./build/Release/lexactivator.node ./lib/bindings/macos/x64
-cp ./build/Release/lexactivator.node ./lib/bindings/macos/arm64
 
 # node-gyp rebuild --arch=arm64
 # cp ./build/Release/lexactivator.node ./lib/bindings/macos/arm64
