@@ -35,7 +35,7 @@ jobs:
           git config user.email github-actions@github.com
           git commit -m "updated version" | exit 0
           git tag ${{ github.event.inputs.packageVersion }}
-          
+          git push & git push --tags
      
   build:
     needs: update-version
