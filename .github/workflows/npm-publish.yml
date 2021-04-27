@@ -104,6 +104,6 @@ jobs:
           path: ./lib/bindings
           name: artifacts
 
-      - run: npm publish --access public
+      - run: npm publish --dry-run --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
