@@ -42,7 +42,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-2019]
+        os: [ubuntu-latest, macos-latest, windows-2016]
     steps:
       - uses: actions/checkout@v2
 
@@ -52,17 +52,16 @@ jobs:
         with:
           node-version: 10
 
-      - name: Install Windows 2015 build tools
-        if: matrix.os == 'windows-2019'
-        run: npm i --global windows-build-tools --vs2015
+      # - name: Install Windows 2015 build tools
+      #   if: matrix.os == 'windows-2019'
+      #   run: npm i --global windows-build-tools --vs2015
 
       - name: Build for Windows
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2016'
         shell: powershell
         run: |
-          npm i -g node-gyp@7
+          npm i -g node-gyp@8
           .\scripts\build-windows.ps1
-
 
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
@@ -85,6 +84,7 @@ jobs:
             ./lib/bindings/linux/**/**/*.node
             ./lib/bindings/macos/**/*.node
             ./lib/bindings/windows/**/*.node
+            ./lib/bindings/windows/**/*.dll
           retention-days: 1
 
   publish-npm:

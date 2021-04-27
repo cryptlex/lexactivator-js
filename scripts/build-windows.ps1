@@ -12,14 +12,14 @@ Expand-Archive $output -DestinationPath ".\tmp\windows\LexActivator-Win"
 
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x64\LexActivator.lib" -Destination ".\"
 npm i
-node-gyp rebuild --msvs_version=2015
+node-gyp rebuild --msvs_version=2017
 
 Copy-Item -Path ".\build\Release\lexactivator.node" -Destination ".\lib\bindings\windows\x64\lexactivator.node"
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x64\LexActivator.dll" -Destination ".\lib\bindings\windows\x64\LexActivator.dll"
 
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x86\LexActivator.lib" -Destination ".\"
 npm i
-node-gyp rebuild --arch=ia32 --msvs_version=2015
+node-gyp rebuild --arch=ia32 --msvs_version=2017
 
 Copy-Item -Path ".\build\Release\lexactivator.node" -Destination ".\lib\bindings\windows\x32\lexactivator.node"
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x86\LexActivator.dll" -Destination ".\lib\bindings\windows\x32\LexActivator.dll"
