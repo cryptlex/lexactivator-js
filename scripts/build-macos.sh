@@ -17,6 +17,6 @@ npm i
 node-gyp rebuild 
 cp ./build/Release/lexactivator.node ./lib/bindings/macos/x64
 
-# node-gyp rebuild --arch=arm64
-# cp ./build/Release/lexactivator.node ./lib/bindings/macos/arm64
+SDKROOT=$(xcrun --sdk macosx --show-sdk-path) node-gyp rebuild --arch=arm64
+cp ./build/Release/lexactivator.node ./lib/bindings/macos/arm64
 rm -f LexActivator-Static-Mac.zip
