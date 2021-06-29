@@ -1,6 +1,6 @@
 {
   "name": "@cryptlex/lexactivator",
-  "version": "3.14.2",
+  "version": "3.14.12",
   "description": "LexActivator API wrapper for Node.js.",
   "main": "index.js",
   "scripts": {
