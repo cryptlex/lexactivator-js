@@ -13,3 +13,4 @@ LexActivator.lib
 libLexActivator.dylib
 libLexActivator.so
 libLexActivator.a
+binding.gyp
