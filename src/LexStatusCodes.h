@@ -344,6 +344,14 @@ enum LexStatusCodes
     LA_E_IP = 82,
 
     /*
+        CODE: LA_E_CONTAINER
+
+        MESSAGE: Application is being run inside a container and
+        activation has been disallowed in the container.
+    */
+    LA_E_CONTAINER = 83,
+
+    /*
         CODE: LA_E_RATE_LIMIT
 
         MESSAGE: Rate limit for API has reached, try again later.
