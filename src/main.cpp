@@ -112,6 +112,23 @@ Napi::Value setProductId(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetProductId(arg0.c_str(), arg1));
 }
 
+Napi::Value setDataDirectory(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    return Napi::Number::New(env, SetDataDirectory(arg0.c_str()));
+}
+
 Napi::Value setCustomDeviceFingerprint(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
