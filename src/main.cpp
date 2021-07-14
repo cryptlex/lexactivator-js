@@ -1030,6 +1030,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports["SetProductFile"] = Napi::Function::New(env, setProductFile);
     exports["SetProductData"] = Napi::Function::New(env, setProductData);
+    exports["SetDataDirectory"] = Napi::Function::New(env,setDataDirectory);
     exports["SetCustomDeviceFingerprint"] = Napi::Function::New(env, setCustomDeviceFingerprint);
     exports["SetProductId"] = Napi::Function::New(env, setProductId);
     exports["SetLicenseKey"] = Napi::Function::New(env, setLicenseKey);
