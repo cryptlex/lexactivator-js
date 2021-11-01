@@ -1118,6 +1118,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetNetworkProxy"] = Napi::Function::New(env, setNetworkProxy);
     exports["SetCryptlexHost"] = Napi::Function::New(env, setCryptlexHost);
     exports["GetProductMetadata"] = Napi::Function::New(env, getProductMetadata);
+    exports["GetProductVersionName"] = Napi::Function::New(env, getProductVersionName);
+    exports["GetProductVersionDisplayName"] = Napi::Function::New(env, getProductVersionDisplayName);
+    exports["GetProductVersionFeatureFlags"] = Napi::Function::New(env, getProductVersionFeatureFlag);
     exports["GetLicenseMetadata"] = Napi::Function::New(env, getLicenseMetadata);
     exports["GetLicenseMeterAttribute"] = Napi::Function::New(env, getLicenseMeterAttribute);
     exports["GetLicenseKey"] = Napi::Function::New(env, getLicenseKey);
