@@ -287,6 +287,24 @@ class LexActivator {
 	}
 
 	/**
+	 * Gets the product metadata as set in the dashboard.
+	 *
+	 * This is available for trial as well as license activations.
+	 *
+	 * @param {string} key metadata key to retrieve the value
+	 * @return {string} value of metadata for the key
+	 * @throws {LexActivatorException}
+	 */
+	static GetProductMetadata(key) {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetProductMetadata(key, array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
 	 * Gets the product version name.
 	 * @return {string} name of the product version
 	 * @throws {LexActivatorException} 
@@ -299,6 +317,7 @@ class LexActivator {
 		}
 		return arrayToString(array);
 	}
+	
 	/**
 	 * Gets the product version display name.
 	 * @return {string}  display name of the product version
@@ -307,24 +326,6 @@ class LexActivator {
 	static GetProductVersionDisplayName() {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
-		if (status != LexStatusCodes.LA_OK) {
-			throw new LexActivatorException(status);
-		}
-		return arrayToString(array);
-	}
-
-	/**
-	 * Gets the product metadata as set in the dashboard.
-	 *
-	 * This is available for trial as well as license activations.
-	 *
-	 * @param {string} key metadata key to retrieve the value
-	 * @return {string} value of metadata for the key
-	 * @throws {LexActivatorException}
-	 */
-	static GetProductMetadata(key) {
-		const array = new Uint8Array(1024);
-		const status = LexActivatorNative.GetProductMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
@@ -348,6 +349,7 @@ class LexActivator {
 				throw new LexActivatorException(status);
 		}
 	}
+
 	/**
 	 * Gets the license metadata as set in the dashboard.
 	 *

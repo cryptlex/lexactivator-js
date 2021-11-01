@@ -331,7 +331,7 @@ enum LexStatusCodes
     /*
         CODE: LA_E_FEATURE_FLAG_NOT_FOUND
 
-        MESSAGE: The product  version feature flag does not exist.
+        MESSAGE: The product version feature flag does not exist.
     */
     LA_E_FEATURE_FLAG_NOT_FOUND = 76,
 
