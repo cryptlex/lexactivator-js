@@ -21,6 +21,20 @@ class LicenseMeterAttribute {
 	}
 }
 /**
+ *  @class ProductVersionFeatureFlag
+ *  @type {Object}
+ *  @property {name} name The name of the feature flag.
+ *  @property {enabled} enabled status of the feature flag.
+ *  @property {data} data value of the feature flag.
+ */
+class ProductVersionFeatureFlag {
+	constructor(name, enabled, data) {
+		this.name = name;
+		this.enabled = enabled;
+		this.data = data;
+	}
+}
+/**
  * @class LexActivator
  */
 class LexActivator {
@@ -81,19 +95,19 @@ class LexActivator {
 	}
 
 	/**
-    * In case you want to change the default directory used by LexActivator to
-    * store the activation data on Linux and macOS, this function can be used to
-    * set a different directory.
+	* In case you want to change the default directory used by LexActivator to
+	* store the activation data on Linux and macOS, this function can be used to
+	* set a different directory.
 
-    * If you decide to use this function, then it must be called on every start of
-    * your program before calling SetProductFile() or SetProductData() function.
+	* If you decide to use this function, then it must be called on every start of
+	* your program before calling SetProductFile() or SetProductData() function.
 
-    * Please ensure that the directory exists and your app has read and write
-    * permissions in the directory.
+	* Please ensure that the directory exists and your app has read and write
+	* permissions in the directory.
 
-    *
+	*
 	* @param {string} directoryPath absolute path of the directory.
-    * @throws {LexActivatorException}
+	* @throws {LexActivatorException}
 	*/
 	static SetDataDirectory(directoryPath) {
 		const status = LexActivatorNative.SetDataDirectory(directoryPath);
@@ -104,12 +118,12 @@ class LexActivator {
 
 	/**
 	 * In case you don't want to use the LexActivator's advanced
-     * device fingerprinting algorithm, this function can be used to set a custom
-     * device fingerprint.
+	 * device fingerprinting algorithm, this function can be used to set a custom
+	 * device fingerprint.
 	 *
 	 * If you decide to use your own custom device fingerprint then this function must be
-     * called on every start of your program immediately after calling SetProductFile()
-     * or SetProductData() function.
+	 * called on every start of your program immediately after calling SetProductFile()
+	 * or SetProductData() function.
 	 *
 	 * The license fingerprint matching strategy is ignored if this function is used.
 	 *
@@ -226,7 +240,7 @@ class LexActivator {
 	 * Sets the meter attribute uses for the offline activation request.
 	 *
 	 * This function should only be called before GenerateOfflineActivationRequest()
-     * function to set the meter attributes in case of offline activation.
+	 * function to set the meter attributes in case of offline activation.
 	 *
 	 * @param {string} name name of the meter attribute
 	 * @param {number} uses the uses value
@@ -273,6 +287,33 @@ class LexActivator {
 	}
 
 	/**
+	 * Gets the product version name.
+	 * @return {string} name of the product version
+	 * @throws {LexActivatorException} 
+	 */
+	static GetProductVersionName() {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetProductVersionName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+	/**
+	 * Gets the product version display name.
+	 * @return {string}  display name of the product version
+	 * @throws {LexActivatorException} 
+	 */
+	static GetProductVersionDisplayName() {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
 	 * Gets the product metadata as set in the dashboard.
 	 *
 	 * This is available for trial as well as license activations.
@@ -290,6 +331,23 @@ class LexActivator {
 		return arrayToString(array);
 	}
 
+	/**
+	 * Gets the product version feature flag.
+	 * @param {string} name name of the feature flag 
+	 * @returns {ProductVersionFeatureFlag} product version feature flag.
+	 * @throws {LexActivatorException}
+	 */
+	static GetProductVersionFeatureFlag(name) {
+		const enabled = new Uint32Array(1);
+		const array = new Uint32Array(1);
+		const status = LexActivatorNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return new ProductVersionFeatureFlag(name, enabled, array[0]);
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
 	/**
 	 * Gets the license metadata as set in the dashboard.
 	 *
@@ -319,10 +377,10 @@ class LexActivator {
 		const grossUses = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -351,12 +409,12 @@ class LexActivator {
 		const allowedActivations = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedActivations(allowedActivations);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return allowedActivations[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return allowedActivations[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -370,12 +428,12 @@ class LexActivator {
 		const totalActivations = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseTotalActivations(totalActivations);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return totalActivations[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return totalActivations[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -389,12 +447,12 @@ class LexActivator {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseExpiryDate(expiryDate);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return expiryDate[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return expiryDate[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -501,10 +559,10 @@ class LexActivator {
 		const uses = new Uint32Array(1);
 		const status = LexActivatorNative.GetActivationMeterAttributeUses(name, uses);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return uses[0];
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return uses[0];
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -518,12 +576,12 @@ class LexActivator {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetServerSyncGracePeriodExpiryDate(expiryDate);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return expiryDate[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return expiryDate[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -553,12 +611,12 @@ class LexActivator {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetTrialExpiryDate(expiryDate);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return expiryDate[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return expiryDate[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -587,12 +645,12 @@ class LexActivator {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLocalTrialExpiryDate(expiryDate);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return expiryDate[0];
-		case LexStatusCodes.LA_FAIL:
-			return 0;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return expiryDate[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -644,16 +702,16 @@ class LexActivator {
 	static ActivateLicense() {
 		const status = LexActivatorNative.ActivateLicense();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_EXPIRED:
-			return LexStatusCodes.LA_EXPIRED;
-		case LexStatusCodes.LA_SUSPENDED:
-			return LexStatusCodes.LA_SUSPENDED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -667,16 +725,16 @@ class LexActivator {
 	static ActivateLicenseOffline(filePath) {
 		const status = LexActivatorNative.ActivateLicenseOffline(filePath);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_EXPIRED:
-			return LexStatusCodes.LA_EXPIRED;
-		case LexStatusCodes.LA_SUSPENDED:
-			return LexStatusCodes.LA_SUSPENDED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -707,12 +765,12 @@ class LexActivator {
 	static DeactivateLicense() {
 		const status = LexActivatorNative.DeactivateLicense();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -730,12 +788,12 @@ class LexActivator {
 	static GenerateOfflineDeactivationRequest(filePath) {
 		const status = LexActivatorNative.GenerateOfflineDeactivationRequest(filePath);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -765,18 +823,18 @@ class LexActivator {
 	static IsLicenseGenuine() {
 		const status = LexActivatorNative.IsLicenseGenuine();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_EXPIRED:
-			return LexStatusCodes.LA_EXPIRED;
-		case LexStatusCodes.LA_SUSPENDED:
-			return LexStatusCodes.LA_SUSPENDED;
-		case LexStatusCodes.LA_GRACE_PERIOD_OVER:
-			return LexStatusCodes.LA_GRACE_PERIOD_OVER;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_GRACE_PERIOD_OVER:
+				return LexStatusCodes.LA_GRACE_PERIOD_OVER;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -796,18 +854,18 @@ class LexActivator {
 	static IsLicenseValid() {
 		const status = LexActivatorNative.IsLicenseValid();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_EXPIRED:
-			return LexStatusCodes.LA_EXPIRED;
-		case LexStatusCodes.LA_SUSPENDED:
-			return LexStatusCodes.LA_SUSPENDED;
-		case LexStatusCodes.LA_GRACE_PERIOD_OVER:
-			return LexStatusCodes.LA_GRACE_PERIOD_OVER;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_GRACE_PERIOD_OVER:
+				return LexStatusCodes.LA_GRACE_PERIOD_OVER;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -824,14 +882,14 @@ class LexActivator {
 	static ActivateTrial() {
 		const status = LexActivatorNative.ActivateTrial();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_TRIAL_EXPIRED:
-			return LexStatusCodes.LA_TRIAL_EXPIRED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -845,14 +903,14 @@ class LexActivator {
 	static ActivateTrialOffline(filePath) {
 		const status = LexActivatorNative.ActivateTrialOffline(filePath);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_TRIAL_EXPIRED:
-			return LexStatusCodes.LA_TRIAL_EXPIRED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -884,14 +942,14 @@ class LexActivator {
 	static IsTrialGenuine() {
 		const status = LexActivatorNative.IsTrialGenuine();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_TRIAL_EXPIRED:
-			return LexStatusCodes.LA_TRIAL_EXPIRED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -908,14 +966,14 @@ class LexActivator {
 	static ActivateLocalTrial(trialLength) {
 		const status = LexActivatorNative.ActivateLocalTrial(trialLength);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED:
-			return LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -931,14 +989,14 @@ class LexActivator {
 	static IsLocalTrialGenuine() {
 		const status = LexActivatorNative.IsLocalTrialGenuine();
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED:
-			return LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_LOCAL_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
@@ -954,12 +1012,12 @@ class LexActivator {
 	static ExtendLocalTrial(trialExtensionLength) {
 		const status = LexActivatorNative.ExtendLocalTrial(trialExtensionLength);
 		switch (status) {
-		case LexStatusCodes.LA_OK:
-			return LexStatusCodes.LA_OK;
-		case LexStatusCodes.LA_FAIL:
-			return LexStatusCodes.LA_FAIL;
-		default:
-			throw new LexActivatorException(status);
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
 		}
 	}
 
