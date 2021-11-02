@@ -340,11 +340,11 @@ class LexActivator {
 	 */
 	static GetProductVersionFeatureFlag(name) {
 		const enabled = new Uint32Array(1);
-		const array = new Uint32Array(1);
+		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return new ProductVersionFeatureFlag(name, enabled > 0, array[0]);
+				return new ProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));
 			default:
 				throw new LexActivatorException(status);
 		}
