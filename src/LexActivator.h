@@ -333,6 +333,50 @@ LEXACTIVATOR_API int LA_CC SetCryptlexHost(CSTRTYPE host);
 LEXACTIVATOR_API int LA_CC GetProductMetadata(CSTRTYPE key, STRTYPE value, uint32_t length);
 
 /*
+    FUNCTION: GetProductVersionName()
+
+    PURPOSE: Gets the product version name.
+
+    PARAMETERS:
+    * name - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the name parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED, LA_E_PRODUCT_VERSION_NOT_LINKED,
+    LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetProductVersionName(STRTYPE name, uint32_t length);
+
+/*
+    FUNCTION: GetProductVersionDisplayName()
+
+    PURPOSE: Gets the product version display name.
+
+    PARAMETERS:
+    * displayName - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the displayName parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED, LA_E_PRODUCT_VERSION_NOT_LINKED,
+    LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetProductVersionDisplayName(STRTYPE displayName, uint32_t length);
+
+/*
+    FUNCTION: GetProductVersionFeatureFlag()
+
+    PURPOSE: Gets the product version feature flag.
+
+    PARAMETERS:
+    * name - name of the feature flag
+    * enabled - pointer to the integer that receives the value - 0 or 1
+    * data - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the data parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED, LA_E_PRODUCT_VERSION_NOT_LINKED,
+    LA_E_FEATURE_FLAG_NOT_FOUND, LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetProductVersionFeatureFlag(CSTRTYPE name, uint32_t *enabled, STRTYPE data, uint32_t length);
+
+/*
     FUNCTION: GetLicenseMetadata()
 
     PURPOSE: Gets the license metadata as set in the dashboard.
