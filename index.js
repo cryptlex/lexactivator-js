@@ -317,7 +317,7 @@ class LexActivator {
 		}
 		return arrayToString(array);
 	}
-	
+
 	/**
 	 * Gets the product version display name.
 	 * @return {string}  display name of the product version
@@ -344,7 +344,7 @@ class LexActivator {
 		const status = LexActivatorNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return new ProductVersionFeatureFlag(name, enabled, array[0]);
+				return new ProductVersionFeatureFlag(name, enabled > 0, array[0]);
 			default:
 				throw new LexActivatorException(status);
 		}
