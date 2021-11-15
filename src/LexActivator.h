@@ -265,6 +265,21 @@ LEXACTIVATOR_API int LA_CC SetTrialActivationMetadata(CSTRTYPE key, CSTRTYPE val
 LEXACTIVATOR_API int LA_CC SetAppVersion(CSTRTYPE appVersion);
 
 /*
+    FUNCTION: SetActivationLeaseDuration()
+
+    PURPOSE: Sets the lease duration for the activation.
+
+    The activation lease duration is honoured when the allow client
+    lease duration property is enabled.
+
+    PARAMETERS:
+    * leaseDuration - value of the lease duration.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY
+*/
+LEXACTIVATOR_API int LA_CC SetActivationLeaseDuration(uint32_t leaseDuration);
+
+/*
     FUNCTION: SetOfflineActivationRequestMeterAttributeUses()
 
     PURPOSE: Sets the meter attribute uses for the offline activation request.
