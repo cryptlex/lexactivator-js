@@ -212,6 +212,23 @@ Napi::Value setLicenseCallback(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetLicenseCallback(licenseCallback));
 }
 
+Napi::Value setActivationLeaseDuration(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetActivationLeaseDuration(arg0));
+}
+
 Napi::Value setActivationMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -296,23 +313,6 @@ Napi::Value setAppVersion(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     return Napi::Number::New(env, SetAppVersion(arg0.c_str()));
-}
-
-Napi::Value setActivationLeaseDuration(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() < 1)
-    {
-        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
-        return env.Null();
-    }
-    if (!info[0].IsNumber())
-    {
-        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
-        return env.Null();
-    }
-    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
-    return Napi::Number::New(env, SetActivationLeaseDuration(arg0));
 }
 
 Napi::Value setNetworkProxy(const Napi::CallbackInfo &info)

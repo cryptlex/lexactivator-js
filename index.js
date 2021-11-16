@@ -187,6 +187,22 @@ class LexActivator {
 	}
 
 	/**
+	 * Sets the lease duration for the activation.
+	 * 
+	 * The activation lease duration is honoured when the allow client
+     * lease duration property is enabled.
+	 * 
+	 * @param {number} leaseDuration 
+	 * @throws {LexActivatorException}
+	 */
+	 static SetActivationLeaseDuration(leaseDuration){
+		const status = LexActivatorNative.SetActivationLeaseDuration(leaseDuration);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Sets the activation metadata.
 	 *
 	 * The metadata appears along with the activation details of the license in
@@ -236,21 +252,6 @@ class LexActivator {
 		}
 	}
 
-	/**
-	 * Sets the lease duration for the activation.
-	 * 
-	 * The activation lease duration is honoured when the allow client
-     * lease duration property is enabled.
-	 * 
-	 * @param {number} leaseDuration 
-	 * @throws {LexActivatorException}
-	 */
-	static SetActivationLeaseDuration(leaseDuration){
-		const status = LexActivatorNative.SetActivationLeaseDuration(leaseDuration);
-		if (LexStatusCodes.LA_OK != status) {
-			throw new LexActivatorException(status);
-		}
-	}
 	/**
 	 * Sets the meter attribute uses for the offline activation request.
 	 *
