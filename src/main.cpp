@@ -212,6 +212,23 @@ Napi::Value setLicenseCallback(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetLicenseCallback(licenseCallback));
 }
 
+Napi::Value setActivationLeaseDuration(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetActivationLeaseDuration(arg0));
+}
+
 Napi::Value setActivationMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1110,6 +1127,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetTrialActivationMetadata"] = Napi::Function::New(env, setTrialActivationMetadata);
     exports["SetOfflineActivationRequestMeterAttributeUses"] = Napi::Function::New(env, setOfflineActivationRequestMeterAttributeUses);
     exports["SetAppVersion"] = Napi::Function::New(env, setAppVersion);
+    exports["SetActivationLeaseDuration"] = Napi::Function::New(env, setActivationLeaseDuration);
     exports["SetNetworkProxy"] = Napi::Function::New(env, setNetworkProxy);
     exports["SetCryptlexHost"] = Napi::Function::New(env, setCryptlexHost);
     exports["GetProductMetadata"] = Napi::Function::New(env, getProductMetadata);
