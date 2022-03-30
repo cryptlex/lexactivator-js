@@ -58,7 +58,7 @@ jobs:
       #   run: npm i --global windows-build-tools --vs2015
 
       - name: Build for Windows
-        if: matrix.os == 'windows-2016'
+        if: matrix.os == 'windows-2019'
         shell: powershell
         run: |
           npm i -g node-gyp@8
