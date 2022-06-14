@@ -583,7 +583,7 @@ LEXACTIVATOR_API int LA_CC GetActivationMetadata(CSTRTYPE key, STRTYPE value, ui
 /*
     FUNCTION: GetActivationMode()
 
-    PURPOSE: Gets the mode of activation (online or offline).
+    PURPOSE: Gets the initial and current mode of activation (online or offline).
 
     PARAMETERS:
     * initialMode - pointer to a buffer that receives the initial mode of activation

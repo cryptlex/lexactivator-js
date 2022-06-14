@@ -614,7 +614,7 @@ class LexActivator {
 	}
 
 	/**
-	 * Gets the activation mode (online or offline).
+	 * Gets the initial and current mode of activation (online or offline).
 	 *
 	 * @return {ActivationMode} mode of activation.
 	 * @throws {LexActivatorException}
