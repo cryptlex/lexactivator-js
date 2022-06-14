@@ -34,6 +34,19 @@ class ProductVersionFeatureFlag {
 		this.data = data;
 	}
 }
+
+/**
+ *  @class ActivationMode
+ *  @type {Object}
+ *  @property {initialMode} initialMode initial mode of activation.
+ *  @property {currentMode} currentmode current mode of activation.
+ */
+class ActivationMode {
+	constructor(initialMode, currentMode) {
+		this.initialMode = initialMode;
+		this.currentMode = currentMode;
+	}
+}
 /**
  * @class LexActivator
  */
@@ -247,6 +260,21 @@ class LexActivator {
 	 */
 	static SetAppVersion(appVersion) {
 		const status = LexActivatorNative.SetAppVersion(appVersion);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Sets the current release version of your application.
+	 * 
+	 * The release version appears along with the activation details in dashboard.
+	 * 
+	 * @param {string} releaseVersion string in following allowed formats: x.x, x.x.x, x.x.x.x
+	 * @throws {LexActivatorException} 
+	 */
+	static SetReleaseVersion(releaseVersion) {
+		const status = LexActivatorNative.SetReleaseVersion(releaseVersion);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
@@ -475,6 +503,25 @@ class LexActivator {
 	}
 
 	/**
+	 * Gets the license maintenance expiry date timestamp.
+	 *
+	 * @return {number} the timestamp
+	 * @throws {LexActivatorException}
+	 */
+	 static GetLicenseMaintenanceExpiryDate() {
+		const maintenanceExpiryDate = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseMaintenanceExpiryDate(maintenanceExpiryDate);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return maintenanceExpiryDate[0];
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Gets the email associated with license user.
 	 *
 	 * @return {string} the license user email
@@ -564,6 +611,22 @@ class LexActivator {
 			throw new LexActivatorException(status);
 		}
 		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the activation mode (online or offline).
+	 *
+	 * @return {ActivationMode} mode of activation.
+	 * @throws {LexActivatorException}
+	 */
+	 static GetActivationMode() {
+		const array1 = new Uint8Array(4096);
+		const array2 = new Uint8Array(4096);
+		const status = LexActivatorNative.GetActivationMode(array1, array1.length, array2, array2.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return new ActivationMode(arrayToString(array1), arrayToString(array2));
 	}
 
 	/**

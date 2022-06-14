@@ -281,6 +281,20 @@ LEXACTIVATOR_API int LA_CC SetTrialActivationMetadata(CSTRTYPE key, CSTRTYPE val
 LEXACTIVATOR_API int LA_CC SetAppVersion(CSTRTYPE appVersion);
 
 /*
+    FUNCTION: SetReleaseVersion()
+
+    PURPOSE: Sets the current release version of your application.
+
+    The release version appears along with the activation details in dashboard. 
+
+    PARAMETERS:
+    * releaseVersion - string in following allowed formats: x.x, x.x.x, x.x.x.x
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_RELEASE_VERSION_FORMAT
+*/
+LEXACTIVATOR_API int LA_CC SetReleaseVersion(CSTRTYPE releaseVersion);
+
+/*
     FUNCTION: SetOfflineActivationRequestMeterAttributeUses()
 
     PURPOSE: Sets the meter attribute uses for the offline activation request.
@@ -471,6 +485,18 @@ LEXACTIVATOR_API int LA_CC GetLicenseTotalActivations(uint32_t *totalActivations
 LEXACTIVATOR_API int LA_CC GetLicenseExpiryDate(uint32_t *expiryDate);
 
 /*
+    FUNCTION: GetLicenseMaintenanceExpiryDate()
+
+    PURPOSE: Gets the license maintenance expiry date timestamp.
+
+    PARAMETERS:
+    * maintenanceExpiryDate - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseMaintenanceExpiryDate(uint32_t* maintenanceExpiryDate);
+
+/*
     FUNCTION: GetLicenseUserEmail()
 
     PURPOSE: Gets the email associated with license user.
@@ -553,6 +579,22 @@ LEXACTIVATOR_API int LA_CC GetLicenseType(STRTYPE licenseType, uint32_t length);
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_METADATA_KEY_NOT_FOUND, LA_E_BUFFER_SIZE
 */
 LEXACTIVATOR_API int LA_CC GetActivationMetadata(CSTRTYPE key, STRTYPE value, uint32_t length);
+
+/*
+    FUNCTION: GetActivationMode()
+
+    PURPOSE: Gets the mode of activation (online or offline).
+
+    PARAMETERS:
+    * initialMode - pointer to a buffer that receives the initial mode of activation
+    * initialModeLength - size of the buffer pointed to by the initialMode parameter
+    * currentMode - pointer to a buffer that receives the current mode of activation
+    * currentModeLength - size of the buffer pointed to by the currentMode parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME_MODIFIED,
+    LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetActivationMode(STRTYPE initialMode, uint32_t initialModeLength, STRTYPE currentMode, uint32_t currentModeLength);
 
 /*
     FUNCTION: GetActivationMeterAttributeUses()
