@@ -295,7 +295,6 @@ LEXACTIVATOR_API int LA_CC SetAppVersion(CSTRTYPE appVersion);
 LEXACTIVATOR_API int LA_CC SetReleaseVersion(CSTRTYPE releaseVersion);
 
 /*
-
     FUNCTION: SetReleasePublishedDate()
 
     PURPOSE: Sets the release published date of your application.
