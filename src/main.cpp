@@ -332,6 +332,56 @@ Napi::Value setReleaseVersion(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetReleaseVersion(arg0.c_str()));
 }
 
+Napi::Value setReleasePublishedDate(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetReleasePublishedDate(arg0));
+}
+
+Napi::Value setReleasePlatform(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    return Napi::Number::New(env, SetReleasePlatform(arg0.c_str()));
+}
+
+Napi::Value setReleaseChannel(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    return Napi::Number::New(env, SetReleaseChannel(arg0.c_str()));
+}
 Napi::Value setNetworkProxy(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -613,6 +663,25 @@ Napi::Value getLicenseMaintenanceExpiryDate(const Napi::CallbackInfo &info)
     Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
     uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseMaintenanceExpiryDate(arg0));
+}
+
+Napi::Value getLicenseMaxAllowedReleaseVersion(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseMaxAllowedReleaseVersion(arg0, length));
 }
 
 Napi::Value getLicenseUserEmail(const Napi::CallbackInfo &info)
@@ -1190,6 +1259,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetOfflineActivationRequestMeterAttributeUses"] = Napi::Function::New(env, setOfflineActivationRequestMeterAttributeUses);
     exports["SetAppVersion"] = Napi::Function::New(env, setAppVersion);
     exports["SetReleaseVersion"] = Napi::Function::New(env,setReleaseVersion);
+    exports["SetReleasePublishedDate"] = Napi::Function::New(env,setReleasePublishedDate);
+    exports["SetReleasePlatform"] = Napi::Function::New(env,setReleasePlatform);
+    exports["SetReleaseChannel"] = Napi::Function::New(env,setReleaseChannel);
     exports["SetActivationLeaseDuration"] = Napi::Function::New(env, setActivationLeaseDuration);
     exports["SetNetworkProxy"] = Napi::Function::New(env, setNetworkProxy);
     exports["SetCryptlexHost"] = Napi::Function::New(env, setCryptlexHost);
@@ -1204,6 +1276,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetLicenseTotalActivations"] = Napi::Function::New(env, getLicenseTotalActivations);
     exports["GetLicenseExpiryDate"] = Napi::Function::New(env, getLicenseExpiryDate);
     exports["GetLicenseMaintenanceExpiryDate"] = Napi::Function::New(env,getLicenseMaintenanceExpiryDate);
+    exports["GetLicenseMaxAllowedReleaseVersion"] = Napi::Function::New(env, getLicenseMaxAllowedReleaseVersion);
     exports["GetLicenseUserEmail"] = Napi::Function::New(env, getLicenseUserEmail);
     exports["GetLicenseUserName"] = Napi::Function::New(env, getLicenseUserName);
     exports["GetLicenseUserCompany"] = Napi::Function::New(env, getLicenseUserCompany);
