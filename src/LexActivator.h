@@ -295,6 +295,46 @@ LEXACTIVATOR_API int LA_CC SetAppVersion(CSTRTYPE appVersion);
 LEXACTIVATOR_API int LA_CC SetReleaseVersion(CSTRTYPE releaseVersion);
 
 /*
+    FUNCTION: SetReleasePublishedDate()
+
+    PURPOSE: Sets the release published date of your application.
+
+    PARAMETERS:
+    * releasePublishedDate - unix timestamp of release published date.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID
+*/
+LEXACTIVATOR_API int LA_CC SetReleasePublishedDate(uint32_t releasePublishedDate);
+
+/*
+    FUNCTION: SetReleasePlatform()
+
+    PURPOSE: Sets the release platform e.g. windows, macos, linux
+
+    The release platform appears along with the activation details in dashboard.
+
+    PARAMETERS:
+    * releasePlatform - release platform e.g. windows, macos, linux
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_RELEASE_PLATFORM_LENGTH
+*/
+LEXACTIVATOR_API int LA_CC SetReleasePlatform(CSTRTYPE releasePlatform);
+
+/*
+    FUNCTION: SetReleaseChannel()
+
+    PURPOSE: Sets the release channel e.g. stable, beta
+
+    The release channel appears along with the activation details in dashboard.
+
+    PARAMETERS:
+    * channel - release channel e.g. stable
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_RELEASE_CHANNEL_LENGTH
+*/
+LEXACTIVATOR_API int LA_CC SetReleaseChannel(CSTRTYPE releaseChannel);
+
+/*
     FUNCTION: SetOfflineActivationRequestMeterAttributeUses()
 
     PURPOSE: Sets the meter attribute uses for the offline activation request.
@@ -495,6 +535,19 @@ LEXACTIVATOR_API int LA_CC GetLicenseExpiryDate(uint32_t *expiryDate);
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME, LA_E_TIME_MODIFIED
 */
 LEXACTIVATOR_API int LA_CC GetLicenseMaintenanceExpiryDate(uint32_t* maintenanceExpiryDate);
+
+/*
+    FUNCTION: GetLicenseMaxAllowedReleaseVersion()
+
+    PURPOSE: Gets the maximum allowed release version of the license.
+
+    PARAMETERS:
+    * maxAllowedReleaseVersion - pointer to a buffer that receives the value of the string.
+    * length - size of the buffer pointed to by the maxAllowedReleaseVersion parameter.
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY,  LA_E_TIME, LA_E_TIME_MODIFIED, LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseMaxAllowedReleaseVersion(STRTYPE maxAllowedReleaseVersion, uint32_t length);
 
 /*
     FUNCTION: GetLicenseUserEmail()

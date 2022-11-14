@@ -281,6 +281,49 @@ class LexActivator {
 	}
 
 	/**
+	 * Sets the release published date of your application.
+	 * 
+	 * @param {number} releasePublishedDate unix timestamp of release published date.
+	 * @throws {LexActivatorException}
+	 */
+	static SetReleasePublishedDate(releasePublishedDate) {
+		const status = LexActivatorNative.SetReleasePublishedDate(releasePublishedDate);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Sets the release platform e.g. windows, macos, linux
+	 * 
+	 * The release platform appears along with the activation details in dashboard.
+	 * 
+	 * @param {string} releasePlatform release platform e.g. windows, macos, linux
+	 * @throws {LexActivatorException} 
+	 */
+	static SetReleasePlatform(releasePlatform) {
+		const status = LexActivatorNative.SetReleasePlatform(releasePlatform);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Sets the release channel e.g. stable, beta
+	 * 
+	 * The release channel appears along with the activation details in dashboard.
+	 * 
+	 * @param {string} releaseChannel release channel e.g. stable
+	 * @throws {LexActivatorException} 
+	 */
+	 static SetReleaseChannel(releaseChannel) {
+		const status = LexActivatorNative.SetReleaseChannel(releaseChannel);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Sets the meter attribute uses for the offline activation request.
 	 *
 	 * This function should only be called before GenerateOfflineActivationRequest()
@@ -519,6 +562,21 @@ class LexActivator {
 			default:
 				throw new LexActivatorException(status);
 		}
+	}
+
+	/**
+	 * Gets the maximum allowed release version of the license.
+	 * 
+	 * @return {string} max allowed release version
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseMaxAllowedReleaseVersion() {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetLicenseMaxAllowedReleaseVersion(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
 	}
 
 	/**
