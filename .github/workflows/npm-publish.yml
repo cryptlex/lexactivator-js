@@ -67,7 +67,7 @@ jobs:
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
         run: |
-          npm i -g node-gyp@7
+          npm i -g node-gyp@8
           ./scripts/build-macos.sh
 
       - name: Build for Linux
