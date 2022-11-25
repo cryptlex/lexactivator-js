@@ -1,4 +1,4 @@
-const LexStatusCodes = {
+export const LexStatusCodes = {
 	/**
 	 * Success code.
 	 */
@@ -220,13 +220,13 @@ const LexStatusCodes = {
 
 	/**
 	 * Custom device fingerprint length is less than 64 characters
-     * or more than 256 characters.
+	 * or more than 256 characters.
 	 */
 	LA_E_CUSTOM_FINGERPRINT_LENGTH: 74,
 
 	/**
-     * No product version is linked with the license.
-     */
+	 * No product version is linked with the license.
+	 */
 	LA_E_PRODUCT_VERSION_NOT_LINKED: 75,
 
 	/**
@@ -267,9 +267,9 @@ const LexStatusCodes = {
 
 	/**
 	 * Application is being run inside a container and
-     * activation has been disallowed in the container.
+	 * activation has been disallowed in the container.
 	 */
-	 LA_E_CONTAINER: 83,
+	LA_E_CONTAINER: 83,
 
 	/**
 	 * Rate limit for API has reached, try again later.
@@ -286,5 +286,3 @@ const LexStatusCodes = {
 	 */
 	LA_E_CLIENT: 92
 };
-
-module.exports = { LexStatusCodes };

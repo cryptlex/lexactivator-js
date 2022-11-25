@@ -3,9 +3,7 @@
   "version": "3.20.4",
   "description": "LexActivator API wrapper for Node.js.",
   "main": "lib/index.js",
-  "engines": {
-    "node": ">=12"
-  },
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "node-gyp rebuild --msvs_version=2015",
     "deploy": "npm publish --access public"

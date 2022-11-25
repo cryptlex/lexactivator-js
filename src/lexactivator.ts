@@ -1,18 +1,23 @@
-/* eslint-disable new-cap */
-const { LexActivatorException } = require('./lib/lexactivator-exception');
-const { LexStatusCodes } = require('./lib/lexstatus-codes');
-const { LexActivatorNative, arrayToString } = require('./lib/lexactivator-native');
+import { LexActivatorNative } from "./lexactivator-native";
+import { LexStatusCodes } from "./lexstatus-codes";
+import { LexActivatorException } from "./lexactivator-exception";
+import { arrayToString } from "./lexactivator-native";
 
 /**
  *  @class LicenseMeterAttribute
- *  @type {Object}
+ *  @constructor
  *  @property {name} name The name of the meter attribute.
- *  @property {allowedUses} allowedUses The allowed uses of the meter attribute.
+ *  @property {number} allowedUses The allowed uses of the meter attribute.
  *  @property {totalUses} totalUses The total uses of the meter attribute.
  *  @property {grossUses} grossUses The gross uses of the meter attribute.
  */
-class LicenseMeterAttribute {
-	constructor(name, allowedUses, totalUses, grossUses) {
+export class LicenseMeterAttribute {
+	name: string;
+	allowedUses: number;
+	totalUses: number;
+	grossUses: number;
+
+	constructor(name: string, allowedUses: number, totalUses: number, grossUses: number) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
@@ -22,13 +27,16 @@ class LicenseMeterAttribute {
 }
 /**
  *  @class ProductVersionFeatureFlag
- *  @type {Object}
+ *  @constructor
  *  @property {name} name The name of the feature flag.
  *  @property {enabled} enabled status of the feature flag.
  *  @property {data} data value of the feature flag.
  */
-class ProductVersionFeatureFlag {
-	constructor(name, enabled, data) {
+export class ProductVersionFeatureFlag {
+	name: string;
+	enabled: boolean;
+	data: string;
+	constructor(name: string, enabled: boolean, data: string) {
 		this.name = name;
 		this.enabled = enabled;
 		this.data = data;
@@ -37,20 +45,26 @@ class ProductVersionFeatureFlag {
 
 /**
  *  @class ActivationMode
- *  @type {Object}
- *  @property {initialMode} initialMode initial mode of activation.
- *  @property {currentMode} currentmode current mode of activation.
+ *  @constructor
+ *  @property {TODO} initialMode initial mode of activation.
+ *  @property {} currentmode current mode of activation.
  */
-class ActivationMode {
-	constructor(initialMode, currentMode) {
+export class ActivationMode {
+	initialMode: unknown;
+	currentMode: unknown;
+
+	constructor(initialMode: unknown, currentMode: unknown) {
 		this.initialMode = initialMode;
 		this.currentMode = currentMode;
 	}
 }
+/** Types of licenses supported by LexActivator. Values returned by `GetLicenseType()` */
+export type LicenseType = 'node-locked' | 'hosted-floating';
+
 /**
  * @class LexActivator
  */
-class LexActivator {
+export class LexActivator {
 	/**
 	 * Sets the absolute path of the Product.dat file.
 	 *
@@ -60,7 +74,7 @@ class LexActivator {
 	 * @param {string} filePath absolute path of the product file (Product.dat)
 	 * @throws {LexActivatorException}
 	 */
-	static SetProductFile(filePath) {
+	static SetProductFile(filePath: string): void {
 		const status = LexActivatorNative.SetProductFile(filePath);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -79,7 +93,7 @@ class LexActivator {
 	 * @param {string} productData content of the Product.dat file
 	 * @throws {LexActivatorException}
 	 */
-	static SetProductData(productData) {
+	static SetProductData(productData: string): void {
 		const status = LexActivatorNative.SetProductData(productData);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -95,13 +109,13 @@ class LexActivator {
 	 *
 	 * @param {string} productId the unique product id of your application as mentioned on
 	 * the product page in the dashboard.
-	 * @param {number} flags depending upon whether your application requires admin/root
+	 * @param {PermissionFlags} flag depending upon whether your application requires admin/root
 	 * permissions to run or not, this parameter can have one of the following values:
 	 * LA_SYSTEM, LA_USER, LA_IN_MEMORY
 	 * @throws {LexActivatorException}
 	 */
-	static SetProductId(productId, flags) {
-		const status = LexActivatorNative.SetProductId(productId, flags);
+	static SetProductId(productId: string, flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
+		const status = LexActivatorNative.SetProductId(productId, flag);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
@@ -122,7 +136,7 @@ class LexActivator {
 	* @param {string} directoryPath absolute path of the directory.
 	* @throws {LexActivatorException}
 	*/
-	static SetDataDirectory(directoryPath) {
+	static SetDataDirectory(directoryPath: string): void {
 		const status = LexActivatorNative.SetDataDirectory(directoryPath);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -143,7 +157,7 @@ class LexActivator {
 	 * @param {string} fingerprint string of minimum length 64 characters and maximum length 256 characters
 	 * @throws {LexActivatorException}
 	 */
-	static SetCustomDeviceFingerprint(fingerprint) {
+	static SetCustomDeviceFingerprint(fingerprint: string): void {
 		const status = LexActivatorNative.SetCustomDeviceFingerprint(fingerprint);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -156,7 +170,7 @@ class LexActivator {
 	 * @param {string} licenseKey a valid license key.
 	 * @throws {LexActivatorException}
 	 */
-	static SetLicenseKey(licenseKey) {
+	static SetLicenseKey(licenseKey: string): void {
 		const status = LexActivatorNative.SetLicenseKey(licenseKey);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -173,7 +187,7 @@ class LexActivator {
 	 * @param {string} password user password.
 	 * @throws {LexActivatorException}
 	 */
-	static SetLicenseUserCredential(email, password) {
+	static SetLicenseUserCredential(email: string, password: string): void {
 		const status = LexActivatorNative.SetLicenseUserCredential(email, password);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -189,10 +203,11 @@ class LexActivator {
 	 * LA_E_ACTIVATION_NOT_FOUND, LA_E_MACHINE_FINGERPRINT LA_E_COUNTRY, LA_E_INET,
 	 * LA_E_SERVER, LA_E_RATE_LIMIT, LA_E_IP
 	 *
-	 * @param {function(int)} licenseCallback callback function
+	 * @param {function(number)} licenseCallback callback function
 	 * @throws {LexActivatorException}
 	 */
-	static SetLicenseCallback(licenseCallback) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	static SetLicenseCallback(licenseCallback: (x: number) => any): void {
 		const status = LexActivatorNative.SetLicenseCallback(licenseCallback);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -203,12 +218,12 @@ class LexActivator {
 	 * Sets the lease duration for the activation.
 	 * 
 	 * The activation lease duration is honoured when the allow client
-     * lease duration property is enabled.
+	 * lease duration property is enabled.
 	 * 
 	 * @param {number} leaseDuration 
 	 * @throws {LexActivatorException}
 	 */
-	 static SetActivationLeaseDuration(leaseDuration){
+	static SetActivationLeaseDuration(leaseDuration: number): void {
 		const status = LexActivatorNative.SetActivationLeaseDuration(leaseDuration);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -225,7 +240,7 @@ class LexActivator {
 	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
-	static SetActivationMetadata(key, value) {
+	static SetActivationMetadata(key: string, value: string): void {
 		const status = LexActivatorNative.SetActivationMetadata(key, value);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -242,7 +257,7 @@ class LexActivator {
 	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
-	static SetTrialActivationMetadata(key, value) {
+	static SetTrialActivationMetadata(key: string, value: string): void {
 		const status = LexActivatorNative.SetTrialActivationMetadata(key, value);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -258,7 +273,7 @@ class LexActivator {
 	 * @param {string} appVersion string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
-	static SetAppVersion(appVersion) {
+	static SetAppVersion(appVersion: string): void {
 		const status = LexActivatorNative.SetAppVersion(appVersion);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -273,7 +288,7 @@ class LexActivator {
 	 * @param {string} releaseVersion string in following allowed formats: x.x, x.x.x, x.x.x.x
 	 * @throws {LexActivatorException} 
 	 */
-	static SetReleaseVersion(releaseVersion) {
+	static SetReleaseVersion(releaseVersion: string): void {
 		const status = LexActivatorNative.SetReleaseVersion(releaseVersion);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -286,7 +301,7 @@ class LexActivator {
 	 * @param {number} releasePublishedDate unix timestamp of release published date.
 	 * @throws {LexActivatorException}
 	 */
-	static SetReleasePublishedDate(releasePublishedDate) {
+	static SetReleasePublishedDate(releasePublishedDate: number): void {
 		const status = LexActivatorNative.SetReleasePublishedDate(releasePublishedDate);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -301,7 +316,7 @@ class LexActivator {
 	 * @param {string} releasePlatform release platform e.g. windows, macos, linux
 	 * @throws {LexActivatorException} 
 	 */
-	static SetReleasePlatform(releasePlatform) {
+	static SetReleasePlatform(releasePlatform: string): void {
 		const status = LexActivatorNative.SetReleasePlatform(releasePlatform);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -316,7 +331,7 @@ class LexActivator {
 	 * @param {string} releaseChannel release channel e.g. stable
 	 * @throws {LexActivatorException} 
 	 */
-	 static SetReleaseChannel(releaseChannel) {
+	static SetReleaseChannel(releaseChannel: string): void {
 		const status = LexActivatorNative.SetReleaseChannel(releaseChannel);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -333,7 +348,7 @@ class LexActivator {
 	 * @param {number} uses the uses value
 	 * @throws {LexActivatorException}
 	 */
-	static SetOfflineActivationRequestMeterAttributeUses(name, uses) {
+	static SetOfflineActivationRequestMeterAttributeUses(name: string, uses: number): void {
 		const status = LexActivatorNative.SetOfflineActivationRequestMeterAttributeUses(name, uses);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -352,7 +367,7 @@ class LexActivator {
 	 * @param {string} proxy proxy having correct proxy format
 	 * @throws {LexActivatorException}
 	 */
-	static SetNetworkProxy(proxy) {
+	static SetNetworkProxy(proxy: string): void {
 		const status = LexActivatorNative.SetNetworkProxy(proxy);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -366,7 +381,7 @@ class LexActivator {
 	 * @param {string} host the address of the Cryptlex on-premise server
 	 * @throws {LexActivatorException}
 	 */
-	static SetCryptlexHost(host) {
+	static SetCryptlexHost(host: string): void {
 		const status = LexActivatorNative.SetCryptlexHost(host);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -382,7 +397,7 @@ class LexActivator {
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
-	static GetProductMetadata(key) {
+	static GetProductMetadata(key: string): string {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetProductMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -396,7 +411,7 @@ class LexActivator {
 	 * @return {string} name of the product version
 	 * @throws {LexActivatorException} 
 	 */
-	static GetProductVersionName() {
+	static GetProductVersionName(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetProductVersionName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -410,7 +425,7 @@ class LexActivator {
 	 * @return {string}  display name of the product version
 	 * @throws {LexActivatorException} 
 	 */
-	static GetProductVersionDisplayName() {
+	static GetProductVersionDisplayName(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -425,16 +440,14 @@ class LexActivator {
 	 * @returns {ProductVersionFeatureFlag} product version feature flag.
 	 * @throws {LexActivatorException}
 	 */
-	static GetProductVersionFeatureFlag(name) {
+	static GetProductVersionFeatureFlag(name: string): ProductVersionFeatureFlag {
 		const enabled = new Uint32Array(1);
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
-		switch (status) {
-			case LexStatusCodes.LA_OK:
-				return new ProductVersionFeatureFlag(name, enabled > 0, arrayToString(array));
-			default:
-				throw new LexActivatorException(status);
+		if (status !== LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
 		}
+		return new ProductVersionFeatureFlag(name, (enabled[0] ? enabled[0] : 0) > 0, arrayToString(array));
 	}
 
 	/**
@@ -444,7 +457,7 @@ class LexActivator {
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseMetadata(key) {
+	static GetLicenseMetadata(key: string): string {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetLicenseMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -460,14 +473,14 @@ class LexActivator {
 	 * @return {LicenseMeterAttribute} values of meter attribute allowed, total and gross uses
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseMeterAttribute(name) {
+	static GetLicenseMeterAttribute(name: string): LicenseMeterAttribute {
 		const allowedUses = new Uint32Array(1);
 		const totalUses = new Uint32Array(1);
 		const grossUses = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return new LicenseMeterAttribute(name, allowedUses[0], totalUses[0], grossUses[0]);
+				return new LicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : 0, totalUses[0] ? totalUses[0] : 0, grossUses[0] ? grossUses[0] : 0);
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -479,7 +492,7 @@ class LexActivator {
 	 * @return {string} the license key
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseKey() {
+	static GetLicenseKey(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseKey(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -494,12 +507,12 @@ class LexActivator {
 	 * @return {number} the allowed activations
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseAllowedActivations() {
+	static GetLicenseAllowedActivations(): number {
 		const allowedActivations = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedActivations(allowedActivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return allowedActivations[0];
+				return allowedActivations[0] ? allowedActivations[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -513,12 +526,12 @@ class LexActivator {
 	 * @return {number} the total activations
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseTotalActivations() {
+	static GetLicenseTotalActivations(): number {
 		const totalActivations = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseTotalActivations(totalActivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return totalActivations[0];
+				return totalActivations[0] ? totalActivations[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -532,12 +545,12 @@ class LexActivator {
 	 * @return {number} the timestamp
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseExpiryDate() {
+	static GetLicenseExpiryDate(): number {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseExpiryDate(expiryDate);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return expiryDate[0];
+				return expiryDate[0] ? expiryDate[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -551,12 +564,12 @@ class LexActivator {
 	 * @return {number} the timestamp
 	 * @throws {LexActivatorException}
 	 */
-	 static GetLicenseMaintenanceExpiryDate() {
+	static GetLicenseMaintenanceExpiryDate(): number {
 		const maintenanceExpiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLicenseMaintenanceExpiryDate(maintenanceExpiryDate);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return maintenanceExpiryDate[0];
+				return maintenanceExpiryDate[0] ? maintenanceExpiryDate[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -570,7 +583,7 @@ class LexActivator {
 	 * @return {string} max allowed release version
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseMaxAllowedReleaseVersion() {
+	static GetLicenseMaxAllowedReleaseVersion(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseMaxAllowedReleaseVersion(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -585,7 +598,7 @@ class LexActivator {
 	 * @return {string} the license user email
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseUserEmail() {
+	static GetLicenseUserEmail(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseUserEmail(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -600,7 +613,7 @@ class LexActivator {
 	 * @return {string} the license user name
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseUserName() {
+	static GetLicenseUserName(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseUserName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -615,7 +628,7 @@ class LexActivator {
 	 * @return {string} the license user company
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseUserCompany() {
+	static GetLicenseUserCompany(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseUserCompany(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -631,7 +644,7 @@ class LexActivator {
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseUserMetadata(key) {
+	static GetLicenseUserMetadata(key: string): string {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetLicenseUserMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -643,16 +656,16 @@ class LexActivator {
 	/**
 	 * Gets the license type.
 	 *
-	 * @return {string} the license type: node-locked or hosted-floating
+	 * @return {LicenseType} the license type: node-locked or hosted-floating
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseType() {
+	static GetLicenseType(): LicenseType {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseType(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return arrayToString(array);
+		return arrayToString(array) as LicenseType;
 	}
 
 	/**
@@ -662,7 +675,7 @@ class LexActivator {
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
-	static GetActivationMetadata(key) {
+	static GetActivationMetadata(key: string): string {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -677,7 +690,7 @@ class LexActivator {
 	 * @return {ActivationMode} mode of activation.
 	 * @throws {LexActivatorException}
 	 */
-	 static GetActivationMode() {
+	static GetActivationMode(): ActivationMode {
 		const array1 = new Uint8Array(4096);
 		const array2 = new Uint8Array(4096);
 		const status = LexActivatorNative.GetActivationMode(array1, array1.length, array2, array2.length);
@@ -694,12 +707,12 @@ class LexActivator {
 	 * @return {number} value of meter attribute uses by the activation
 	 * @throws {LexActivatorException}
 	 */
-	static GetActivationMeterAttributeUses(name) {
+	static GetActivationMeterAttributeUses(name: string): number {
 		const uses = new Uint32Array(1);
 		const status = LexActivatorNative.GetActivationMeterAttributeUses(name, uses);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return uses[0];
+				return uses[0] ? uses[0] : 0;
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -711,12 +724,12 @@ class LexActivator {
 	 * @return {number} the timestamp
 	 * @throws {LexActivatorException}
 	 */
-	static GetServerSyncGracePeriodExpiryDate() {
+	static GetServerSyncGracePeriodExpiryDate(): number {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetServerSyncGracePeriodExpiryDate(expiryDate);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return expiryDate[0];
+				return expiryDate[0] ? expiryDate[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -731,7 +744,7 @@ class LexActivator {
 	 * @return {string} value of metadata for the key
 	 * @throws {LexActivatorException}
 	 */
-	static GetTrialActivationMetadata(key) {
+	static GetTrialActivationMetadata(key: string): string {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetTrialActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -746,12 +759,12 @@ class LexActivator {
 	 * @return {number} the timestamp
 	 * @throws {LexActivatorException}
 	 */
-	static GetTrialExpiryDate() {
+	static GetTrialExpiryDate(): number {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetTrialExpiryDate(expiryDate);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return expiryDate[0];
+				return expiryDate[0] ? expiryDate[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -765,7 +778,7 @@ class LexActivator {
 	 * @return {string} the trial id
 	 * @throws {LexActivatorException}
 	 */
-	static GetTrialId() {
+	static GetTrialId(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetTrialId(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -780,12 +793,12 @@ class LexActivator {
 	 * @return {number} the timestamp
 	 * @throws {LexActivatorException}
 	 */
-	static GetLocalTrialExpiryDate() {
+	static GetLocalTrialExpiryDate(): number {
 		const expiryDate = new Uint32Array(1);
 		const status = LexActivatorNative.GetLocalTrialExpiryDate(expiryDate);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return expiryDate[0];
+				return expiryDate[0] ? expiryDate[0] : 0;
 			case LexStatusCodes.LA_FAIL:
 				return 0;
 			default:
@@ -799,7 +812,7 @@ class LexActivator {
 	 * @return {string} the library version
 	 * @throws {LexActivatorException}
 	 */
-	static GetLibraryVersion() {
+	static GetLibraryVersion(): string {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLibraryVersion(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
@@ -817,10 +830,10 @@ class LexActivator {
 	 * @param {string} platform release platform e.g. windows, macos, linux
 	 * @param {string} version current release version
 	 * @param {string} channel release channel e.g. stable
-	 * @param {function(int)} releaseCallback callback function
+	 * @param {function(number)} releaseCallback callback function
 	 * @throws {LexActivatorException}
 	 */
-	static CheckForReleaseUpdate(platform, version, channel, releaseCallback) {
+	static CheckForReleaseUpdate(platform: string, version: string, channel: string, releaseCallback: (x: number) => number): void {
 		const status = LexActivatorNative.CheckForReleaseUpdate(platform, version, channel, releaseCallback);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -838,7 +851,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static ActivateLicense() {
+	static ActivateLicense(): number {
 		const status = LexActivatorNative.ActivateLicense();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -861,7 +874,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static ActivateLicenseOffline(filePath) {
+	static ActivateLicenseOffline(filePath: string): number {
 		const status = LexActivatorNative.ActivateLicenseOffline(filePath);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -884,7 +897,7 @@ class LexActivator {
 	 * @param {string} filePath path of the file for the offline request.
 	 * @throws {LexActivatorException}
 	 */
-	static GenerateOfflineActivationRequest(filePath) {
+	static GenerateOfflineActivationRequest(filePath: string): void {
 		const status = LexActivatorNative.GenerateOfflineActivationRequest(filePath);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -901,7 +914,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static DeactivateLicense() {
+	static DeactivateLicense(): number {
 		const status = LexActivatorNative.DeactivateLicense();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -924,7 +937,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static GenerateOfflineDeactivationRequest(filePath) {
+	static GenerateOfflineDeactivationRequest(filePath: string): number {
 		const status = LexActivatorNative.GenerateOfflineDeactivationRequest(filePath);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -959,7 +972,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_GRACE_PERIOD_OVER, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static IsLicenseGenuine() {
+	static IsLicenseGenuine(): number {
 		const status = LexActivatorNative.IsLicenseGenuine();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -990,7 +1003,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_GRACE_PERIOD_OVER, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static IsLicenseValid() {
+	static IsLicenseValid(): number {
 		const status = LexActivatorNative.IsLicenseValid();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1018,7 +1031,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_TRIAL_EXPIRED
 	 * @throws {LexActivatorException}
 	 */
-	static ActivateTrial() {
+	static ActivateTrial(): number {
 		const status = LexActivatorNative.ActivateTrial();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1039,7 +1052,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static ActivateTrialOffline(filePath) {
+	static ActivateTrialOffline(filePath: string): number {
 		const status = LexActivatorNative.ActivateTrialOffline(filePath);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1060,7 +1073,7 @@ class LexActivator {
 	 * @param {string} filePath path of the file for the offline request
 	 * @throws {LexActivatorException}
 	 */
-	static GenerateOfflineTrialActivationRequest(filePath) {
+	static GenerateOfflineTrialActivationRequest(filePath: string): void {
 		const status = LexActivatorNative.GenerateOfflineTrialActivationRequest(filePath);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -1078,7 +1091,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static IsTrialGenuine() {
+	static IsTrialGenuine(): number {
 		const status = LexActivatorNative.IsTrialGenuine();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1102,7 +1115,7 @@ class LexActivator {
 	 * @return {number} LA_OK, LA_LOCAL_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static ActivateLocalTrial(trialLength) {
+	static ActivateLocalTrial(trialLength: number): number {
 		const status = LexActivatorNative.ActivateLocalTrial(trialLength);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1125,7 +1138,7 @@ class LexActivator {
 	 * @returns {number} LA_OK, LA_LOCAL_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static IsLocalTrialGenuine() {
+	static IsLocalTrialGenuine(): number {
 		const status = LexActivatorNative.IsLocalTrialGenuine();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1148,7 +1161,7 @@ class LexActivator {
 	 * @returns {number} LA_OK, LA_FAIL
 	 * @throws {LexActivatorException}
 	 */
-	static ExtendLocalTrial(trialExtensionLength) {
+	static ExtendLocalTrial(trialExtensionLength: number): number {
 		const status = LexActivatorNative.ExtendLocalTrial(trialExtensionLength);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1167,7 +1180,7 @@ class LexActivator {
 	 * @param {number} increment the increment value
 	 * @throws {LexActivatorException}
 	 */
-	static IncrementActivationMeterAttributeUses(name, increment) {
+	static IncrementActivationMeterAttributeUses(name: string, increment: number): void {
 		const status = LexActivatorNative.IncrementActivationMeterAttributeUses(name, increment);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -1181,7 +1194,7 @@ class LexActivator {
 	 * @param {number} decrement the decrement value
 	 * @throws {LexActivatorException}
 	 */
-	static DecrementActivationMeterAttributeUses(name, decrement) {
+	static DecrementActivationMeterAttributeUses(name: string, decrement: number): void {
 		const status = LexActivatorNative.DecrementActivationMeterAttributeUses(name, decrement);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -1194,7 +1207,7 @@ class LexActivator {
 	 * @param {string} name name of the meter attribute
 	 * @throws {LexActivatorException}
 	 */
-	static ResetActivationMeterAttributeUses(name) {
+	static ResetActivationMeterAttributeUses(name: string): void {
 		const status = LexActivatorNative.ResetActivationMeterAttributeUses(name);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -1208,7 +1221,7 @@ class LexActivator {
 	 *
 	 * @throws {LexActivatorException}
 	 */
-	static Reset() {
+	static Reset(): void {
 		const status = LexActivatorNative.Reset();
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
@@ -1216,10 +1229,10 @@ class LexActivator {
 	}
 }
 
-const PermissionFlags = {
-	LA_USER: 1,
-	LA_SYSTEM: 2,
-	LA_IN_MEMORY: 4
+export const PermissionFlags = {
+	'LA_USER': 1,
+	'LA_SYSTEM': 2,
+	'LA_IN_MEMORY': 4
 };
 
 module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, LexActivatorException, PermissionFlags };
