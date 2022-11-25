@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cryptlex/lexactivator": "^3.18.1"
+    "@cryptlex/lexactivator": "latest"
   }
 }
