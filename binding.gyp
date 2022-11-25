@@ -3,7 +3,7 @@
         {
             "target_name": "lexactivator",
             "sources": [
-                "src/main.cpp"
+                "src/native/main.cpp"
             ],
             "cflags!": [
                 "-fno-exceptions"
