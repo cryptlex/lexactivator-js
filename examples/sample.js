@@ -1,5 +1,4 @@
-/* eslint-disable new-cap */
-const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
+const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('../lib/index');
 
 function init() {
 	// LexActivator.SetProductFile("ABSOLUTE_PATH_OF_PRODUCT.DAT_FILE");

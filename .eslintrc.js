@@ -23,5 +23,5 @@ module.exports = {
 		],
 		'@typescript-eslint/explicit-function-return-type': 'warn'
 	},
-	'ignorePatterns': ['lib/**/*', 'node_modules/**/*']
+	'ignorePatterns': ['lib/**/*', 'examples/**/*', 'node_modules/**/*']
 };
