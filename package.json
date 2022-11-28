@@ -23,10 +23,10 @@
   "devDependencies": {
     "@types/detect-libc": "^1.0.0",
     "@types/node": "18.11.9",
-    "@typescript-eslint/eslint-plugin": "~5.44.0",
-    "@typescript-eslint/parser": "~5.44.0",
-    "eslint": "~8.28.0",
-    "typescript": "~4.9"
+    "@typescript-eslint/eslint-plugin": "5.44.0",
+    "@typescript-eslint/parser": "5.44.0",
+    "eslint": "8.28.0",
+    "typescript": "4.9"
   },
   "repository": {
     "type": "git",
