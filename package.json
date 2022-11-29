@@ -5,9 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "compile": "tsc",
-    "build": "node-gyp rebuild --msvs_version=2015",
-    "deploy": "npm publish --access public"
+    "build": "tsc"
   },
   "keywords": [
     "cryptlex",

@@ -40,7 +40,7 @@ jobs:
           git push & git push --tags
 
   # Compile TS files to JS
-  compile:
+  transpile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -48,7 +48,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm run compile
+      - run: npm run build
 
   # Link LexActivator static libs to Node
   build:
