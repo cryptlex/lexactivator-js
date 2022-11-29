@@ -1,7 +1,7 @@
-import { LexActivatorNative } from "./lexactivator-native";
-import { LexStatusCodes } from "./lexstatus-codes";
-import { LexActivatorException } from "./lexactivator-exception";
-import { arrayToString } from "./lexactivator-native";
+import { LexActivatorNative } from "./lexactivator-native.js";
+import { LexStatusCodes } from "./lexstatus-codes.js";
+import { LexActivatorException } from "./lexactivator-exception.js";
+import { arrayToString } from "./lexactivator-native.js";
 
 /**
  *  @class LicenseMeterAttribute
@@ -43,17 +43,19 @@ export class ProductVersionFeatureFlag {
 	}
 }
 
+export type ActivationModes = 'online' | 'offline';
+
 /**
  *  @class ActivationMode
  *  @constructor
- *  @property {TODO} initialMode initial mode of activation.
- *  @property {} currentmode current mode of activation.
+ *  @property {ActivationModes} initialMode initial mode of activation.
+ *  @property {ActivationModes} currentmode current mode of activation.
  */
 export class ActivationMode {
-	initialMode: unknown;
-	currentMode: unknown;
+	initialMode: ActivationModes;
+	currentMode: ActivationModes;
 
-	constructor(initialMode: unknown, currentMode: unknown) {
+	constructor(initialMode: ActivationModes, currentMode: ActivationModes) {
 		this.initialMode = initialMode;
 		this.currentMode = currentMode;
 	}
@@ -697,7 +699,7 @@ export class LexActivator {
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		return new ActivationMode(arrayToString(array1), arrayToString(array2));
+		return new ActivationMode(arrayToString(array1) as ActivationModes, arrayToString(array2) as ActivationModes);
 	}
 
 	/**

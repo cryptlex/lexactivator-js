@@ -1,4 +1,4 @@
-import { LexStatusCodes } from "./lexstatus-codes";
+import { LexStatusCodes } from "./lexstatus-codes.js";
 
 export class LexActivatorException extends Error {
 	constructor(code: number) {
