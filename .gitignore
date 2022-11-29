@@ -44,21 +44,10 @@ typings/
 # Optional eslint cache
 .eslintcache
 
-# Optional REPL history
-.node_repl_history
+# VSCode Config
+.vscode
 
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-
-# next.js build output
-.next
-build
-build*/
-lib/binding/
-
+# Generated files
+lib/*.js
+lib/*.ts
+lib/*.map

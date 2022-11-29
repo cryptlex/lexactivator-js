@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
 
 function init() {

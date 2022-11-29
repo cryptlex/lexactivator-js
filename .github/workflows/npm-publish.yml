@@ -13,6 +13,7 @@ on:
         default: ''
 
 jobs:
+  # Set version in package.json, git tag
   update-version:
     runs-on: ubuntu-latest
     steps:
@@ -37,9 +38,22 @@ jobs:
           git commit -m "chore(package version): updated version" | exit 0
           git tag ${{ github.event.inputs.packageVersion }}
           git push & git push --tags
-     
+
+  # Compile TS files to JS
   build:
     needs: update-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run build
+
+  # Link LexActivator static libs to Node
+  build-addons:
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -88,8 +102,9 @@ jobs:
             ./lib/bindings/windows/**/*.dll
           retention-days: 1
 
+  # Publish to NPM
   publish-npm:
-    needs: build
+    needs: build-addons
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

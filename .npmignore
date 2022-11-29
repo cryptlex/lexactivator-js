@@ -14,3 +14,6 @@ libLexActivator.dylib
 libLexActivator.so
 libLexActivator.a
 binding.gyp
+
+# Source files
+src

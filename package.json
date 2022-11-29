@@ -2,10 +2,10 @@
   "name": "@cryptlex/lexactivator",
   "version": "3.20.4",
   "description": "LexActivator API wrapper for Node.js.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "node-gyp rebuild --msvs_version=2015",
-    "deploy": "npm publish --access public"
+    "build": "tsc"
   },
   "keywords": [
     "cryptlex",
@@ -19,8 +19,12 @@
     "node-addon-api": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-google": "^0.14.0"
+    "@types/detect-libc": "^1.0.0",
+    "@types/node": "18.11.9",
+    "@typescript-eslint/eslint-plugin": "5.44.0",
+    "@typescript-eslint/parser": "5.44.0",
+    "eslint": "8.28.0",
+    "typescript": "4.9"
   },
   "repository": {
     "type": "git",
