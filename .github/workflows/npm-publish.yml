@@ -39,21 +39,9 @@ jobs:
           git tag ${{ github.event.inputs.packageVersion }}
           git push & git push --tags
 
-  # Compile TS files to JS
-  build:
-    needs: update-version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run build
-
   # Link LexActivator static libs to Node
   build-addons:
-    needs: build
+    needs: update-version
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -101,24 +89,28 @@ jobs:
             ./lib/bindings/windows/**/*.node
             ./lib/bindings/windows/**/*.dll
           retention-days: 1
-
+  
   # Publish to NPM
   publish-npm:
     needs: build-addons
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: git pull origin master --ff-only
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
+          node-version: 16
+      - run: git pull origin master --ff-only
 
       - name: 'Download artifacts'
         uses: actions/download-artifact@v2
         with:
           path: ./lib/bindings
           name: artifacts
+
+      - name: 'Build library'
+        run: |
+          npm ci
+          npm run build
 
       - run: npm publish --access public
         env:
