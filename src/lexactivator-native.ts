@@ -1,5 +1,5 @@
 import path from 'path';
-import isNonGlibcLinux from 'detect-libc';
+import { isNonGlibcLinuxSync } from 'detect-libc';
 
 // Using this line correctly with import would mean using top-level await which we cannot 
 // support at the moment.
@@ -16,7 +16,7 @@ function getLibraryPath(): string {
 		case 'win32':
 			return path.join(__dirname, 'bindings/windows', process.arch === 'ia32' ? 'x32' : process.arch, 'lexactivator.node');
 		case 'linux':
-			return path.join(__dirname, 'bindings/linux', isNonGlibcLinux ? 'musl' : 'gcc', process.arch, 'lexactivator.node');
+			return path.join(__dirname, 'bindings/linux', isNonGlibcLinuxSync() ? 'musl' : 'gcc', process.arch, 'lexactivator.node');
 	}
 	throw Error(`LexActivator library not found for your platform ${process.platform}.`);
 }
