@@ -15,8 +15,8 @@
   "author": "Cryptlex, LLC",
   "license": "MIT",
   "dependencies": {
-    "detect-libc": "^1.0.3",
-    "node-addon-api": "^3.2.1"
+    "detect-libc": "~2.0.1",
+    "node-addon-api": "~3.2.1"
   },
   "devDependencies": {
     "@types/detect-libc": "^1.0.0",
