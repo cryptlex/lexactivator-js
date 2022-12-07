@@ -1,7 +1,7 @@
 import { LexStatusCodes } from "./lexstatus-codes.js";
 
 export class LexActivatorException extends Error {
-	/** LexActivatorException numberic code */
+	/** LexActivatorException numeric code */
 	code: number;
 	constructor(code: number) {
 		super(LexActivatorException.getErrorMessage(code));
