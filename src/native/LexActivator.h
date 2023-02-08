@@ -59,10 +59,14 @@
 #endif
 
 typedef void (LA_CC *CallbackType)(uint32_t);
+typedef void (LA_CC *ReleaseCallbackType)(uint32_t, CSTRTYPE);
 
 #define LA_USER ((uint32_t)1)
 #define LA_SYSTEM ((uint32_t)2)
 #define LA_IN_MEMORY ((uint32_t)4)
+
+#define LA_RELEASES_ALL ((uint32_t)1)
+#define LA_RELEASES_ALLOWED ((uint32_t)2)
 
 /*
     FUNCTION: SetProductFile()
@@ -739,6 +743,35 @@ LEXACTIVATOR_API int LA_CC GetLocalTrialExpiryDate(uint32_t *trialExpiryDate);
     RETURN CODES: LA_OK, LA_E_BUFFER_SIZE
 */
 LEXACTIVATOR_API int LA_CC GetLibraryVersion(STRTYPE libraryVersion, uint32_t length);
+
+/*
+    FUNCTION: CheckReleaseUpdate()
+
+    PURPOSE: Checks whether a new release is available for the product.
+
+    This function should only be used if you manage your releases through
+    Cryptlex release management API.
+
+    When this function is called the release update callback function gets invoked 
+    which returns the following parameters:
+
+    * status - determines if any update is available or not. It also determines whether 
+      an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
+      LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
+
+    * releaseJson- returns json string of the latest available release, depending on the 
+      flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL passed to the CheckReleaseUpdate().
+
+    PARAMETERS:
+    * releaseUpdateCallback - name of the callback function.
+    * releaseFlags - If an update only related to the allowed release is required, 
+      then use LA_RELEASES_ALLOWED. Otherwise, if an update for all the releases is
+      required, then use LA_RELEASES_ALL.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_RELEASE_VERSION_FORMAT, LA_E_RELEASE_VERSION,
+    LA_E_RELEASE_PLATFORM, LA_E_RELEASE_CHANNEL
+*/
+LEXACTIVATOR_API int LA_CC CheckReleaseUpdate(ReleaseCallbackType releaseUpdateCallback, uint32_t releaseFlag);
 
 /*
     FUNCTION: CheckForReleaseUpdate()

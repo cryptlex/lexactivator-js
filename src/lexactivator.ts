@@ -43,6 +43,21 @@ export class ProductVersionFeatureFlag {
 	}
 }
 
+/**
+ *  @class ReleaseUpdateCallback
+ *  @constructor
+ *  @property {status} status Status of an update.
+ *  @property {releaseJson} releaseJson Json for the available release.
+ */
+export class ReleaseUpdateCallback {
+	status: number;
+	releaseJson: string;
+	constructor(status: number, releaseJson: string) {
+		this.status = status;
+		this.releaseJson = releaseJson;
+	}
+}
+
 export type ActivationModes = 'online' | 'offline';
 
 /**
@@ -118,6 +133,7 @@ export class LexActivator {
 	 */
 	static SetProductId(productId: string, flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
 		const status = LexActivatorNative.SetProductId(productId, flag);
+		console.log("New product..")
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
@@ -825,6 +841,36 @@ export class LexActivator {
 
 	/**
 	 * Checks whether a new release is available for the product.
+	 * 
+	 * This function should only be used if you manage your releases through
+     * Cryptlex release management API.
+	 * 
+	 * When this function is called the release update callback function gets invoked 
+     * which returns the following parameters:
+	 * 
+	 * status - determines if any update is available or not. It also determines whether 
+     * an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
+     * LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
+	 * 
+	 * releaseJson- returns json string of the latest available release, depending on the 
+     * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL passed to the CheckReleaseUpdate().
+	 * 
+	 * @param {function(number, string)} releaseUpdateCallback callback function
+	 * @param {ReleaseFlags} flag If an update only related to the allowed release is required, 
+     * then use LA_RELEASES_ALLOWED. Otherwise, if an update for all the releases is
+     * required, then use LA_RELEASES_ALL.
+	 * @throws {LexActivatorException}
+	 */
+	static CheckReleaseUpdate(releaseUpdateCallback:(x: number, y: string) => ReleaseUpdateCallback , flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
+		const status = LexActivatorNative.CheckReleaseUpdate(releaseUpdateCallback, flag);
+		// not sure if the callback returns ReleaseUpdateCallback where i need to create its instance.
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Checks whether a new release is available for the product.
 	 *
 	 * This function should only be used if you manage your releases through
 	 * Cryptlex release management API.
@@ -1237,4 +1283,9 @@ export const PermissionFlags = {
 	'LA_IN_MEMORY': 4
 };
 
-module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, LexActivatorException, PermissionFlags };
+export const ReleaseFlags = {
+	'LA_RELEASES_ALL': 1,
+	'LA_RELEASES_ALLOWED': 2
+}
+
+module.exports = { LexActivator, LicenseMeterAttribute, LexStatusCodes, LexActivatorException, PermissionFlags, ReleaseFlags };
