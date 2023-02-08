@@ -43,8 +43,18 @@ export const LexStatusCodes = {
 	/**
 	 * No new update is available for the product. The current version is latest.
 	 */
-	LA_RELEASE_NO_UPDATE_AVAILABLE: 31,
+	LA_RELEASE_NO_UPDATE_AVAILABLE: 31, //deprecated
 
+	/**
+	 * No new update is available for the product. The current version is latest.
+	 */
+	LA_RELEASE_UPDATE_NOT_AVAILABLE: 31,
+
+	/**
+	 * The update available is not allowed for this license.
+	 */
+	LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED: 32,
+	
 	/**
 	 * Invalid file path.
 	 */
@@ -270,6 +280,22 @@ export const LexStatusCodes = {
 	 * activation has been disallowed in the container.
 	 */
 	LA_E_CONTAINER: 83,
+
+	/**
+     * Invalid release version. Make sure the release version
+     * uses the following formats: x.x, x.x.x, x.x.x.x (where x is a number).
+     */
+	LA_E_RELEASE_VERSION: 84,
+
+	/**
+	 * Release platform not set.
+	 */
+	LA_E_RELEASE_PLATFORM: 85,
+	
+	/**
+	 * Release channel not set.
+	 */
+	LA_E_RELEASE_CHANNEL: 86,
 
 	/**
 	 * Rate limit for API has reached, try again later.

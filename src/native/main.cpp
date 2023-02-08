@@ -21,6 +21,8 @@ const char *MISSING_LICENSE_KEY = "License key not set";
 
 map<STRING, CallbackWrapper *> LicenseCallbacks;
 map<STRING, CallbackWrapper *> ReleaseCallbacks;
+map<STRING, ReleaseUpdateCallbackWrapper *> ReleaseUpdateCallbacks;
+
 
 STRING toEncodedString(Napi::String input)
 {
@@ -53,6 +55,18 @@ void softwareReleaseUpdateCallback(uint32_t status)
     }
     ReleaseCallbacks[STRING(licenseKey)]->status = status;
     ReleaseCallbacks[STRING(licenseKey)]->Queue();
+}
+
+void newSoftwareReleaseUpdateCallback(uint32_t status, const char *releaseJson)
+{
+    CHARTYPE licenseKey[256];
+    if (GetLicenseKey(licenseKey, 256) != LA_OK)
+    {
+        return;
+    }
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->status = status;
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->releaseJson = releaseJson;
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->Queue();
 }
 
 Napi::Value setProductFile(const Napi::CallbackInfo &info)
@@ -976,6 +990,38 @@ Napi::Value getLibraryVersion(const Napi::CallbackInfo &info)
     size_t length = array.ElementLength();
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLibraryVersion(arg0, length));
+}
+
+Napi:: Value checkReleaseUpdate(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 2)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsFunction())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[1].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Function callback = info[0].As<Napi::Function>();
+    uint32_t arg1 = info[1].As<Napi::Number>().Uint32Value();
+    CHARTYPE licenseKey[256];
+    int status = GetLicenseKey(licenseKey, 256);
+    if (status != LA_OK)
+    {
+        Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    ReleaseUpdateCallbacks[STRING(licenseKey)] = new ReleaseUpdateCallbackWrapper(callback);
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    return Napi::Number::New(env, CheckReleaseUpdate(newSoftwareReleaseUpdateCallback, arg1));
 }
 
 Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
