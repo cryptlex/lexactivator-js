@@ -41,9 +41,10 @@ export const LexStatusCodes = {
 	LA_RELEASE_UPDATE_AVAILABLE: 30,
 
 	/**
+	 * @deprecated
 	 * No new update is available for the product. The current version is latest.
 	 */
-	LA_RELEASE_NO_UPDATE_AVAILABLE: 31, //deprecated
+	LA_RELEASE_NO_UPDATE_AVAILABLE: 31, 
 
 	/**
 	 * No new update is available for the product. The current version is latest.
