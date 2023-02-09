@@ -133,7 +133,6 @@ export class LexActivator {
 	 */
 	static SetProductId(productId: string, flag: typeof PermissionFlags[keyof typeof PermissionFlags]): void {
 		const status = LexActivatorNative.SetProductId(productId, flag);
-		console.log("New product..")
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
