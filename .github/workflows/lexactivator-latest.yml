@@ -1,0 +1,23 @@
+# Gets the latest version of LexActivator
+name: cryptlex/lexactivator-latest
+
+on:
+  workflow_call:
+    outputs:
+      version:
+        description: "The latest version of LexActivator publicly available"
+        value: ${{ jobs.latest-version.outputs.version }}
+        
+jobs:
+  latest-version:
+    name: Fetch latest LexActivator Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - id: get-version
+        run: |
+          curl https://dl.cryptlex.com/downloads/manifest.json > manifest.json
+          LEXACTIVATOR_LATEST=$(jq --raw-output '.libs[] | select(.name=="lexactivator") | .versions[0]' manifest.json)
+          echo "Using LexActivator $LEXACTIVATOR_LATEST"  
+          echo "version=$LEXACTIVATOR_LATEST" >> $GITHUB_OUTPUT

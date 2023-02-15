@@ -1,63 +1,57 @@
-name: Build @cryptlex/lexactivator package
+name: release
 
 on:
-  workflow_dispatch:
-    inputs:
-      libraryVersion:
-        description: 'Library Version'
-        required: true
-        default: ''
-      packageVersion:
-        description: 'Package Version'
-        required: true
-        default: ''
+  push:
+    branches:
+      - master
 
 jobs:
-  # Set version in package.json, git tag
-  update-version:
+  # Create release PR
+  release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          package-name: lexactivator-js
+          changelog-types: '[{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
+
+  # Get latest LexActivator
+  lexactivator-latest:
+    uses: ./.github/workflows/lexactivator-latest.yml
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+
+  # Update scripts to use latest LexActivator version
+  update-scripts:
+    runs-on: ubuntu-latest
+    needs: [release-please, lexactivator-latest]
+    if: ${{ needs.release-please.outputs.release_created }}
+    steps:
+      - uses: actions/checkout@v3
       - name: Update Library Version
         run: |
-          sed -i '/VERSION=/!b;cVERSION=\"v${{ github.event.inputs.libraryVersion }}";' scripts/*.sh
-          sed -i '/lexactivator_version =/!b;c$lexactivator_version ="v${{ github.event.inputs.libraryVersion }}"' scripts/*.ps1
-
-      - name: Update Package Version
-        run: |
-          sed -i '/"version":/!b;c \ \ "version": "${{ github.event.inputs.packageVersion }}",' package.json
-     
-      - name: Commit, Tag and Push
-        run: |
-          git add package.json
-          git add scripts/*.*
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit -m "chore(package version): updated version" | exit 0
-          git tag ${{ github.event.inputs.packageVersion }}
-          git push & git push --tags
+          sed -i '/VERSION=/!b;cVERSION=\"v${{ needs.lexactivator-latest.outputs.version }}";' scripts/*.sh
+          sed -i '/lexactivator_version =/!b;c$lexactivator_version ="v${{ needs.lexactivator-latest.outputs.version }}"' scripts/*.ps1
 
   # Link LexActivator static libs to Node
   build-addons:
-    needs: update-version
+    needs: [release-please, lexactivator-latest, update-scripts]
+    if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-2019]
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - run: git pull origin master --ff-only
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 10
-
-      # - name: Install Windows 2015 build tools
-      #   if: matrix.os == 'windows-2019'
-      #   run: npm i --global windows-build-tools --vs2015
+          node-version: 12
 
       - name: Build for Windows
         if: matrix.os == 'windows-2019'
@@ -89,16 +83,17 @@ jobs:
             ./lib/bindings/windows/**/*.node
             ./lib/bindings/windows/**/*.dll
           retention-days: 1
-  
+
   # Publish to NPM
   publish-npm:
-    needs: build-addons
+    needs: [release-please, lexactivator-latest, update-scripts, build-addons]
+    if: ${{ needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: git pull origin master --ff-only
 
