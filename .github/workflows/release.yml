@@ -21,7 +21,7 @@ jobs:
 
   # Get latest LexActivator
   lexactivator-latest:
-    uses: ./.github/workflows/lexactivator-latest.yml
+    uses: cryptlex/action-workflows/.github/workflows/lexactivator-latest-version.yml@main
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
 
