@@ -2,6 +2,7 @@
 #define SIZE_MAX ((size_t)(-1))
 #endif
 #include "napi.h"
+#include <string>
 
 class CallbackWrapper : public Napi::AsyncWorker
 {
@@ -30,7 +31,7 @@ public:
     {
     }
     uint32_t status;
-    const char *releaseJson;
+    std::string releaseJson;
 
 private:
     void Execute()

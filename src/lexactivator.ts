@@ -2,6 +2,7 @@ import { LexActivatorNative } from "./lexactivator-native.js";
 import { LexStatusCodes } from "./lexstatus-codes.js";
 import { LexActivatorException } from "./lexactivator-exception.js";
 import { arrayToString } from "./lexactivator-native.js";
+import { Release } from "./release.js"
 
 /**
  *  @class LicenseMeterAttribute
@@ -43,21 +44,6 @@ export class ProductVersionFeatureFlag {
 	}
 }
 
-/**
- *  @class ReleaseUpdateCallback
- *  @constructor
- *  @property {status} status Status of an update.
- *  @property {releaseJson} releaseJson Json for the available release.
- */
-export class ReleaseUpdateCallback {
-	status: number;
-	releaseJson: string;
-	constructor(status: number, releaseJson: string) {
-		this.status = status;
-		this.releaseJson = releaseJson;
-	}
-}
-
 export type ActivationModes = 'online' | 'offline';
 
 /**
@@ -77,6 +63,15 @@ export class ActivationMode {
 }
 /** Types of licenses supported by LexActivator. Values returned by `GetLicenseType()` */
 export type LicenseType = 'node-locked' | 'hosted-floating';
+
+/**
+ * A callback function used to handle updates for a release.
+ *
+ * @param {number} x - status of an update.
+ * @param {Release} y - release object.
+ * @returns {void}
+ */
+export type ReleaseUpdateCallback = (x: number, y: Release) => void;
 
 /**
  * @class LexActivator
@@ -842,27 +837,26 @@ export class LexActivator {
 	 * Checks whether a new release is available for the product.
 	 * 
 	 * This function should only be used if you manage your releases through
-     * Cryptlex release management API.
+	 * Cryptlex release management API.
 	 * 
 	 * When this function is called the release update callback function gets invoked 
-     * which returns the following parameters:
+	 * which passes the following parameters:
 	 * 
 	 * status - determines if any update is available or not. It also determines whether 
-     * an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
-     * LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
+	 * an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
+	 * LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
 	 * 
 	 * releaseJson- returns json string of the latest available release, depending on the 
-     * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL passed to the CheckReleaseUpdate().
+	 * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL passed to the CheckReleaseUpdate().
 	 * 
 	 * @param {function(number, string)} releaseUpdateCallback callback function
 	 * @param {ReleaseFlags} flag If an update only related to the allowed release is required, 
-     * then use LA_RELEASES_ALLOWED. Otherwise, if an update for all the releases is
-     * required, then use LA_RELEASES_ALL.
+	 * then use LA_RELEASES_ALLOWED. Otherwise, if an update for all the releases is
+	 * required, then use LA_RELEASES_ALL.
 	 * @throws {LexActivatorException}
 	 */
-	static CheckReleaseUpdate(releaseUpdateCallback:(x: number, y: string) => ReleaseUpdateCallback , flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
+	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
 		const status = LexActivatorNative.CheckReleaseUpdate(releaseUpdateCallback, flag);
-		// not sure if the callback returns ReleaseUpdateCallback where i need to create its instance.
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}

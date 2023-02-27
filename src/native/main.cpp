@@ -57,15 +57,15 @@ void softwareReleaseUpdateCallback(uint32_t status)
     ReleaseCallbacks[STRING(licenseKey)]->Queue();
 }
 
-void newSoftwareReleaseUpdateCallback(uint32_t status, const char *releaseJson)
-{
+void releaseUpdateCallback(uint32_t status, const char *releaseJson)
+{   
     CHARTYPE licenseKey[256];
     if (GetLicenseKey(licenseKey, 256) != LA_OK)
     {
         return;
     }
     ReleaseUpdateCallbacks[STRING(licenseKey)]->status = status;
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->releaseJson = releaseJson;
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->releaseJson.assign(releaseJson);
     ReleaseUpdateCallbacks[STRING(licenseKey)]->Queue();
 }
 
@@ -992,7 +992,7 @@ Napi::Value getLibraryVersion(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetLibraryVersion(arg0, length));
 }
 
-Napi:: Value checkReleaseUpdate(const Napi::CallbackInfo &info)
+Napi::Value checkReleaseUpdate(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (info.Length() < 2)
@@ -1021,7 +1021,7 @@ Napi:: Value checkReleaseUpdate(const Napi::CallbackInfo &info)
     }
     ReleaseUpdateCallbacks[STRING(licenseKey)] = new ReleaseUpdateCallbackWrapper(callback);
     ReleaseUpdateCallbacks[STRING(licenseKey)]->SuppressDestruct();
-    return Napi::Number::New(env, CheckReleaseUpdate(newSoftwareReleaseUpdateCallback, arg1));
+    return Napi::Number::New(env, CheckReleaseUpdate(releaseUpdateCallback, arg1));
 }
 
 Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
@@ -1337,6 +1337,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetTrialId"] = Napi::Function::New(env, getTrialId);
     exports["GetLocalTrialExpiryDate"] = Napi::Function::New(env, getLocalTrialExpiryDate);
     exports["GetLibraryVersion"] = Napi::Function::New(env, getLibraryVersion);
+    exports["CheckReleaseUpdate"] = Napi::Function::New(env, checkReleaseUpdate);
     exports["CheckForReleaseUpdate"] = Napi::Function::New(env, checkForReleaseUpdate);
     exports["ActivateLicense"] = Napi::Function::New(env, activateLicense);
     exports["ActivateLicenseOffline"] = Napi::Function::New(env, activateLicenseOffline);

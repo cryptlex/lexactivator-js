@@ -2,3 +2,4 @@ export { LexActivator, LicenseMeterAttribute, PermissionFlags, ReleaseFlags } fr
 export { LexActivatorException } from "./lexactivator-exception.js";
 export { LexStatusCodes } from "./lexstatus-codes.js";
 export { ProductVersionFeatureFlag } from "./lexactivator.js";
+export { Release } from "./release.js";
