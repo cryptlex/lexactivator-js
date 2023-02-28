@@ -4,7 +4,7 @@ function init() {
 	// LexActivator.SetProductFile("ABSOLUTE_PATH_OF_PRODUCT.DAT_FILE");
 	LexActivator.SetProductData('PASTE_CONTENT_OF_PRODUCT.DAT_FILE');
 	LexActivator.SetProductId('PASTE_PRODUCT_ID', PermissionFlags.LA_USER);
-	LexActivator.SetAppVersion('PASTE_YOUR_APP_VERION');
+	LexActivator.SetReleaseVersion('1.0.0');  // Set this to the release version of your app
 }
 
 function activate() {
