@@ -192,6 +192,18 @@ export class LexActivatorException extends Error {
 			message = 'Application is being run inside a container and activation has been disallowed in the container.';
 			break;
 
+		case LexStatusCodes.LA_E_RELEASE_VERSION:
+			message = 'Invalid release version. Make sure the release version uses the following formats: x.x, x.x.x, x.x.x.x (where x is a number).';
+			break;
+
+		case LexStatusCodes.LA_E_RELEASE_PLATFORM:
+			message = 'Release platform not set.';
+			break;
+
+		case LexStatusCodes.LA_E_RELEASE_CHANNEL:
+			message = 'Release channel not set.';
+			break;
+
 		case LexStatusCodes.LA_E_RATE_LIMIT:
 			message = 'Rate limit for API has reached, try again later.';
 			break;
