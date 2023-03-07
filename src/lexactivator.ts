@@ -64,8 +64,6 @@ export class ActivationMode {
 /** Types of licenses supported by LexActivator. Values returned by `GetLicenseType()` */
 export type LicenseType = 'node-locked' | 'hosted-floating';
 
-type EmptyObject = Record<string, never>;
-
 /**
  * A callback function for CheckReleaseUpdate().
  *
@@ -73,7 +71,7 @@ type EmptyObject = Record<string, never>;
  * @param {Release} release - release object.
  * @returns {void}
  */
-export type ReleaseUpdateCallback = (status: number, release: Release | EmptyObject) => void;
+export type ReleaseUpdateCallback = (status: number, release: Release | {}) => void;
 
 /**
  * @class LexActivator
@@ -859,7 +857,7 @@ export class LexActivator {
 	 */
 	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
 		const internalReleaseUpdateCallback = function (status: number, releaseJson: string ): void {
-			let release: Release | EmptyObject = {};
+			let release: Release | {} = {};
 			if (releaseJson) {
 				try {
 					release = JSON.parse(releaseJson);
