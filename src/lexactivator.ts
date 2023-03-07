@@ -846,8 +846,8 @@ export class LexActivator {
 	 * an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
 	 * LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
 	 * 
-	 * releaseJson- returns json string of the latest available release, depending on the 
-	 * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL passed to the CheckReleaseUpdate().
+	 * release- object of the latest available release, the object passed depends on the 
+	 * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL provided to the CheckReleaseUpdate().
 	 * 
 	 * @param {function(number, string)} releaseUpdateCallback callback function
 	 * @param {ReleaseFlags} flag If an update only related to the allowed release is required, 
@@ -861,9 +861,7 @@ export class LexActivator {
 			if (releaseJson) {
 				try {
 					release = JSON.parse(releaseJson);
-				} catch (error:any) {
-					console.error(error.message);
-				}
+				} catch  {}
 			}
 			releaseUpdateCallback(status, release);
 		};

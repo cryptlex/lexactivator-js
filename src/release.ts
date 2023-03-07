@@ -1,6 +1,6 @@
 /**
- * Represents a release object.
- * @class Release
+ * Represents a release structure.
+ * @type Release
  * @property {boolean} private - Indicates whether the release is private or not.
  * @property {string} id - The unique identifier for the release.
  * @property {string} createdAt - The timestamp when the release was created.
@@ -30,20 +30,20 @@
  * @property {string} tenantId - The unique identifier for the tenant that this release is associated with.
  */
  
-export class Release {
-    '`private`'!: boolean
-    id!: string;
-    createdAt!: string;
-    updatedAt!: string;
-    name!: string;
-    channel!: string;
-    version!: string;
-    platform!: string;
-    platforms!: string[];
-    notes!: string;
-    totalFiles!: number;
-    publishedAt!: string;
-    files!: {
+export type Release = {
+    'private': boolean;
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    name: string;
+    channel: string;
+    version: string;
+    platform: string;
+    platforms: string[];
+    notes: string;
+    totalFiles: number;
+    publishedAt: string;
+    files: {
         id: string;
         createdAt: string;
         updatedAt: string;
@@ -56,7 +56,7 @@ export class Release {
         secured: boolean;
         releaseId: string;
     }[];
-    published!: boolean;
-    productId!: string;
-    tenantId!: string;
+    published: boolean;
+    productId: string;
+    tenantId: string;
 };
