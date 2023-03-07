@@ -206,7 +206,7 @@ LEXACTIVATOR_API int LA_CC SetLicenseUserCredential(CSTRTYPE email, CSTRTYPE pas
 
     PURPOSE: Sets server sync callback function.
 
-    This function must be called just before the IsLicenseGenuine().
+    In case this function is used it should be called just before the IsLicenseGenuine().
 
     Whenever the server sync occurs in a separate thread, and server returns the response,
     license callback function gets invoked with the following status codes:
