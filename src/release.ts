@@ -1,6 +1,5 @@
 /**
- * Represents a release structure.
- * @type Release
+ * @class Release
  * @property {boolean} private - Indicates whether the release is private or not.
  * @property {string} id - The unique identifier for the release.
  * @property {string} createdAt - The timestamp when the release was created.
@@ -30,7 +29,7 @@
  * @property {string} tenantId - The unique identifier for the tenant that this release is associated with.
  */
  
-export type Release = {
+export class Release {
     'private': boolean;
     id: string;
     createdAt: string;
