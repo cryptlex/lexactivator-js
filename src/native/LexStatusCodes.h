@@ -68,7 +68,21 @@ enum LexStatusCodes
 
         MESSAGE: No new update is available for the product. The current version is latest.
     */
-    LA_RELEASE_NO_UPDATE_AVAILABLE = 31,
+    LA_RELEASE_NO_UPDATE_AVAILABLE = 31, //deprecated
+
+    /*
+        CODE: LA_RELEASE_UPDATE_NOT_AVAILABLE
+
+        MESSAGE: No new update is available for the product. The current version is latest.
+    */
+    LA_RELEASE_UPDATE_NOT_AVAILABLE = 31,
+
+    /*
+        CODE: LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED
+
+        MESSAGE: The update available is not allowed for this license.
+    */
+    LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED = 32,
 
     /*
         CODE: LA_E_FILE_PATH
@@ -385,6 +399,28 @@ enum LexStatusCodes
         activation has been disallowed in the container.
     */
     LA_E_CONTAINER = 83,
+
+    /*
+        CODE: LA_E_RELEASE_VERSION
+     
+        MESSAGE: Invalid release version. Make sure the release version
+        uses the following formats: x.x, x.x.x, x.x.x.x (where x is a number).
+    */
+    LA_E_RELEASE_VERSION = 84,
+
+    /*
+        CODE: LA_E_RELEASE_PLATFORM
+     
+        MESSAGE: Release platform not set.
+    */
+    LA_E_RELEASE_PLATFORM = 85,
+
+    /*
+        CODE: LA_E_RELEASE_CHANNEL
+     
+        MESSAGE: Release channel not set.
+    */
+    LA_E_RELEASE_CHANNEL = 86,
 
     /*
         CODE: LA_E_RATE_LIMIT
