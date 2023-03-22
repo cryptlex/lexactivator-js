@@ -755,6 +755,44 @@ Napi::Value getLicenseUserCompany(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetLicenseUserCompany(arg0, length));
 }
 
+Napi::Value getLicenseOrganizationName(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseOrganizationName(arg0, length));
+}
+
+Napi::Value getLicenseOrganizationAddress(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseOrganizationAddressInternal(arg0, length));
+}
+
 Napi::Value getLicenseUserMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1326,6 +1364,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetLicenseUserEmail"] = Napi::Function::New(env, getLicenseUserEmail);
     exports["GetLicenseUserName"] = Napi::Function::New(env, getLicenseUserName);
     exports["GetLicenseUserCompany"] = Napi::Function::New(env, getLicenseUserCompany);
+    exports["GetLicenseOrganizationName"] = Napi::Function::New(env, getLicenseOrganizationName);
+    exports["GetLicenseOrganizationAddress"] = Napi::Function::New(env, getLicenseOrganizationAddress);
     exports["GetLicenseUserMetadata"] = Napi::Function::New(env, getLicenseUserMetadata);
     exports["GetLicenseType"] = Napi::Function::New(env, getLicenseType);
     exports["GetActivationMetadata"] = Napi::Function::New(env, getActivationMetadata);
