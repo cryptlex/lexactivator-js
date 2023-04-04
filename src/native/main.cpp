@@ -1021,7 +1021,7 @@ Napi::Value checkReleaseUpdate(const Napi::CallbackInfo &info)
     }
     ReleaseUpdateCallbacks[STRING(licenseKey)] = new ReleaseUpdateCallbackWrapper(callback);
     ReleaseUpdateCallbacks[STRING(licenseKey)]->SuppressDestruct();
-    return Napi::Number::New(env, CheckReleaseUpdate(releaseUpdateCallback, arg1));
+    return Napi::Number::New(env, CheckReleaseUpdateInternal(releaseUpdateCallback, arg1));
 }
 
 Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)

@@ -747,7 +747,7 @@ LEXACTIVATOR_API int LA_CC GetLocalTrialExpiryDate(uint32_t *trialExpiryDate);
 LEXACTIVATOR_API int LA_CC GetLibraryVersion(STRTYPE libraryVersion, uint32_t length);
 
 /*
-    FUNCTION: CheckReleaseUpdate()
+    FUNCTION: CheckReleaseUpdateInternal()
 
     PURPOSE: Checks whether a new release is available for the product.
 
@@ -773,7 +773,7 @@ LEXACTIVATOR_API int LA_CC GetLibraryVersion(STRTYPE libraryVersion, uint32_t le
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_RELEASE_VERSION_FORMAT, LA_E_RELEASE_VERSION,
     LA_E_RELEASE_PLATFORM, LA_E_RELEASE_CHANNEL
 */
-LEXACTIVATOR_API int LA_CC CheckReleaseUpdate(ReleaseCallbackType releaseUpdateCallback, uint32_t releaseFlag);
+LEXACTIVATOR_API int LA_CC CheckReleaseUpdateInternal(ReleaseCallbackType releaseUpdateCallback, uint32_t releaseFlags);
 
 /*
     FUNCTION: CheckForReleaseUpdate()
