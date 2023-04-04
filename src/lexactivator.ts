@@ -98,7 +98,7 @@ export type LicenseType = 'node-locked' | 'hosted-floating';
  * @param {Release} release - release object.
  * @returns {void}
  */
-export type ReleaseUpdateCallback = (status: number, release: Release | {}) => void;
+export type ReleaseUpdateCallback = (status: number, release: Release | null) => void;
 
 /**
  * @class LexActivator
@@ -713,7 +713,7 @@ export class LexActivator {
 	 * @return {OrganizationAddress} the license organization address
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseOrganizationAddress(): OrganizationAddress | {} {
+	static GetLicenseOrganizationAddress(): OrganizationAddress | null {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseOrganizationAddress(array, array.length)
 		if (status != LexStatusCodes.LA_OK) {
@@ -725,7 +725,7 @@ export class LexActivator {
 		} catch {
 			addressObject = {};
 		}
-		let organizationAddress = {};
+		let organizationAddress = null;
 		if (Object.keys(addressObject).length > 0) {
 			organizationAddress = new OrganizationAddress(addressObject.addressLine1, addressObject.addressLine2, addressObject.city, addressObject.state, addressObject.country, addressObject.postalCode);
 			return organizationAddress;
@@ -925,7 +925,7 @@ export class LexActivator {
 	 */
 	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
 		const internalReleaseUpdateCallback = function (status: number, releaseJson: string ): void {
-			let release: Release | {} = {};
+			let release: Release | null = null;
 			if (releaseJson) {
 				try {
 					release = JSON.parse(releaseJson);
