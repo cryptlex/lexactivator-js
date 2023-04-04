@@ -635,7 +635,7 @@ LEXACTIVATOR_API int LA_CC GetLicenseOrganizationName(STRTYPE organizationName, 
    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
    LA_E_BUFFER_SIZE
 */
-LEXACTIVATOR_API int LA_CC GetLicenseOrganizationAddressInternal(STRTYPE organisationAddress, uint32_t length);
+LEXACTIVATOR_API int LA_CC GetLicenseOrganizationAddressInternal(STRTYPE organizationAddress, uint32_t length);
 
 /*
     FUNCTION: GetLicenseType()

@@ -61,7 +61,7 @@ export class OrganizationAddress {
     state: string;
     country: string;
     postalCode: string;
-	constructor(addressLine1: string = '', addressLine2: string = '', city: string = '', state: string = '', country: string = '', postalCode: string =''){
+	constructor(addressLine1: string = '', addressLine2: string = '', city: string = '', state: string = '', country: string = '', postalCode: string = ''){
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
 		this.city = city;
@@ -713,7 +713,7 @@ export class LexActivator {
 	 * @return {OrganizationAddress} the license organization address
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseOrganizationAddress(): OrganizationAddress {
+	static GetLicenseOrganizationAddress(): OrganizationAddress | {} {
 		const array = new Uint8Array(1024);
 		const status = LexActivatorNative.GetLicenseOrganizationAddress(array, array.length)
 		if (status != LexStatusCodes.LA_OK) {
@@ -725,7 +725,11 @@ export class LexActivator {
 		} catch {
 			addressObject = {};
 		}
-		const organizationAddress = new OrganizationAddress(addressObject.addressLine1, addressObject.addressLine2, addressObject.city, addressObject.state, addressObject.country, addressObject.postalCode);
+		let organizationAddress = {};
+		if (Object.keys(addressObject).length > 0) {
+			organizationAddress = new OrganizationAddress(addressObject.addressLine1, addressObject.addressLine2, addressObject.city, addressObject.state, addressObject.country, addressObject.postalCode);
+			return organizationAddress;
+		}
 		return organizationAddress;
 	}
 
