@@ -612,6 +612,32 @@ LEXACTIVATOR_API int LA_CC GetLicenseUserCompany(STRTYPE company, uint32_t lengt
 LEXACTIVATOR_API int LA_CC GetLicenseUserMetadata(CSTRTYPE key, STRTYPE value, uint32_t length);
 
 /*
+   FUNCTION: GetLicenseOrganizationName()
+
+   PURPOSE: Gets the organization name associated with the license.
+
+   PARAMETERS:
+   * organizationName - pointer to the string that receives the value
+
+   RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
+   LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseOrganizationName(STRTYPE organizationName, uint32_t length);
+
+/*
+   FUNCTION: GetLicenseOrganizationAddressInternal()
+
+   PURPOSE: Gets the organization address json associated with the license.
+
+   PARAMETERS:
+   * organizationAddress - pointer to the string that receives the value
+
+   RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
+   LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseOrganizationAddressInternal(STRTYPE organizationAddress, uint32_t length);
+
+/*
     FUNCTION: GetLicenseType()
 
     PURPOSE: Gets the license type (node-locked or hosted-floating).

@@ -44,6 +44,33 @@ export class ProductVersionFeatureFlag {
 	}
 }
 
+/**
+ * @class OrganizationAddress
+ * @constructor
+ * @property {string} addressLine1 
+ * @property {string} addressLine2
+ * @property {string} city
+ * @property {string} state
+ * @property {string} country
+ * @property {string} postalCode
+ */
+export class OrganizationAddress {
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: string;
+	constructor(addressLine1: string = '', addressLine2: string = '', city: string = '', state: string = '', country: string = '', postalCode: string = ''){
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.postalCode = postalCode;
+	}
+};
+
 export type ActivationModes = 'online' | 'offline';
 
 /**
@@ -71,7 +98,7 @@ export type LicenseType = 'node-locked' | 'hosted-floating';
  * @param {Release} release - release object.
  * @returns {void}
  */
-export type ReleaseUpdateCallback = (status: number, release: Release | {}) => void;
+export type ReleaseUpdateCallback = (status: number, release: Release | null) => void;
 
 /**
  * @class LexActivator
@@ -666,6 +693,47 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the organization name associated with the license.
+	 * 
+	 * @return {string} the license organization name
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseOrganizationName(): string {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetLicenseOrganizationName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the organization address associated with the license.
+	 * 
+	 * @return {OrganizationAddress} the license organization address
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseOrganizationAddress(): OrganizationAddress | null {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetLicenseOrganizationAddress(array, array.length)
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		let addressObject;
+		try {
+			addressObject = JSON.parse(arrayToString(array));
+		} catch {
+			addressObject = {};
+		}
+		let organizationAddress = null;
+		if (Object.keys(addressObject).length > 0) {
+			organizationAddress = new OrganizationAddress(addressObject.addressLine1, addressObject.addressLine2, addressObject.city, addressObject.state, addressObject.country, addressObject.postalCode);
+			return organizationAddress;
+		}
+		return organizationAddress;
+	}
+
+	/**
 	 * Gets the license type.
 	 *
 	 * @return {LicenseType} the license type: node-locked or hosted-floating
@@ -857,7 +925,7 @@ export class LexActivator {
 	 */
 	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
 		const internalReleaseUpdateCallback = function (status: number, releaseJson: string ): void {
-			let release: Release | {} = {};
+			let release: Release | null = null;
 			if (releaseJson) {
 				try {
 					release = JSON.parse(releaseJson);
