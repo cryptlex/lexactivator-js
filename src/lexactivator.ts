@@ -96,9 +96,10 @@ export type LicenseType = 'node-locked' | 'hosted-floating';
  *
  * @param {number} status - status of an update.
  * @param {Release} release - release object.
+ * @param {any} userData - user defined data.
  * @returns {void}
  */
-export type ReleaseUpdateCallback = (status: number, release: Release | null) => void;
+export type ReleaseUpdateCallback = (status: number, release: Release | null, userData: any) => void;
 
 /**
  * @class LexActivator
@@ -914,24 +915,30 @@ export class LexActivator {
 	 * an update is allowed or not. Expected values are LA_RELEASE_UPDATE_AVAILABLE,
 	 * LA_RELEASE_UPDATE_NOT_AVAILABLE, LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED.
 	 * 
-	 * release- object of the latest available release, the object passed depends on the 
+	 * release - object of the latest available release, the object passed depends on the 
 	 * flag LA_RELEASES_ALLOWED or LA_RELEASES_ALL provided to the CheckReleaseUpdate().
 	 * 
-	 * @param {function(number, Release)} releaseUpdateCallback callback function.
+	 * userData - data that is passed to the callback function when it is registered
+	 * using the CheckReleaseUpdate function. This parameter is optional and can be null if no user data
+	 * is passed to the CheckReleaseUpdate function.
+	 * 
+	 * @param {function(number, Release, any)} releaseUpdateCallback callback function.
 	 * @param {ReleaseFlags} flag if an update only related to the allowed release is required, 
 	 * then use LA_RELEASES_ALLOWED. Otherwise, if an update for all the releases is
 	 * required, then use LA_RELEASES_ALL.
+	 * @param {any} userData data that can be passed to the callback function. This parameter 
+	 * has to be null if no user data needs to be passed to the callback.
 	 * @throws {LexActivatorException}
 	 */
-	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags]): void {
-		const internalReleaseUpdateCallback = function (status: number, releaseJson: string ): void {
+	static CheckReleaseUpdate(releaseUpdateCallback: ReleaseUpdateCallback, flag: typeof ReleaseFlags[keyof typeof ReleaseFlags], userData: any): void {
+		const internalReleaseUpdateCallback = function (status: number, releaseJson: string, _userData: any): void {
 			let release: Release | null = null;
 			if (releaseJson) {
 				try {
 					release = JSON.parse(releaseJson);
 				} catch {}
 			}
-			releaseUpdateCallback(status, release);
+			releaseUpdateCallback(status, release, userData);
 		};
 		const status = LexActivatorNative.CheckReleaseUpdate(internalReleaseUpdateCallback, flag);
 		if (LexStatusCodes.LA_OK != status) {

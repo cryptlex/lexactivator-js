@@ -57,7 +57,7 @@ void softwareReleaseUpdateCallback(uint32_t status)
     ReleaseCallbacks[STRING(licenseKey)]->Queue();
 }
 
-void releaseUpdateCallback(uint32_t status, const char *releaseJson)
+void releaseUpdateCallback(uint32_t status, const char *releaseJson, void* userData)
 {   
     CHARTYPE licenseKey[256];
     if (GetLicenseKey(licenseKey, 256) != LA_OK)
@@ -66,6 +66,7 @@ void releaseUpdateCallback(uint32_t status, const char *releaseJson)
     }
     ReleaseUpdateCallbacks[STRING(licenseKey)]->status = status;
     ReleaseUpdateCallbacks[STRING(licenseKey)]->releaseJson.assign(releaseJson);
+    ReleaseUpdateCallbacks[STRING(licenseKey)]->userData = NULL;
     ReleaseUpdateCallbacks[STRING(licenseKey)]->Queue();
 }
 
@@ -1059,7 +1060,7 @@ Napi::Value checkReleaseUpdate(const Napi::CallbackInfo &info)
     }
     ReleaseUpdateCallbacks[STRING(licenseKey)] = new ReleaseUpdateCallbackWrapper(callback);
     ReleaseUpdateCallbacks[STRING(licenseKey)]->SuppressDestruct();
-    return Napi::Number::New(env, CheckReleaseUpdateInternal(releaseUpdateCallback, arg1));
+    return Napi::Number::New(env, CheckReleaseUpdateInternal(releaseUpdateCallback, arg1, NULL));
 }
 
 Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
