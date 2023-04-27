@@ -32,6 +32,7 @@ public:
     }
     uint32_t status;
     std::string releaseJson;
+    void* userData;
 
 private:
     void Execute()
@@ -41,6 +42,6 @@ private:
     void OnOK()
     {
         Napi::HandleScope scope(Env());
-        Callback().Call({Napi::Number::New(Env(), status), Napi::String::New(Env(), releaseJson)});
+        Callback().Call({Napi::Number::New(Env(), status), Napi::String::New(Env(), releaseJson), Napi::External<void>::New(Env(), userData)});
     }
 };
