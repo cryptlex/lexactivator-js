@@ -9,10 +9,12 @@ using namespace ::std;
 #ifdef _WIN32
 #include <codecvt>
 typedef wchar_t CHARTYPE;
+typedef const wchar_t* CONST_CHARTYPE;
 typedef wstring STRING;
 #else
 typedef char CHARTYPE;
 typedef string STRING;
+typedef const char* CONST_CHARTYPE;
 #endif
 
 const char *MISSING_ARGUMENTS = "Wrong number of arguments";
@@ -57,7 +59,7 @@ void softwareReleaseUpdateCallback(uint32_t status)
     ReleaseCallbacks[STRING(licenseKey)]->Queue();
 }
 
-void releaseUpdateCallback(uint32_t status, const char *releaseJson, void* userData)
+void releaseUpdateCallback(uint32_t status, CONST_CHARTYPE releaseJson, void* userData)
 {   
     CHARTYPE licenseKey[256];
     if (GetLicenseKey(licenseKey, 256) != LA_OK)
