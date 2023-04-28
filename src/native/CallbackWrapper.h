@@ -4,6 +4,13 @@
 #include "napi.h"
 #include <string>
 
+#ifdef _WIN32
+typedef std::wstring STRING;
+#else
+typedef std::string STRING;
+#endif
+
+
 class CallbackWrapper : public Napi::AsyncWorker
 {
 public:
@@ -31,7 +38,7 @@ public:
     {
     }
     uint32_t status;
-    std::string releaseJson;
+    STRING releaseJson;
     void* userData;
 
 private:
