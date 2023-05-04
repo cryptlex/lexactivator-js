@@ -10,7 +10,6 @@ typedef std::wstring STRING;
 typedef std::string STRING;
 #endif
 
-
 class CallbackWrapper : public Napi::AsyncWorker
 {
 public:
@@ -49,6 +48,13 @@ private:
     void OnOK()
     {
         Napi::HandleScope scope(Env());
+#ifdef _WIN32
+        // convert STRING to utf16 encoded string
+        const wchar_t *releaseJsonPtr = releaseJson.c_str();
+        const char16_t *utf16StringPtr = reinterpret_cast<const char16_t *>(releaseJsonPtr);
+        Callback().Call({Napi::Number::New(Env(), status), Napi::String::New(Env(), utf16StringPtr), Napi::External<void>::New(Env(), userData)});
+#else
         Callback().Call({Napi::Number::New(Env(), status), Napi::String::New(Env(), releaseJson), Napi::External<void>::New(Env(), userData)});
+#endif
     }
 };
