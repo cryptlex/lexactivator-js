@@ -1,9 +1,10 @@
-const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags } = require('@cryptlex/lexactivator');
+const { LexActivator, LexStatusCodes, LexActivatorException, PermissionFlags, ReleaseFlags } = require('@cryptlex/lexactivator');
 
 function init() {
-	// LexActivator.SetProductFile("ABSOLUTE_PATH_OF_PRODUCT.DAT_FILE");
 	LexActivator.SetProductData('PASTE_CONTENT_OF_PRODUCT.DAT_FILE');
 	LexActivator.SetProductId('PASTE_PRODUCT_ID', PermissionFlags.LA_USER);
+	LexActivator.SetReleasePlatform('RELEASE_PLATFORM'); // set the actual platform of the release e.g windows
+	LexActivator.SetReleaseChannel('RELEASE_CHANNEL'); // set the actual channel of the release e.g stable
 	LexActivator.SetReleaseVersion('1.0.0');  // Set this to the release version of your app
 }
 
@@ -46,6 +47,28 @@ function licenseCallback(status) {
 	}
 }
 
+function softwareReleaseUpdateCallback(status, release, userData) {
+	try {
+		switch (status) {
+			case LexStatusCodes.LA_RELEASE_UPDATE_AVAILABLE:
+				console.log('Release update available!');
+				console.log("Release:",  release.notes);
+				break;
+			case LexStatusCodes.LA_RELEASE_UPDATE_AVAILABLE_NOT_ALLOWED:
+				console.log('Release update available but not allowed!');
+				console.log("Release:",  release.notes);
+				break;
+			case LexStatusCodes.LA_RELEASE_UPDATE_NOT_AVAILABLE:
+				console.log('Release update not available!');
+				break;
+			default:
+				throw new LexActivatorException(status);
+		}
+	} catch (error) {
+		console.log(error.code, error.message);
+	}
+}
+
 function main() {
 	try {
 		init();
@@ -63,9 +86,7 @@ function main() {
 			console.log('License user name: %s\n', userName);
 
 			// console.log('Checking for software release update...');
-			// LexActivator.CheckForReleaseUpdate('windows', '1.0.0', 'stable', function (status) {
-			// 	console.log('Release status:', status);
-			// });
+			// LexActivator.CheckReleaseUpdate(softwareReleaseUpdateCallback, ReleaseFlags.LA_RELEASES_ALL, null);
 		} else if (LexStatusCodes.LA_EXPIRED == status) {
 			console.log('License is genuinely activated but has expired!');
 		} else if (LexStatusCodes.LA_SUSPENDED == status) {
