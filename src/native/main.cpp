@@ -821,6 +821,25 @@ Napi::Value getLicenseUserMetadata(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetLicenseUserMetadata(arg0.c_str(), arg1, length));
 }
 
+Napi::Value getUserLicenses(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetUserLicensesInternal(arg0, length));
+}
+
 Napi::Value getLicenseType(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1109,6 +1128,29 @@ Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, CheckForReleaseUpdate(arg0.c_str(), arg1.c_str(), arg2.c_str(), softwareReleaseUpdateCallback));
 }
 
+Napi::Value authenticateUser(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 2)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[1].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    STRING arg1 = toEncodedString(info[1].As<Napi::String>());
+    return Napi::Number::New(env, AuthenticateUser(arg0.c_str(), arg1.c_str()));
+}
+
 Napi::Value activateLicense(const Napi::CallbackInfo &info)
 {
     return Napi::Number::New(info.Env(), ActivateLicense());
@@ -1382,6 +1424,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetLibraryVersion"] = Napi::Function::New(env, getLibraryVersion);
     exports["CheckReleaseUpdate"] = Napi::Function::New(env, checkReleaseUpdate);
     exports["CheckForReleaseUpdate"] = Napi::Function::New(env, checkForReleaseUpdate);
+    exports["AuthenticateUser"] = Napi::Function::New(env, authenticateUser);
+    exports["GetUserLicenses"] = Napi::Function::New(env, getUserLicenses);
     exports["ActivateLicense"] = Napi::Function::New(env, activateLicense);
     exports["ActivateLicenseOffline"] = Napi::Function::New(env, activateLicenseOffline);
     exports["GenerateOfflineActivationRequest"] = Napi::Function::New(env, generateOfflineActivationRequest);

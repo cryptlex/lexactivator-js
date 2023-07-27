@@ -617,7 +617,8 @@ LEXACTIVATOR_API int LA_CC GetLicenseUserMetadata(CSTRTYPE key, STRTYPE value, u
    PURPOSE: Gets the organization name associated with the license.
 
    PARAMETERS:
-   * organizationName - pointer to the string that receives the value
+   * organizationName - pointer to a buffer that receives the value of the string.
+   * length - size of the buffer pointed to by the organizationName parameter
 
    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
    LA_E_BUFFER_SIZE
@@ -630,12 +631,30 @@ LEXACTIVATOR_API int LA_CC GetLicenseOrganizationName(STRTYPE organizationName, 
    PURPOSE: Gets the organization address json associated with the license.
 
    PARAMETERS:
-   * organizationAddress - pointer to the string that receives the value
+   * organizationAddress - pointer to a buffer that receives the value of the string.
+   * length - size of the buffer pointed to by the organizationAddress parameter
 
    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
    LA_E_BUFFER_SIZE
 */
 LEXACTIVATOR_API int LA_CC GetLicenseOrganizationAddressInternal(STRTYPE organizationAddress, uint32_t length);
+
+/*
+    FUNCTION: GetUserLicenses()
+
+    PURPOSE: Gets the user licenses for the product. This function sends a network request to 
+    Cryptlex servers to get the licenses. 
+    
+    Make sure AuthenticateUser() function is called before calling this function.
+
+    PARAMETERS: 
+    * userLicenses - pointer to a buffer that receives the value of the string.
+    * length - size of the buffer pointed to by the userLicenses parameter
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_INET, LA_E_SERVER, LA_E_RATE_LIMIT
+    LA_E_USER_NOT_AUTHENTICATED, LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetUserLicensesInternal(STRTYPE userLicenses, uint32_t length);
 
 /*
     FUNCTION: GetLicenseType()
@@ -822,6 +841,16 @@ LEXACTIVATOR_API int LA_CC CheckReleaseUpdateInternal(ReleaseCallbackType releas
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_RELEASE_VERSION_FORMAT
 */
 LEXACTIVATOR_API int LA_CC CheckForReleaseUpdate(CSTRTYPE platform, CSTRTYPE version, CSTRTYPE channel, CallbackType releaseUpdateCallback);
+
+/*
+    FUNCTION: AuthenticateUser()
+
+    PURPOSE: It sends the request to the Cryptlex servers to authenticate the user.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_INET, LA_E_SERVER, LA_E_RATE_LIMIT
+    LA_E_AUTHENTICATION_FAILED
+*/
+LEXACTIVATOR_API int LA_CC AuthenticateUser(CSTRTYPE email, CSTRTYPE password);
 
 /*
     FUNCTION: ActivateLicense()

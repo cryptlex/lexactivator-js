@@ -423,6 +423,13 @@ enum LexStatusCodes
     LA_E_RELEASE_CHANNEL = 86,
 
     /*
+        CODE: LA_E_USER_NOT_AUTHENTICATED
+
+        MESSAGE: Permission denied.
+    */
+    LA_E_USER_NOT_AUTHENTICATED = 87,
+
+    /*
         CODE: LA_E_RATE_LIMIT
 
         MESSAGE: Rate limit for API has reached, try again later.
