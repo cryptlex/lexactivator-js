@@ -642,8 +642,9 @@ LEXACTIVATOR_API int LA_CC GetLicenseOrganizationAddressInternal(STRTYPE organiz
 /*
     FUNCTION: GetUserLicenses()
 
-    PURPOSE: Gets the user licenses for the product. This function sends a network request to 
-    Cryptlex servers to get the licenses. 
+    PURPOSE: Gets the user licenses for the product. 
+    
+    This function sends a network request to Cryptlex servers to get the licenses. 
     
     Make sure AuthenticateUser() function is called before calling this function.
 
