@@ -299,7 +299,7 @@ export const LexStatusCodes = {
 	LA_E_RELEASE_CHANNEL: 86,
 
 	/**
-	 * Permission denied.
+	 * The user is not authenticated.
 	 */
 	LA_E_USER_NOT_AUTHENTICATED: 87,
 

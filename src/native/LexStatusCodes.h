@@ -425,7 +425,7 @@ enum LexStatusCodes
     /*
         CODE: LA_E_USER_NOT_AUTHENTICATED
 
-        MESSAGE: Permission denied.
+        MESSAGE: The user is not authenticated.
     */
     LA_E_USER_NOT_AUTHENTICATED = 87,
 

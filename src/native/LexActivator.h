@@ -848,6 +848,10 @@ LEXACTIVATOR_API int LA_CC CheckForReleaseUpdate(CSTRTYPE platform, CSTRTYPE ver
 
     PURPOSE: It sends the request to the Cryptlex servers to authenticate the user.
 
+    PARAMETERS:
+    * email - user email address.
+    * password - user password.
+
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_INET, LA_E_SERVER, LA_E_RATE_LIMIT
     LA_E_AUTHENTICATION_FAILED
 */

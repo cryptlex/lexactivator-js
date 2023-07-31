@@ -205,7 +205,7 @@ export class LexActivatorException extends Error {
 			break;
 
 		case LexStatusCodes.LA_E_USER_NOT_AUTHENTICATED:
-			message = 'Permission Denied.';
+			message = 'The user is not authenticated.';
 			break;
 
 		case LexStatusCodes.LA_E_RATE_LIMIT:
