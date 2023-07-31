@@ -71,6 +71,13 @@ export class OrganizationAddress {
 	}
 };
 
+export class UserLicense {
+	allowedActivations: number;
+	allowedDeactivations: number;
+	key: string;
+	type: string;
+}
+
 export type ActivationModes = 'online' | 'offline';
 
 /**
@@ -773,6 +780,31 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the user licenses for the product.
+	 * 
+	 * This function sends a network request to Cryptlex servers to get the licenses.
+	 * 
+	 * Make sure AuthenticateUser() function is called before calling this function.
+	 * 
+	 * @return {UserLicense[]} array of user licenses
+	 * @throws {LexActivatorException}
+	 */
+	static GetUserLicenses(): UserLicense[] {
+		const array = new Uint8Array(4096);
+		const status = LexActivatorNative.GetUserLicenses(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		let userLicenses: UserLicense[];
+		try {
+			userLicenses = JSON.parse(arrayToString(array));
+		} catch {
+			userLicenses = [];
+		}
+		return userLicenses;
+	}
+
+	/**
 	 * Gets the license type.
 	 *
 	 * @return {LicenseType} the license type: node-locked or hosted-floating
@@ -1003,6 +1035,23 @@ export class LexActivator {
 		}
 	}
 
+	/**
+	 * It sends the request to the Cryptlex servers to authenticate the user.
+	 * 
+	 * @param {string} email user email address
+	 * @param {string} password user password
+	 * @return {number} LA_OK
+	 * @throws {LexActivatorException}
+	 */
+	static AuthenticateUser(email: string, password: string): number {
+		const status = LexActivatorNative.AuthenticateUser(email, password);
+		if (status == LexStatusCodes.LA_OK) {
+			return LexStatusCodes.LA_OK;
+		} else {
+			throw new LexActivatorException(status);
+		}
+	}
+	
 	/**
 	 * Activates the license by contacting the Cryptlex servers. It validates the
 	 * key and returns with encrypted and digitally signed token which it stores and

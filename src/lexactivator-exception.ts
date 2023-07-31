@@ -204,6 +204,10 @@ export class LexActivatorException extends Error {
 			message = 'Release channel not set.';
 			break;
 
+		case LexStatusCodes.LA_E_USER_NOT_AUTHENTICATED:
+			message = 'The user is not authenticated.';
+			break;
+
 		case LexStatusCodes.LA_E_RATE_LIMIT:
 			message = 'Rate limit for API has reached, try again later.';
 			break;
