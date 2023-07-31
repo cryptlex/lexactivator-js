@@ -78,8 +78,6 @@ export class UserLicense {
 	type: string;
 }
 
-export type UserLicenses = UserLicense[];
-
 export type ActivationModes = 'online' | 'offline';
 
 /**
@@ -750,16 +748,16 @@ export class LexActivator {
 	 * 
 	 * Make sure AuthenticateUser() function is called before calling this function.
 	 * 
-	 * @return {UserLicenses} array of user licenses
+	 * @return {UserLicense[]} array of user licenses
 	 * @throws {LexActivatorException}
 	 */
-	static GetUserLicenses(): UserLicenses {
+	static GetUserLicenses(): UserLicense[] {
 		const array = new Uint8Array(4096);
 		const status = LexActivatorNative.GetUserLicenses(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		let userLicenses: UserLicenses;
+		let userLicenses: UserLicense[];
 		try {
 			userLicenses = JSON.parse(arrayToString(array));
 		} catch {
