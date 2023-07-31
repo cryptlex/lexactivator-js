@@ -519,6 +519,30 @@ LEXACTIVATOR_API int LA_CC GetLicenseAllowedActivations(uint32_t *allowedActivat
 LEXACTIVATOR_API int LA_CC GetLicenseTotalActivations(uint32_t *totalActivations);
 
 /*
+    FUNCTION: GetLicenseCreationDate()
+
+    PURPOSE: Gets the license creation date timestamp.
+
+    PARAMETERS:
+    * creationDate - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseCreationDate(uint32_t *creationDate);
+
+/*
+    FUNCTION: GetLicenseActivationDate()
+
+    PURPOSE: Gets the activation creation date timestamp.
+
+    PARAMETERS:
+    * activationDate - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseActivationDate(uint32_t *activationDate);
+
+/*
     FUNCTION: GetLicenseExpiryDate()
 
     PURPOSE: Gets the license expiry date timestamp.

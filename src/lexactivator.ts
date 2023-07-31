@@ -580,6 +580,44 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the license creation date timestamp.
+	 * 
+	 * @return {number} the timestamp
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseCreationDate(): number {
+		const creationDate = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseCreationDate(creationDate);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return creationDate[0] ? creationDate[0] : 0;
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Gets the activation creation date timestamp.
+	 * 
+	 * @return {number} the timestamp
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseActivationDate(): number {
+		const activationDate = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseActivationDate(activationDate);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return activationDate[0] ? activationDate[0] : 0;
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Gets the license expiry date timestamp.
 	 *
 	 * @return {number} the timestamp
