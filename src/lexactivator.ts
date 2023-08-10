@@ -436,6 +436,19 @@ export class LexActivator {
 	}
 
 	/**
+	 * Sets the two-factor authentication code for the user authentication.
+	 * 
+	 * @param {string} twoFactorAuthenticationCode the 2FA code
+	 * @throws {LexActivatorException}
+	 */
+	static SetTwoFactorAuthenticationCode(twoFactorAuthenticationCode: string): void {
+		const status = LexActivatorNative.SetTwoFactorAuthenticationCode(twoFactorAuthenticationCode);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Gets the product metadata as set in the dashboard.
 	 *
 	 * This is available for trial as well as license activations.

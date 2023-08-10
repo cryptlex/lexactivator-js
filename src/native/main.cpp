@@ -433,6 +433,23 @@ Napi::Value setCryptlexHost(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetCryptlexHost(arg0.c_str()));
 }
 
+Napi::Value setTwoFactorAuthenticationCode(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    return Napi::Number::New(env, SetTwoFactorAuthenticationCode(arg0.c_str()));
+}
+
 Napi::Value getProductMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1430,6 +1447,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetActivationLeaseDuration"] = Napi::Function::New(env, setActivationLeaseDuration);
     exports["SetNetworkProxy"] = Napi::Function::New(env, setNetworkProxy);
     exports["SetCryptlexHost"] = Napi::Function::New(env, setCryptlexHost);
+    exports["SetTwoFactorAuthenticationCode"] = Napi::Function::New(env, setTwoFactorAuthenticationCode);
     exports["GetProductMetadata"] = Napi::Function::New(env, getProductMetadata);
     exports["GetProductVersionName"] = Napi::Function::New(env, getProductVersionName);
     exports["GetProductVersionDisplayName"] = Napi::Function::New(env, getProductVersionDisplayName);

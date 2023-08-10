@@ -208,6 +208,14 @@ export class LexActivatorException extends Error {
 			message = 'The user is not authenticated.';
 			break;
 
+		case LexStatusCodes.LA_E_TWO_FACTOR_AUTHENTICATION_CODE_MISSING:
+			message = 'The two-factor authentication code for the user authentication is missing.';
+			break;
+
+		case LexStatusCodes.LA_E_TWO_FACTOR_AUTHENTICATION_CODE_INVALID:
+			message = 'The two-factor authentication code provided by the user is invalid.';
+			break;
+
 		case LexStatusCodes.LA_E_RATE_LIMIT:
 			message = 'Rate limit for API has reached, try again later.';
 			break;
@@ -218,6 +226,10 @@ export class LexActivatorException extends Error {
 
 		case LexStatusCodes.LA_E_CLIENT:
 			message = 'Client error.';
+			break;
+
+		case LexStatusCodes.LA_E_LOGIN_TEMPORARILY_LOCKED:
+			message = 'The user account has been temporarily locked for 5 mins due to 5 failed attempts.';
 			break;
 
 		default:
