@@ -393,6 +393,18 @@ LEXACTIVATOR_API int LA_CC SetNetworkProxy(CSTRTYPE proxy);
 LEXACTIVATOR_API int LA_CC SetCryptlexHost(CSTRTYPE host);
 
 /*
+    FUNCTION: SetTwoFactorAuthenticationCode()
+
+    PURPOSE: Sets the two-factor authentication code for the user authentication.
+
+    PARAMETERS:
+    * twoFactorAuthenticationCode - the 2FA code
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_TWO_FACTOR_AUTHENTICATION_CODE_INVALID
+*/
+LEXACTIVATOR_API int LA_CC SetTwoFactorAuthenticationCode(CSTRTYPE twoFactorAuthenticationCode);
+
+/*
     FUNCTION: GetProductMetadata()
 
     PURPOSE: Gets the product metadata as set in the dashboard.
@@ -877,7 +889,8 @@ LEXACTIVATOR_API int LA_CC CheckForReleaseUpdate(CSTRTYPE platform, CSTRTYPE ver
     * password - user password.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_INET, LA_E_SERVER, LA_E_RATE_LIMIT
-    LA_E_AUTHENTICATION_FAILED
+    LA_E_TWO_FACTOR_AUTHENTICATION_CODE_MISSING, LA_E_AUTHENTICATION_FAILED, 
+    LA_E_TWO_FACTOR_AUTHENTICATION_CODE_INVALID, LA_E_LOGIN_TEMPORARILY_LOCKED
 */
 LEXACTIVATOR_API int LA_CC AuthenticateUser(CSTRTYPE email, CSTRTYPE password);
 

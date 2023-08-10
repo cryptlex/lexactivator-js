@@ -304,6 +304,16 @@ export const LexStatusCodes = {
 	LA_E_USER_NOT_AUTHENTICATED: 87,
 
 	/**
+	 * The two-factor authentication code for the user authentication is missing.
+	 */
+	LA_E_TWO_FACTOR_AUTHENTICATION_CODE_MISSING: 88,
+
+	/**
+	 * The two-factor authentication code provided by the user is invalid.
+	 */
+	LA_E_TWO_FACTOR_AUTHENTICATION_CODE_INVALID: 89,
+
+	/**
 	 * Rate limit for API has reached, try again later.
 	 */
 	LA_E_RATE_LIMIT: 90,
@@ -316,5 +326,10 @@ export const LexStatusCodes = {
 	/**
 	 * Client error.
 	 */
-	LA_E_CLIENT: 92
+	LA_E_CLIENT: 92,
+
+	/**
+	 * The user account has been temporarily locked for 5 mins due to 5 failed attempts.
+	 */
+	LA_E_LOGIN_TEMPORARILY_LOCKED: 100
 };
