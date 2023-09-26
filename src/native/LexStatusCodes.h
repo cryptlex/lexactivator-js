@@ -472,7 +472,7 @@ enum LexStatusCodes
     LA_E_LOGIN_TEMPORARILY_LOCKED = 100,
 
     /*
-        CODE: LA_E_ID_TOKEN
+        CODE: LA_E_AUTHENTICATION_ID_TOKEN
 
         MESSAGE: Invalid authentication ID token.
     */
