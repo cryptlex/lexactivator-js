@@ -191,6 +191,27 @@ export class LexActivator {
 	}
 
 	/**
+	 * Enables network logs.
+	 * 
+	 * This function should be used for network testing only in case of network errors.
+     * By default logging is disabled.
+	 * 
+	 * This function generates the lexactivator-logs.log file in the same directory
+     * where the application is running.
+	 * 
+	 * @param {boolean} flag true or false to enable or disable logging.
+	 * @throws {LexActivatorException}
+	 */
+
+	static SetDebugMode(flag: boolean): void {
+		const cFlag: number = flag ? 1 : 0;
+		const status = LexActivatorNative.SetDebugMode(cFlag);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * In case you don't want to use the LexActivator's advanced
 	 * device fingerprinting algorithm, this function can be used to set a custom
 	 * device fingerprint.
@@ -1198,6 +1219,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static IsLicenseGenuine(): number {
+		console.log("IsLicenseGenuine...");
 		const status = LexActivatorNative.IsLicenseGenuine();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1210,6 +1232,8 @@ export class LexActivator {
 				return LexStatusCodes.LA_GRACE_PERIOD_OVER;
 			case LexStatusCodes.LA_FAIL:
 				return LexStatusCodes.LA_FAIL;
+			case LexStatusCodes.LA_E_RELEASE_VERSION_NOT_ALLOWED:
+				return LexStatusCodes.LA_E_RELEASE_VERSION_NOT_ALLOWED;
 			default:
 				throw new LexActivatorException(status);
 		}
