@@ -331,5 +331,20 @@ export const LexStatusCodes = {
 	/**
 	 * The user account has been temporarily locked for 5 mins due to 5 failed attempts.
 	 */
-	LA_E_LOGIN_TEMPORARILY_LOCKED: 100
+	LA_E_LOGIN_TEMPORARILY_LOCKED: 100,
+
+	/**
+	 * Invalid authentication ID token.
+	 */
+	LA_E_AUTHENTICATION_ID_TOKEN: 101,
+
+	/**
+	 * OIDC SSO is not enabled.
+	 */
+	LA_E_OIDC_SSO_NOT_ENABLED: 102,
+
+	/**
+	 * The allowed users for this account has reached its limit.
+	 */
+	LA_E_USERS_LIMIT_REACHED: 103
 };

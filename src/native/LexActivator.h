@@ -895,6 +895,20 @@ LEXACTIVATOR_API int LA_CC CheckForReleaseUpdate(CSTRTYPE platform, CSTRTYPE ver
 LEXACTIVATOR_API int LA_CC AuthenticateUser(CSTRTYPE email, CSTRTYPE password);
 
 /*
+    FUNCTION: AuthenticateUserWithIdToken()
+
+    PURPOSE: Authenticates the user via OIDC Id token.
+
+    PARAMETER:
+    * idToken - The id token obtained from the OIDC provider.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_INET, LA_E_SERVER, LA_E_RATE_LIMIT, 
+    LA_E_AUTHENTICATION_FAILED, LA_E_LOGIN_TEMPORARILY_LOCKED, LA_E_AUTHENTICATION_ID_TOKEN,
+    LA_E_OIDC_SSO_NOT_ENABLED, LA_E_USERS_LIMIT_REACHED
+*/
+LEXACTIVATOR_API int LA_CC AuthenticateUserWithIdToken(CSTRTYPE idToken);
+
+/*
     FUNCTION: ActivateLicense()
 
     PURPOSE: Activates the license by contacting the Cryptlex servers. It

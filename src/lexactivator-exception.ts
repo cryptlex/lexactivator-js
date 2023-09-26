@@ -232,6 +232,18 @@ export class LexActivatorException extends Error {
 			message = 'The user account has been temporarily locked for 5 mins due to 5 failed attempts.';
 			break;
 
+		case LexStatusCodes.LA_E_AUTHENTICATION_ID_TOKEN:
+			message = 'Invalid authentication ID token.';
+			break;
+
+		case LexStatusCodes.LA_E_OIDC_SSO_NOT_ENABLED:
+			message = 'OIDC SSO is not enabled.';
+			break;
+
+		case LexStatusCodes.LA_E_USERS_LIMIT_REACHED:
+			message = 'The allowed users for this account has reached its limit.';
+			break;
+
 		default:
 			message = 'Unknown error!';
 		}
