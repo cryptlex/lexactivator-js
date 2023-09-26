@@ -1219,7 +1219,6 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static IsLicenseGenuine(): number {
-		console.log("IsLicenseGenuine...");
 		const status = LexActivatorNative.IsLicenseGenuine();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
@@ -1232,8 +1231,6 @@ export class LexActivator {
 				return LexStatusCodes.LA_GRACE_PERIOD_OVER;
 			case LexStatusCodes.LA_FAIL:
 				return LexStatusCodes.LA_FAIL;
-			case LexStatusCodes.LA_E_RELEASE_VERSION_NOT_ALLOWED:
-				return LexStatusCodes.LA_E_RELEASE_VERSION_NOT_ALLOWED;
 			default:
 				throw new LexActivatorException(status);
 		}
