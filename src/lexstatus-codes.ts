@@ -336,7 +336,7 @@ export const LexStatusCodes = {
 	/**
 	 * Invalid authentication ID token.
 	 */
-	LA_E_AUTHENTICATION_ID_TOKEN: 101,
+	LA_E_AUTHENTICATION_ID_TOKEN_INVALID: 101,
 
 	/**
 	 * OIDC SSO is not enabled.

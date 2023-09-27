@@ -232,7 +232,7 @@ export class LexActivatorException extends Error {
 			message = 'The user account has been temporarily locked for 5 mins due to 5 failed attempts.';
 			break;
 
-		case LexStatusCodes.LA_E_AUTHENTICATION_ID_TOKEN:
+		case LexStatusCodes.LA_E_AUTHENTICATION_ID_TOKEN_INVALID:
 			message = 'Invalid authentication ID token.';
 			break;
 
