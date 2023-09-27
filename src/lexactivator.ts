@@ -199,13 +199,12 @@ export class LexActivator {
 	 * This function generates the lexactivator-logs.log file in the same directory
      * where the application is running.
 	 * 
-	 * @param {boolean} flag true or false to enable or disable logging.
+	 * @param {number} flag 0 or 1 to disable or enable logging.
 	 * @throws {LexActivatorException}
 	 */
 
-	static SetDebugMode(flag: boolean): void {
-		const cFlag: number = flag ? 1 : 0;
-		const status = LexActivatorNative.SetDebugMode(cFlag);
+	static SetDebugMode(flag: number): void {
+		const status = LexActivatorNative.SetDebugMode(flag);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
