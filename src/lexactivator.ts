@@ -1064,6 +1064,22 @@ export class LexActivator {
 			throw new LexActivatorException(status);
 		}
 	}
+
+	/**
+	 * Authenticates the user via OIDC Id token.
+	 * 
+	 * @param {string} idToken The id token obtained from the OIDC provider.
+	 * @return {number} LA_OK
+	 * @throws {LexActivatorException}
+	 */
+	static AuthenticateUserWithIdToken(idToken: string): number {
+		const status = LexActivatorNative.AuthenticateUserWithIdToken(idToken);
+		if (status == LexStatusCodes.LA_OK) {
+			return LexStatusCodes.LA_OK;
+		} else {
+			throw new LexActivatorException(status);
+		}
+	}
 	
 	/**
 	 * Activates the license by contacting the Cryptlex servers. It validates the

@@ -1204,6 +1204,23 @@ Napi::Value authenticateUser(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, AuthenticateUser(arg0.c_str(), arg1.c_str()));
 }
 
+Napi::Value authenticateUserWithIdToken(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    return Napi::Number::New(env, AuthenticateUserWithIdToken(arg0.c_str()));
+}
+
 Napi::Value activateLicense(const Napi::CallbackInfo &info)
 {
     return Napi::Number::New(info.Env(), ActivateLicense());
@@ -1481,6 +1498,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["CheckReleaseUpdate"] = Napi::Function::New(env, checkReleaseUpdate);
     exports["CheckForReleaseUpdate"] = Napi::Function::New(env, checkForReleaseUpdate);
     exports["AuthenticateUser"] = Napi::Function::New(env, authenticateUser);
+    exports["AuthenticateUserWithIdToken"] = Napi::Function::New(env, authenticateUserWithIdToken);
     exports["GetUserLicenses"] = Napi::Function::New(env, getUserLicenses);
     exports["ActivateLicense"] = Napi::Function::New(env, activateLicense);
     exports["ActivateLicenseOffline"] = Napi::Function::New(env, activateLicenseOffline);
