@@ -154,6 +154,24 @@ LEXACTIVATOR_API int LA_CC SetProductId(CSTRTYPE productId, uint32_t flags);
 LEXACTIVATOR_API int LA_CC SetDataDirectory(CSTRTYPE directoryPath);
 
 /*
+    FUNCTION: SetDebugMode()
+
+    PURPOSE: Enables network logs.
+
+    This function should be used for network testing only in case of network errors.
+    By default logging is disabled.
+
+    This function generates the lexactivator-logs.log file in the same directory
+    where the application is running.
+
+    PARAMETERS :
+    *enable - 0 or 1 to disable or enable logging.
+
+    RETURN CODES : LA_OK
+*/
+LEXACTIVATOR_API int LA_CC SetDebugMode(uint32_t enable);
+
+/*
     FUNCTION: SetCustomDeviceFingerprint()
 
     PURPOSE: In case you don't want to use the LexActivator's advanced

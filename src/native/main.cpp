@@ -146,6 +146,23 @@ Napi::Value setDataDirectory(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, SetDataDirectory(arg0.c_str()));
 }
 
+Napi::Value setDebugMode(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, SetDebugMode(arg0));
+}
+
 Napi::Value setCustomDeviceFingerprint(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1448,6 +1465,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["SetProductFile"] = Napi::Function::New(env, setProductFile);
     exports["SetProductData"] = Napi::Function::New(env, setProductData);
     exports["SetDataDirectory"] = Napi::Function::New(env, setDataDirectory);
+    exports["SetDebugMode"] = Napi::Function::New(env, setDebugMode);
     exports["SetCustomDeviceFingerprint"] = Napi::Function::New(env, setCustomDeviceFingerprint);
     exports["SetProductId"] = Napi::Function::New(env, setProductId);
     exports["SetLicenseKey"] = Napi::Function::New(env, setLicenseKey);
