@@ -851,7 +851,22 @@ export class LexActivator {
 		}
 		return arrayToString(array) as LicenseType;
 	}
-
+	
+	/**
+	 * Gets the activation Id.
+	 *
+	 * @return {string} the activation Id
+	 * @throws {LexActivatorException}
+	 */
+	static GetActivationId(): string {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetActivationId(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+	
 	/**
 	 * Gets the activation metadata.
 	 *

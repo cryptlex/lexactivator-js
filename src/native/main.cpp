@@ -929,6 +929,25 @@ Napi::Value getLicenseType(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetLicenseType(arg0, length));
 }
 
+Napi::Value getActivationId(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetActivationId(arg0, length));
+}
+
 Napi::Value getActivationMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1504,6 +1523,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetLicenseOrganizationAddress"] = Napi::Function::New(env, getLicenseOrganizationAddress);
     exports["GetLicenseUserMetadata"] = Napi::Function::New(env, getLicenseUserMetadata);
     exports["GetLicenseType"] = Napi::Function::New(env, getLicenseType);
+    exports["GetActivationId"] = Napi::Function::New(env, getActivationId);
     exports["GetActivationMetadata"] = Napi::Function::New(env, getActivationMetadata);
     exports["GetActivationMode"] = Napi::Function::New(env, getActivationMode);
     exports["GetActivationMeterAttributeUses"] = Napi::Function::New(env, getActivationMeterAttributeUses);

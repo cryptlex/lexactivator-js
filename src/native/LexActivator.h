@@ -726,6 +726,20 @@ LEXACTIVATOR_API int LA_CC GetUserLicensesInternal(STRTYPE userLicenses, uint32_
 LEXACTIVATOR_API int LA_CC GetLicenseType(STRTYPE licenseType, uint32_t length);
 
 /*
+    FUNCTION: GetActivationId()
+
+    PURPOSE: Gets the activation id.
+
+    PARAMETERS:
+    * id - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the id parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
+    LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetActivationId(STRTYPE id, uint32_t length);
+
+/*
     FUNCTION: GetActivationMetadata()
 
     PURPOSE: Gets the activation metadata.
