@@ -491,6 +491,13 @@ enum LexStatusCodes
         MESSAGE: The allowed users for this account has reached its limit.
     */
     LA_E_USERS_LIMIT_REACHED = 103,
+
+    /*
+        CODE: LA_E_OS_USER
+        
+        MESSAGE: OS user has changed since activation and the license is user-locked.
+    */
+    LA_E_OS_USER = 104,
 };
 
 #endif // LEX_STATUS_CODES_H

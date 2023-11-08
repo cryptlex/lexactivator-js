@@ -244,6 +244,10 @@ export class LexActivatorException extends Error {
 			message = 'The allowed users for this account has reached its limit.';
 			break;
 
+		case LexStatusCodes.LA_E_OS_USER:
+			message = 'OS user has changed since activation and the license is user-locked.';
+			break;
+
 		default:
 			message = 'Unknown error!';
 		}
