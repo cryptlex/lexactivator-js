@@ -13,7 +13,7 @@ unzip -o LexActivator-Static-Mac.zip -d ./tmp/macos
 
 cp ./tmp/macos/libs/clang/universal/libLexActivator.a ./
 npm i
-
+python3 -m pip install setuptools
 node-gyp rebuild 
 cp ./build/Release/lexactivator.node ./lib/bindings/macos/x64
 
