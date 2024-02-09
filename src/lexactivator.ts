@@ -620,6 +620,43 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the allowed deactivations of the license.
+	 *
+	 * @return {number} the allowed deactivations
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseAllowedDeactivations(): number {
+		const allowedDeactivations = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseAllowedDeactivations(allowedDeactivations);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return allowedDeactivations[0] ? allowedDeactivations[0] : 0;
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}		
+
+	/**
+	 * Gets the total deactivations of the license.
+	 *
+	 * @return {number} the total deactivations
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseTotalDeactivations(): number {
+		const totalDeactivations = new Uint32Array(1);
+		const status = LexActivatorNative.GetLicenseTotalDeactivations(totalDeactivations);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return totalDeactivations[0] ? totalDeactivations[0] : 0;
+			case LexStatusCodes.LA_FAIL:
+				return 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+	/**
 	 * Gets the license creation date timestamp.
 	 * 
 	 * @return {number} the timestamp

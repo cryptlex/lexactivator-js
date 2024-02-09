@@ -549,6 +549,30 @@ LEXACTIVATOR_API int LA_CC GetLicenseAllowedActivations(uint32_t *allowedActivat
 LEXACTIVATOR_API int LA_CC GetLicenseTotalActivations(uint32_t *totalActivations);
 
 /*
+    FUNCTION: GetLicenseAllowedDeactivations()
+
+    PURPOSE: Gets the allowed deactivations of the license.
+
+    PARAMETERS:
+    * allowedDeactivations - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseAllowedDeactivations(uint32_t *allowedDeactivations);
+
+/*
+    FUNCTION: GetLicenseTotalDeactivations()
+
+    PURPOSE: Gets the total deactivations of the license.
+
+    PARAMETERS:
+    * totalDeactivations - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseTotalDeactivations(uint32_t *totalDeactivations);
+
+/*
     FUNCTION: GetLicenseCreationDate()
 
     PURPOSE: Gets the license creation date timestamp.

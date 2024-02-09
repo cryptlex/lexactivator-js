@@ -680,6 +680,42 @@ Napi::Value getLicenseTotalActivations(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetLicenseTotalActivations(arg0));
 }
 
+Napi::Value getLicenseAllowedDeactivations(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
+    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseAllowedDeactivations(arg0));
+}
+
+Napi::Value getLicenseTotalDeactivations(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
+    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseTotalDeactivations(arg0));
+}
+
 Napi::Value getLicenseCreationDate(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1511,6 +1547,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetLicenseKey"] = Napi::Function::New(env, getLicenseKey);
     exports["GetLicenseAllowedActivations"] = Napi::Function::New(env, getLicenseAllowedActivations);
     exports["GetLicenseTotalActivations"] = Napi::Function::New(env, getLicenseTotalActivations);
+    exports["GetLicenseAllowedDeactivations"] = Napi::Function::New(env, getLicenseAllowedDeactivations);
+    exports["GetLicenseTotalDeactivations"] = Napi::Function::New(env, getLicenseTotalDeactivations);
+
     exports["GetLicenseCreationDate"] = Napi::Function::New(env, getLicenseCreationDate);
     exports["GetLicenseActivationDate"] = Napi::Function::New(env, getLicenseActivationDate);
     exports["GetLicenseExpiryDate"] = Napi::Function::New(env, getLicenseExpiryDate);
