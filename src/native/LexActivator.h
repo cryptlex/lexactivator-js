@@ -265,7 +265,7 @@ LEXACTIVATOR_API int LA_CC SetActivationLeaseDuration(uint32_t leaseDuration);
 
     PARAMETERS:
     * key - string of maximum length 256 characters.
-    * value - string of maximum length 256 characters.
+    * value - string of maximum length 4096 characters.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_METADATA_KEY_LENGTH,
     LA_E_METADATA_VALUE_LENGTH, LA_E_ACTIVATION_METADATA_LIMIT
@@ -282,7 +282,7 @@ LEXACTIVATOR_API int LA_CC SetActivationMetadata(CSTRTYPE key, CSTRTYPE value);
 
     PARAMETERS:
     * key - string of maximum length 256 characters.
-    * value - string of maximum length 256 characters.
+    * value - string of maximum length 4096 characters.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_METADATA_KEY_LENGTH,
     LA_E_METADATA_VALUE_LENGTH, LA_E_TRIAL_ACTIVATION_METADATA_LIMIT

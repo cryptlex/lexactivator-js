@@ -185,7 +185,7 @@ export const LexStatusCodes = {
 	LA_E_METADATA_KEY_LENGTH: 64,
 
 	/**
-	 * Metadata value length is more than 256 characters.
+	 * Metadata value length is more than 4096 characters.
 	 */
 	LA_E_METADATA_VALUE_LENGTH: 65,
 

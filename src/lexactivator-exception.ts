@@ -117,7 +117,7 @@ export class LexActivatorException extends Error {
 			break;
 
 		case LexStatusCodes.LA_E_METADATA_VALUE_LENGTH:
-			message = 'Metadata value length is more than 256 characters.';
+			message = 'Metadata value length is more than 4096 characters.';
 			break;
 
 		case LexStatusCodes.LA_E_ACTIVATION_METADATA_LIMIT:
