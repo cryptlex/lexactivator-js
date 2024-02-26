@@ -304,7 +304,7 @@ export class LexActivator {
 	 * dashboard.
 	 *
 	 * @param {string} key string of maximum length 256 characters with utf-8 encoding.
-	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} value string of maximum length 4096 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetActivationMetadata(key: string, value: string): void {
@@ -321,7 +321,7 @@ export class LexActivator {
 	 * in dashboard.
 	 *
 	 * @param {string} key string of maximum length 256 characters with utf-8 encoding.
-	 * @param {string} value string of maximum length 256 characters with utf-8 encoding.
+	 * @param {string} value string of maximum length 4096 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
 	static SetTrialActivationMetadata(key: string, value: string): void {
