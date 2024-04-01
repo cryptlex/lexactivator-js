@@ -1545,7 +1545,8 @@ export class LexActivator {
 export const PermissionFlags = {
 	'LA_USER': 1,
 	'LA_SYSTEM': 2,
-	'LA_IN_MEMORY': 4
+	'LA_ALL_USERS': 3,
+	'LA_IN_MEMORY': 4,
 };
 
 export const ReleaseFlags = {
