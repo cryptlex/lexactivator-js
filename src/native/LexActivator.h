@@ -63,6 +63,7 @@ typedef void (LA_CC *ReleaseCallbackType)(uint32_t, CSTRTYPE, void*);
 
 #define LA_USER ((uint32_t)1)
 #define LA_SYSTEM ((uint32_t)2)
+#define LA_ALL_USERS ((uint32_t)3)
 #define LA_IN_MEMORY ((uint32_t)4)
 
 #define LA_RELEASES_ALL ((uint32_t)1)
