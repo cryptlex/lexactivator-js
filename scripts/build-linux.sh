@@ -7,7 +7,7 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
 source ~/.bashrc
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v3.26.1";
+VERSION="v3.27.1";
 wget ${URL}${VERSION}/LexActivator-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexActivator-Static-Linux.zip -d ./tmp/linux
