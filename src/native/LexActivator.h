@@ -185,6 +185,22 @@ LEXACTIVATOR_API int LA_CC SetDataDirectory(CSTRTYPE directoryPath);
 LEXACTIVATOR_API int LA_CC SetDebugMode(uint32_t enable);
 
 /*
+    FUNCTION: SetCacheMode()
+
+    PURPOSE: Enables or disables in-memory caching for LexActivator. This function is designed to control caching
+    behavior to suit specific application requirements. Caching is enabled by default to enhance performance.
+
+    Disabling caching is recommended in environments where multiple processes access the same license on a 
+    single machine and require real-time updates to the license state.
+
+    * enable - 0 or 1 to disable or enable in-memory caching.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID
+*/
+
+LEXACTIVATOR_API int LA_CC SetCacheMode(uint32_t enable);
+
+/*
     FUNCTION: SetCustomDeviceFingerprint()
 
     PURPOSE: In case you don't want to use the LexActivator's advanced

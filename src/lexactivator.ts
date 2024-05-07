@@ -2,7 +2,7 @@ import { LexActivatorNative } from "./lexactivator-native.js";
 import { LexStatusCodes } from "./lexstatus-codes.js";
 import { LexActivatorException } from "./lexactivator-exception.js";
 import { arrayToString } from "./lexactivator-native.js";
-import { Release } from "./release.js"
+import { Release } from "./release.js";
 
 /**
  *  @class LicenseMeterAttribute
@@ -212,6 +212,24 @@ export class LexActivator {
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
+	}
+
+    /**
+    * Enables or disables in-memory caching
+    * PURPOSE: Enables or disables in-memory caching for LexActivator. This function is designed to control caching
+    * behavior to suit specific application requirements. Caching is enabled by default to enhance performance.
+    * Disabling caching is recommended in environments where multiple processes access the same license on a 
+    * single machine and require real-time updates to the license state.
+    * RETURN CODES: LA_OK, LA_E_PRODUCT_ID
+	* @param enable true or false to enable or disable in-memory caching respectively.
+    */
+
+	static SetCacheMode(enable:boolean):void{
+		const status = LexActivatorNative.SetCacheMode(enable);
+		if (LexStatusCodes.LA_OK != status) {
+			throw new LexActivatorException(status);
+		}
+	
 	}
 
 	/**
