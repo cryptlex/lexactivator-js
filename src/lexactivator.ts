@@ -215,13 +215,16 @@ export class LexActivator {
 	}
 
     /**
-    * Enables or disables in-memory caching
-    * PURPOSE: Enables or disables in-memory caching for LexActivator. This function is designed to control caching
-    * behavior to suit specific application requirements. Caching is enabled by default to enhance performance.
-    * Disabling caching is recommended in environments where multiple processes access the same license on a 
+    * Enables or disables in-memory caching for LexActivator.
+	* 
+    * This function is designed to control caching behavior to suit specific application requirements. 
+	* Caching is enabled by default to enhance performance.
+    * 
+	* Disabling caching is recommended in environments where multiple processes access the same license on a 
     * single machine and require real-time updates to the license state.
-    * RETURN CODES: LA_OK, LA_E_PRODUCT_ID
-	* @param enable true or false to enable or disable in-memory caching respectively.
+	* 
+	* @param {enable} true or false to enable or disable in-memory caching.
+	* @throws {LexActivatorException}
     */
 
 	static SetCacheMode(enable:boolean):void{
@@ -229,7 +232,6 @@ export class LexActivator {
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
-	
 	}
 
 	/**
