@@ -170,11 +170,12 @@ Napi::Value setCacheMode(const Napi::CallbackInfo& info) {
         Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
         return env.Null();
     }
-    if (!info[0].IsBoolean()) {
+    if (!info[0].IsNumber())
+    {
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    uint32_t arg0  = info[0].As<Napi::Boolean>().Value();
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
     return Napi::Number::New(env, SetCacheMode(arg0));
 }
 

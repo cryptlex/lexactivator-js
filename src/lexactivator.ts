@@ -227,8 +227,15 @@ export class LexActivator {
 	* @throws {LexActivatorException}
     */
 
-	static SetCacheMode(enable:boolean):void{
-		const status = LexActivatorNative.SetCacheMode(enable);
+	static SetCacheMode(enable: boolean):void{
+		let enableFlag;
+		if(enable){
+			enableFlag = 1;
+		}
+		else{
+			enableFlag = 0;
+		}
+		const status = LexActivatorNative.SetCacheMode(enableFlag);
 		if (LexStatusCodes.LA_OK != status) {
 			throw new LexActivatorException(status);
 		}
