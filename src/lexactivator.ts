@@ -227,7 +227,7 @@ export class LexActivator {
 	* @throws {LexActivatorException}
     */
 
-	static SetCacheMode(enable: boolean):void{
+	static SetCacheMode(enable: boolean): void{
 		let enableFlag;
 		if(enable){
 			enableFlag = 1;
