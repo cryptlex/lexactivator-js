@@ -1,0 +1,11 @@
+name: Codium Review
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  issue_comment:
+
+jobs:
+   call-workflow:
+     uses: cryptlex/github-actions/.github/workflows/codium_pr_agent.yml@main
+     secrets: inherit
