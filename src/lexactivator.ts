@@ -8,17 +8,17 @@ import { Release } from "./release.js";
  *  @class LicenseMeterAttribute
  *  @constructor
  *  @property {name} name The name of the meter attribute.
- *  @property {number} allowedUses The allowed uses of the meter attribute.
- *  @property {totalUses} totalUses The total uses of the meter attribute.
- *  @property {grossUses} grossUses The gross uses of the meter attribute.
+ *  @property {bigint} allowedUses The allowed uses of the meter attribute. A value of -1 indicates unlimited allowed uses.
+ *  @property {bigint} totalUses The total uses of the meter attribute.
+ *  @property {bigint} grossUses The gross uses of the meter attribute.
  */
 export class LicenseMeterAttribute {
 	name: string;
-	allowedUses: number;
-	totalUses: number;
-	grossUses: number;
+	allowedUses: bigint;
+	totalUses: bigint;
+	grossUses: bigint;
 
-	constructor(name: string, allowedUses: number, totalUses: number, grossUses: number) {
+	constructor(name: string, allowedUses: bigint, totalUses: bigint, grossUses: bigint) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
@@ -29,9 +29,9 @@ export class LicenseMeterAttribute {
 /**
  *  @class ProductVersionFeatureFlag
  *  @constructor
- *  @property {name} name The name of the feature flag.
- *  @property {enabled} enabled status of the feature flag.
- *  @property {data} data value of the feature flag.
+ *  @property {string} name The name of the feature flag.
+ *  @property {boolean} enabled status of the feature flag.
+ *  @property {string} data value of the feature flag.
  */
 export class ProductVersionFeatureFlag {
 	name: string;
@@ -585,13 +585,13 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMeterAttribute(name: string): LicenseMeterAttribute {
-		const allowedUses = new Uint32Array(1);
-		const totalUses = new Uint32Array(1);
-		const grossUses = new Uint32Array(1);
+		const allowedUses = new BigInt64Array(1);
+		const totalUses = new BigUint64Array(1);
+		const grossUses = new BigUint64Array(1);
 		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return new LicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : 0, totalUses[0] ? totalUses[0] : 0, grossUses[0] ? grossUses[0] : 0);
+				return new LicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : BigInt(0), totalUses[0] ? totalUses[0] : BigInt(0), grossUses[0] ? grossUses[0] : BigInt(0));
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -615,17 +615,17 @@ export class LexActivator {
 	/**
 	 * Gets the allowed activations of the license.
 	 *
-	 * @return {number} the allowed activations
+	 * @return {number} the allowed activations. A value of -1 indicates unlimited number of activations.
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseAllowedActivations(): number {
-		const allowedActivations = new Uint32Array(1);
+	static GetLicenseAllowedActivations(): bigint {
+		const allowedActivations = new BigInt64Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedActivations(allowedActivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return allowedActivations[0] ? allowedActivations[0] : 0;
+				return allowedActivations[0] ? allowedActivations[0] : BigInt(0);
 			case LexStatusCodes.LA_FAIL:
-				return 0;
+				return BigInt(0);
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -653,17 +653,17 @@ export class LexActivator {
 	/**
 	 * Gets the allowed deactivations of the license.
 	 *
-	 * @return {number} the allowed deactivations
+	 * @return {number} the allowed deactivations. A value of -1 indicates unlimited number of deactivations.
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseAllowedDeactivations(): number {
-		const allowedDeactivations = new Uint32Array(1);
+	static GetLicenseAllowedDeactivations(): bigint {
+		const allowedDeactivations = new BigInt64Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedDeactivations(allowedDeactivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return allowedDeactivations[0] ? allowedDeactivations[0] : 0;
+				return allowedDeactivations[0] ? allowedDeactivations[0] : BigInt(0);
 			case LexStatusCodes.LA_FAIL:
-				return 0;
+				return BigInt(0);
 			default:
 				throw new LexActivatorException(status);
 		}
