@@ -71,9 +71,17 @@ export class OrganizationAddress {
 	}
 };
 
+/**
+ * @class OrganizationAddress
+ * @constructor
+ * @property {bigint} allowedActivations The allowed activations of the license. A value of -1 indicates unlimited number of activations.
+ * @property {bigint} allowedDeactivations The allowed activations of the license. A value of -1 indicates unlimited number of deactivations.
+ * @property {string} key The license key
+ * @property {string} type The license type (node-locked or hosted-floating).
+ */
 export class UserLicense {
-	allowedActivations: number;
-	allowedDeactivations: number;
+	allowedActivations: bigint;
+	allowedDeactivations: bigint;
 	key: string;
 	type: string;
 }
