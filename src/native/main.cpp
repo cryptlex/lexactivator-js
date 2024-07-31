@@ -275,7 +275,7 @@ Napi::Value setActivationLeaseDuration(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    int64_t arg0 = info[0].As<Napi::Number>().Int64Value();
     return Napi::Number::New(env, SetActivationLeaseDuration(arg0));
 }
 
