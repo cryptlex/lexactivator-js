@@ -318,7 +318,8 @@ export class LexActivator {
 	 * The activation lease duration is honoured when the allow client
 	 * lease duration property is enabled.
 	 * 
-	 * @param {number} leaseDuration 
+	 * @param {number} leaseDuration value of the lease duration. A value of -1 indicates unlimited 
+     * lease duration.
 	 * @throws {LexActivatorException}
 	 */
 	static SetActivationLeaseDuration(leaseDuration: number): void {

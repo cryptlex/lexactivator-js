@@ -278,11 +278,12 @@ LEXACTIVATOR_API int LA_CC SetLicenseCallback(CallbackType callback);
     lease duration property is enabled.
 
     PARAMETERS:
-    * leaseDuration - value of the lease duration.
+    * leaseDuration - value of the lease duration. A value of -1 indicates unlimited 
+      lease duration.
 
     RETURN CODES: LA_OK, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY
 */
-LEXACTIVATOR_API int LA_CC SetActivationLeaseDuration(uint32_t leaseDuration);
+LEXACTIVATOR_API int LA_CC SetActivationLeaseDuration(int64_t leaseDuration);
 
 /*
     FUNCTION: SetActivationMetadata()
