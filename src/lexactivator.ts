@@ -72,8 +72,8 @@ export class OrganizationAddress {
 };
 
 export class UserLicense {
-	allowedActivations: number;
-	allowedDeactivations: number;
+	allowedActivations: bigint;
+	allowedDeactivations: bigint;
 	key: string;
 	type: string;
 }
