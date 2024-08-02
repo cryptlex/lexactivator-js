@@ -275,7 +275,7 @@ Napi::Value setActivationLeaseDuration(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    int64_t arg0 = info[0].As<Napi::Number>().Int64Value();
     return Napi::Number::New(env, SetActivationLeaseDuration(arg0));
 }
 
@@ -632,12 +632,12 @@ Napi::Value getLicenseMeterAttribute(const Napi::CallbackInfo &info)
         return env.Null();
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
-    Napi::Uint32Array array1 = info[1].As<Napi::Uint32Array>();
-    uint32_t *arg1 = reinterpret_cast<uint32_t *>(array1.ArrayBuffer().Data());
-    Napi::Uint32Array array2 = info[2].As<Napi::Uint32Array>();
-    uint32_t *arg2 = reinterpret_cast<uint32_t *>(array2.ArrayBuffer().Data());
-    Napi::Uint32Array array3 = info[3].As<Napi::Uint32Array>();
-    uint32_t *arg3 = reinterpret_cast<uint32_t *>(array3.ArrayBuffer().Data());
+    Napi::BigInt64Array array1 = info[1].As<Napi::BigInt64Array>();
+    int64_t *arg1 = reinterpret_cast<int64_t *>(array1.ArrayBuffer().Data());
+    Napi::BigUint64Array array2 = info[2].As<Napi::BigUint64Array>();
+    uint64_t *arg2 = reinterpret_cast<uint64_t *>(array2.ArrayBuffer().Data());
+    Napi::BigUint64Array array3 = info[3].As<Napi::BigUint64Array>();
+    uint64_t *arg3 = reinterpret_cast<uint64_t *>(array3.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseMeterAttribute(arg0.c_str(), arg1, arg2, arg3));
 }
 
@@ -673,8 +673,8 @@ Napi::Value getLicenseAllowedActivations(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
-    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    Napi::BigInt64Array array = info[0].As<Napi::BigInt64Array>();
+    int64_t *arg0 = reinterpret_cast<int64_t *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseAllowedActivations(arg0));
 }
 
@@ -709,8 +709,8 @@ Napi::Value getLicenseAllowedDeactivations(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
         return env.Null();
     }
-    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
-    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    Napi::BigInt64Array array = info[0].As<Napi::BigInt64Array>();
+    int64_t *arg0 = reinterpret_cast<int64_t *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseAllowedDeactivations(arg0));
 }
 
