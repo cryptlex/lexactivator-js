@@ -8,17 +8,17 @@ import { Release } from "./release.js";
  *  @class LicenseMeterAttribute
  *  @constructor
  *  @property {name} name The name of the meter attribute.
- *  @property {bigint} allowedUses The allowed uses of the meter attribute. A value of -1 indicates unlimited allowed uses.
- *  @property {bigint} totalUses The total uses of the meter attribute.
- *  @property {bigint} grossUses The gross uses of the meter attribute.
+ *  @property {number} allowedUses The allowed uses of the meter attribute. A value of -1 indicates unlimited allowed uses.
+ *  @property {number} totalUses The total uses of the meter attribute.
+ *  @property {number} grossUses The gross uses of the meter attribute.
  */
 export class LicenseMeterAttribute {
 	name: string;
-	allowedUses: bigint;
-	totalUses: bigint;
-	grossUses: bigint;
+	allowedUses: number;
+	totalUses: number;
+	grossUses: number;
 
-	constructor(name: string, allowedUses: bigint, totalUses: bigint, grossUses: bigint) {
+	constructor(name: string, allowedUses: number, totalUses: number, grossUses: number) {
 		this.name = name;
 		this.allowedUses = allowedUses;
 		this.totalUses = totalUses;
@@ -74,14 +74,14 @@ export class OrganizationAddress {
 /**
  * @class OrganizationAddress
  * @constructor
- * @property {bigint} allowedActivations The allowed activations of the license. A value of -1 indicates unlimited number of activations.
- * @property {bigint} allowedDeactivations The allowed activations of the license. A value of -1 indicates unlimited number of deactivations.
+ * @property {number} allowedActivations The allowed activations of the license. A value of -1 indicates unlimited number of activations.
+ * @property {number} allowedDeactivations The allowed activations of the license. A value of -1 indicates unlimited number of deactivations.
  * @property {string} key The license key
  * @property {string} type The license type (node-locked or hosted-floating).
  */
 export class UserLicense {
-	allowedActivations: bigint;
-	allowedDeactivations: bigint;
+	allowedActivations: number;
+	allowedDeactivations: number;
 	key: string;
 	type: string;
 }
@@ -600,7 +600,7 @@ export class LexActivator {
 		const status = LexActivatorNative.GetLicenseMeterAttribute(name, allowedUses, totalUses, grossUses);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return new LicenseMeterAttribute(name, allowedUses[0] ? allowedUses[0] : BigInt(0), totalUses[0] ? totalUses[0] : BigInt(0), grossUses[0] ? grossUses[0] : BigInt(0));
+				return new LicenseMeterAttribute(name, Number(allowedUses[0]) ? Number(allowedUses[0]) : 0, Number(totalUses[0]) ? Number(totalUses[0]) : 0, Number(grossUses[0]) ? Number(grossUses[0]) : 0);
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -627,14 +627,14 @@ export class LexActivator {
 	 * @return {number} the allowed activations. A value of -1 indicates unlimited number of activations.
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseAllowedActivations(): bigint {
+	static GetLicenseAllowedActivations(): number {
 		const allowedActivations = new BigInt64Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedActivations(allowedActivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return allowedActivations[0] ? allowedActivations[0] : BigInt(0);
+				return Number(allowedActivations[0]) ? Number(allowedActivations[0]) : 0;
 			case LexStatusCodes.LA_FAIL:
-				return BigInt(0);
+				return 0;
 			default:
 				throw new LexActivatorException(status);
 		}
@@ -665,14 +665,14 @@ export class LexActivator {
 	 * @return {number} the allowed deactivations. A value of -1 indicates unlimited number of deactivations.
 	 * @throws {LexActivatorException}
 	 */
-	static GetLicenseAllowedDeactivations(): bigint {
+	static GetLicenseAllowedDeactivations(): number {
 		const allowedDeactivations = new BigInt64Array(1);
 		const status = LexActivatorNative.GetLicenseAllowedDeactivations(allowedDeactivations);
 		switch (status) {
 			case LexStatusCodes.LA_OK:
-				return allowedDeactivations[0] ? allowedDeactivations[0] : BigInt(0);
+				return Number(allowedDeactivations[0]) ? Number(allowedDeactivations[0]) : 0;
 			case LexStatusCodes.LA_FAIL:
-				return BigInt(0);
+				return 0;
 			default:
 				throw new LexActivatorException(status);
 		}
