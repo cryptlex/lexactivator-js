@@ -84,6 +84,10 @@ export class UserLicense {
 	allowedDeactivations: number;
 	key: string;
 	type: string;
+	metadata: [{
+		key: string;
+		value: string;
+	}]
 }
 
 export type ActivationModes = 'online' | 'offline';
