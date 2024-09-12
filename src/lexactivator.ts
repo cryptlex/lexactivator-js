@@ -78,7 +78,7 @@ export class OrganizationAddress {
  * @property {number} allowedDeactivations The allowed activations of the license. A value of -1 indicates unlimited number of deactivations.
  * @property {string} key The license key
  * @property {string} type The license type (node-locked or hosted-floating).
- * @property {Array<{key: string, value: string}>} metadata License metadata with view_permission set to "user".
+ * @property {Array<{key: string, value: string}>} metadata The license metadata.
  */
 export class UserLicense {
 	allowedActivations: number;
