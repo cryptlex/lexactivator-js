@@ -72,18 +72,23 @@ export class OrganizationAddress {
 };
 
 /**
- * @class OrganizationAddress
+ * @class UserLicense
  * @constructor
  * @property {number} allowedActivations The allowed activations of the license. A value of -1 indicates unlimited number of activations.
  * @property {number} allowedDeactivations The allowed activations of the license. A value of -1 indicates unlimited number of deactivations.
  * @property {string} key The license key
  * @property {string} type The license type (node-locked or hosted-floating).
+ * @property {Array<{key: string, value: string}>} metadata The license metadata.
  */
 export class UserLicense {
 	allowedActivations: number;
 	allowedDeactivations: number;
 	key: string;
 	type: string;
+	metadata: [{
+		key: string;
+		value: string;
+	}]
 }
 
 export type ActivationModes = 'online' | 'offline';
