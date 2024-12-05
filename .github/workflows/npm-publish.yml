@@ -44,9 +44,9 @@ jobs:
           docker run -t -v $PWD:$PWD -w $PWD cryptlex/alpine-builder:2 ./scripts/build-linux-musl.sh
 
       - name: 'Upload artifacts'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: artifacts
+          name: artifacts-${{matrix.os}}
           path: |
             ./lib/bindings/linux/**/**/*.node
             ./lib/bindings/macos/**/*.node
@@ -67,10 +67,10 @@ jobs:
       - run: git pull origin master --ff-only
 
       - name: 'Download artifacts'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: ./lib/bindings
-          name: artifacts
+          merge-multiple: true
 
       - name: 'Build library'
         run: |
