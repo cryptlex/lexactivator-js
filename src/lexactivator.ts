@@ -718,7 +718,26 @@ export class LexActivator {
 			default:
 				throw new LexActivatorException(status);
 		}
-	}
+	}	
+	
+	/**
+	* Gets the activation creation date timestamp.
+	* 
+	* @return {number} the timestamp
+	* @throws {LexActivatorException}
+	*/
+   static GetActivationCreationDate(): number {
+	   const creationDate = new Uint32Array(1);
+	   const status = LexActivatorNative.GetActivationCreationDate(creationDate);
+	   switch (status) {
+		   case LexStatusCodes.LA_OK:
+			   return creationDate[0] ? creationDate[0] : 0;
+		   case LexStatusCodes.LA_FAIL:
+			   return 0;
+		   default:
+			   throw new LexActivatorException(status);
+	   }
+   }
 
 	/**
 	 * Gets the activation creation date timestamp.
