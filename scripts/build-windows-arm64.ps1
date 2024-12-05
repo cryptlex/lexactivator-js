@@ -12,7 +12,7 @@ Expand-Archive $output -DestinationPath ".\tmp\windows\LexActivator-Win"
 
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc17\arm64\LexActivator.lib" -Destination ".\"
 npm i
-node-gyp rebuild 
+node-gyp rebuild --arch=arm64
 
 Copy-Item -Path ".\build\Release\lexactivator.node" -Destination ".\lib\bindings\windows\arm64\lexactivator.node"
-Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc17\arm64\LexActivator.dll" -Destination ".\lib\bindings\windows\arm64\LexActivator.dll"
+Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc17\arm64\LexActivator.dll" -Destination ".\lib\bindings\windows\arm64\LexActivator.dll"s
