@@ -108,6 +108,23 @@ export class ActivationMode {
 		this.currentMode = currentMode;
 	}
 }
+
+/**
+ * @class FeatureEntitlement
+ * @constructor
+ * @property {string} featureName The feature name of the entitlement.
+ * @property {string} value The value of the entitlement.
+ */
+export class FeatureEntitlement {
+	featureName: string;
+	value: string;
+
+	constructor(featureName: string, value: string) {
+		this.featureName = featureName;
+		this.value = value;
+	}
+}
+
 /** Types of licenses supported by LexActivator. Values returned by `GetLicenseType()` */
 export type LicenseType = 'node-locked' | 'hosted-floating';
 
@@ -575,6 +592,91 @@ export class LexActivator {
 		return new ProductVersionFeatureFlag(name, (enabled[0] ? enabled[0] : 0) > 0, arrayToString(array));
 	}
 
+
+	/**
+	 * Gets the license entitlement set name.
+	 * @return {string}  name of the license entitlement set
+	 * @throws {LexActivatorException} 
+	 */
+	static GetLicenseEntitlementSetName(): string {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetLicenseEntitlementSetName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the license entitlement set display name.
+	 * @return {string}  display name of the license entitlement set
+	 * @throws {LexActivatorException} 
+	 */
+	static GetLicenseEntitlementSetDisplayName(): string {
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetLicenseEntitlementSetDisplayName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the feature entitlements associated with the license.
+	 * 
+	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
+	 * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+	 * the license feature entitlement takes precedence, overriding the entitlement set value.
+	 * 
+	 * @return {FeatureEntitlement[]}  feature entitlements associated with the license.
+	 * 
+	 * @throws {LexActivatorException}
+	 */
+	static GetFeatureEntitlements(): FeatureEntitlement[] {
+		const array = new Uint8Array(4096);
+		const status = LexActivatorNative.GetFeatureEntitlements(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		let featureEntitlements: FeatureEntitlement[];
+		try {
+			featureEntitlements = JSON.parse(arrayToString(array));
+		} catch {
+			featureEntitlements = [];
+		}
+		return featureEntitlements;
+	}
+
+	/**
+	 * Gets the feature entitlements associated with the license.
+	 * 
+	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
+	 * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+	 * the license feature entitlement takes precedence, overriding the entitlement set value.
+	 * 
+	 * @param {string} featureName name of the feature
+	 * @return {FeatureEntitlement}  feature entitlements associated with the license.
+	 * 
+	 * @throws {LexActivatorException}
+	 */
+	static GetFeatureEntitlement(featureName: string): FeatureEntitlement | null {
+		const array = new Uint8Array(4096);
+		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		let featureObject;
+		try {
+			featureObject = JSON.parse(arrayToString(array));
+		} catch {
+			featureObject = {};
+		}
+		let featureEntitlement = null;
+		if (Object.keys(featureObject).length > 0) {
+			featureEntitlement = new FeatureEntitlement(featureObject.featureName, featureObject.value);
+		}
+		return featureEntitlement;
+	}
 	/**
 	 * Gets the license metadata as set in the dashboard.
 	 *

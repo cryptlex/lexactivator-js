@@ -578,6 +578,86 @@ Napi::Value getProductVersionFeatureFlag(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
 }
 
+Napi::Value getLicenseEntitlementSetName(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseEntitlementSetName(arg0, length));
+}
+
+Napi::Value getLicenseEntitlementSetDisplayName(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLicenseEntitlementSetDisplayName(arg0, length));
+}
+
+Napi::Value getFeatureEntitlements(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetFeatureEntitlementsInternal(arg0, length));
+}
+
+Napi::Value getFeatureEntitlement(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 2)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsString())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[1].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    STRING arg0 = toEncodedString(info[0].As<Napi::String>());
+    Napi::Uint8Array array1 = info[1].As<Napi::Uint8Array>();
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array1.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetFeatureEntitlementInternal(arg0.c_str(), arg1));
+}
 Napi::Value getLicenseMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1577,6 +1657,10 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetProductVersionName"] = Napi::Function::New(env, getProductVersionName);
     exports["GetProductVersionDisplayName"] = Napi::Function::New(env, getProductVersionDisplayName);
     exports["GetProductVersionFeatureFlag"] = Napi::Function::New(env, getProductVersionFeatureFlag);
+    exports["GetLicenseEntitlementSetName"] = Napi::Function::New(env, getLicenseEntitlementSetName);
+    exports["GetLicenseEntitlementSetDisplayName"] = Napi::Function::New(env, getLicenseEntitlementSetDisplayName);
+    exports["GetFeatureEntitlements"] = Napi::Function::New(env, getFeatureEntitlements);
+    exports["GetFeatureEntitlement"] = Napi::Function::New(env, getFeatureEntitlement);
     exports["GetLicenseMetadata"] = Napi::Function::New(env, getLicenseMetadata);
     exports["GetLicenseMeterAttribute"] = Napi::Function::New(env, getLicenseMeterAttribute);
     exports["GetLicenseKey"] = Napi::Function::New(env, getLicenseKey);

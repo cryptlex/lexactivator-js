@@ -228,6 +228,10 @@ export class LexActivatorException extends Error {
 			message = 'Client error.';
 			break;
 
+		case LexStatusCodes.LA_E_ACCOUNT_ID:
+			message = 'Invalid account ID.';
+			break;
+
 		case LexStatusCodes.LA_E_LOGIN_TEMPORARILY_LOCKED:
 			message = 'The user account has been temporarily locked for 5 mins due to 5 failed attempts.';
 			break;
@@ -254,6 +258,18 @@ export class LexActivatorException extends Error {
 	
 		case LexStatusCodes.LA_E_FREE_PLAN_ACTIVATION_LIMIT_REACHED:
 			message = 'The free plan has reached its activation limit.';
+			break;
+		
+		case LexStatusCodes.LA_E_FEATURE_ENTITLEMENTS_INVALID:
+			message = 'The feature entitlements are invalid.';
+			break;
+
+		case LexStatusCodes.LA_E_FEATURE_ENTITLEMENT_NOT_FOUND:
+			message = 'The feature entitlement does not exist.';
+			break;
+
+		case LexStatusCodes.LA_E_ENTITLEMENT_SET_NOT_LINKED:
+			message = 'No entitlement set is linked.';
 			break;
 
 		default:
