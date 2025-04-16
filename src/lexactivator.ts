@@ -676,7 +676,7 @@ export class LexActivator {
 	 */
 	static GetFeatureEntitlement(featureName: string): FeatureEntitlement | null {
 		const array = new Uint8Array(4096);
-		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array);
+		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
