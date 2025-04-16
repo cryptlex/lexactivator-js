@@ -654,9 +654,10 @@ Napi::Value getFeatureEntitlement(const Napi::CallbackInfo &info)
         return env.Null();
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
-    Napi::Uint8Array array1 = info[1].As<Napi::Uint8Array>();
-    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array1.ArrayBuffer().Data());
-    return Napi::Number::New(env, GetFeatureEntitlementInternal(arg0.c_str(), arg1));
+    Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
+    size_t length = array.ElementLength();
+    CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetFeatureEntitlementInternal(arg0.c_str(), arg1, length));
 }
 Napi::Value getLicenseMetadata(const Napi::CallbackInfo &info)
 {

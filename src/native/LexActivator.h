@@ -554,7 +554,7 @@ LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetName(STRTYPE name, uint32_t l
 LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetDisplayName(STRTYPE displayName, uint32_t length);
 
 /*
-    FUNCTION: GetFeatureEntitlements()
+    FUNCTION: GetFeatureEntitlementsInternal()
 
     PURPOSE: Gets the feature entitlements associated with the license.
 
@@ -572,7 +572,7 @@ LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetDisplayName(STRTYPE displayNa
 LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitlements, uint32_t length);
 
 /*
-    FUNCTION: GetFeatureEntitlement()
+    FUNCTION: GetFeatureEntitlementInternal()
 
     PURPOSE: Gets the feature entitlement associated with the license.
 
@@ -587,7 +587,7 @@ LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitle
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
     LA_E_BUFFER_SIZE, LA_E_FEATURE_ENTITLEMENT_NOT_FOUND, LA_E_FEATURE_ENTITLEMENTS_INVALID
 */
-LEXACTIVATOR_API int LA_CC GetFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE featureEntitlement);
+LEXACTIVATOR_API int LA_CC GetFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE featureEntitlement, uint32_t length);
 
 /*
     FUNCTION: GetLicenseMeterAttribute()

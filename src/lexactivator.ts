@@ -147,6 +147,8 @@ export class LexActivator {
 	 *
 	 * This function must be called on every start of your program before any other
 	 * functions are called.
+	 * 
+	 * @deprecated This function is deprecated. Use SetProductData() instead.
 	 *
 	 * @param {string} filePath absolute path of the product file (Product.dat)
 	 * @throws {LexActivatorException}
@@ -311,6 +313,8 @@ export class LexActivator {
 	 * This function must be called before ActivateLicense() or IsLicenseGenuine()
 	 * function if requireAuthentication property of the license is set to true.
 	 *
+	 * @deprecated This function is deprecated. Use AuthenticateUser() instead.
+	 * 
 	 * @param {string} email user email address.
 	 * @param {string} password user password.
 	 * @throws {LexActivatorException}
@@ -399,6 +403,8 @@ export class LexActivator {
 	 * The app version appears along with the activation details in dashboard. It is
 	 * also used to generate app analytics.
 	 *
+	 * @deprecated This function is deprecated. Use SetReleaseVersion() instead.
+	 * 
 	 * @param {string} appVersion string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
@@ -550,6 +556,9 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version name.
+	 * 
+	 * @deprecated This function is deprecated. Use GetLicenseEntitlementSetName() instead.
+	 * 
 	 * @return {string} name of the product version
 	 * @throws {LexActivatorException} 
 	 */
@@ -564,6 +573,9 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version display name.
+	 * 
+	 * @deprecated This function is deprecated. Use GetLicenseEntitlementSetDisplayName() instead.
+	 * 
 	 * @return {string}  display name of the product version
 	 * @throws {LexActivatorException} 
 	 */
@@ -578,6 +590,9 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version feature flag.
+	 * 
+	 * @deprecated This function is deprecated. Use GetFeatureEntitlement() instead.
+	 * 
 	 * @param {string} name name of the feature flag 
 	 * @returns {ProductVersionFeatureFlag} product version feature flag.
 	 * @throws {LexActivatorException}
@@ -1272,6 +1287,8 @@ export class LexActivator {
 	 *
 	 * This function should only be used if you manage your releases through
 	 * Cryptlex release management API.
+	 * 
+	 * @deprecated This function is deprecated. Use CheckReleaseUpdate() instead.
 	 *
 	 * @param {string} platform release platform e.g. windows, macos, linux
 	 * @param {string} version current release version
