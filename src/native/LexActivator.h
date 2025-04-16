@@ -540,7 +540,7 @@ LEXACTIVATOR_API int LA_CC GetLicenseMetadata(CSTRTYPE key, STRTYPE value, uint3
 LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetName(STRTYPE name, uint32_t length);
 
 /*
-    FUNCTION: GetEntitlementSetDisplayName()
+    FUNCTION: GetLicenseEntitlementSetDisplayName()
 
     PURPOSE: Gets the entitlement set display name.
 
