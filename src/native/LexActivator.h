@@ -513,20 +513,6 @@ LEXACTIVATOR_API int LA_CC GetProductVersionDisplayName(STRTYPE displayName, uin
 LEXACTIVATOR_API int LA_CC GetProductVersionFeatureFlag(CSTRTYPE name, uint32_t *enabled, STRTYPE data, uint32_t length);
 
 /*
-    FUNCTION: GetLicenseMetadata()
-
-    PURPOSE: Gets the license metadata as set in the dashboard.
-
-    PARAMETERS:
-    * key - key to retrieve the value
-    * value - pointer to a buffer that receives the value of the string
-    * length - size of the buffer pointed to by the value parameter
-
-    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_METADATA_KEY_NOT_FOUND, LA_E_BUFFER_SIZE
-*/
-LEXACTIVATOR_API int LA_CC GetLicenseMetadata(CSTRTYPE key, STRTYPE value, uint32_t length);
-
-/*
     FUNCTION: GetLicenseEntitlementSetName()
 
     PURPOSE: Gets the license entitlement set name.
@@ -563,13 +549,13 @@ LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetDisplayName(STRTYPE displayNa
     the license feature entitlement takes precedence, overriding the entitlement set value.
     
     PARAMETERS:
-    * featureEntitlements - pointer to the struct that receives the values of the feature entitlements.
-    * length - size of the featureEntitlementsPtr array.
+    * featureEntitlementsJson - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the featureEntitlementsJson parameter
 
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
     LA_E_BUFFER_SIZE, LA_E_FEATURE_ENTITLEMENTS_INVALID
 */
-LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitlements, uint32_t length);
+LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitlementsJson, uint32_t length);
 
 /*
     FUNCTION: GetFeatureEntitlementInternal()
@@ -582,13 +568,27 @@ LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitle
 
     PARAMETERS:
     * featureName - name of the feature
-    * featureEntitlement - pointer to the struct that receives the values of the feature entitlement
-    * length - size of the buffer pointed to by the featureEntitlement parameter
+    * featureEntitlementJson - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the featureEntitlementJson parameter
 
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
     LA_E_BUFFER_SIZE, LA_E_FEATURE_ENTITLEMENT_NOT_FOUND, LA_E_FEATURE_ENTITLEMENTS_INVALID
 */
-LEXACTIVATOR_API int LA_CC GetFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE featureEntitlement, uint32_t length);
+LEXACTIVATOR_API int LA_CC GetFeatureEntitlementInternal(CSTRTYPE featureName, STRTYPE featureEntitlementJson, uint32_t length);
+
+/*
+    FUNCTION: GetLicenseMetadata()
+
+    PURPOSE: Gets the license metadata as set in the dashboard.
+
+    PARAMETERS:
+    * key - key to retrieve the value
+    * value - pointer to a buffer that receives the value of the string
+    * length - size of the buffer pointed to by the value parameter
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_METADATA_KEY_NOT_FOUND, LA_E_BUFFER_SIZE
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseMetadata(CSTRTYPE key, STRTYPE value, uint32_t length);
 
 /*
     FUNCTION: GetLicenseMeterAttribute()

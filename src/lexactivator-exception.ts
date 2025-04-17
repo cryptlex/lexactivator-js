@@ -269,7 +269,7 @@ export class LexActivatorException extends Error {
 			break;
 
 		case LexStatusCodes.LA_E_ENTITLEMENT_SET_NOT_LINKED:
-			message = 'No entitlement set is linked.';
+			message = 'No entitlement set is linked to the license.';
 			break;
 
 		default:

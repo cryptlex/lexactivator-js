@@ -580,7 +580,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionDisplayName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -614,7 +614,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetLicenseEntitlementSetName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetLicenseEntitlementSetName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -628,7 +628,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetLicenseEntitlementSetDisplayName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetLicenseEntitlementSetDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -670,7 +670,7 @@ export class LexActivator {
 	 * the license feature entitlement takes precedence, overriding the entitlement set value.
 	 * 
 	 * @param {string} featureName name of the feature
-	 * @return {FeatureEntitlement}  feature entitlements associated with the license.
+	 * @return {FeatureEntitlement}  feature entitlement associated with the license.
 	 * 
 	 * @throws {LexActivatorException}
 	 */
