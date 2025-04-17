@@ -537,7 +537,7 @@ enum LexStatusCodes
     /*
         CODE: LA_E_ENTITLEMENT_SET_NOT_LINKED
 
-        MESSAGE: The entitlement set is not linked.
+        MESSAGE: No entitlement set is linked.
     */
     LA_E_ENTITLEMENT_SET_NOT_LINKED = 109,
 };

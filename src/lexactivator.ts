@@ -112,8 +112,8 @@ export class ActivationMode {
 /**
  * @class FeatureEntitlement
  * @constructor
- * @property {string} featureName The feature name of the entitlement.
- * @property {string} value The value of the entitlement.
+ * @property {string} featureName The name of the feature
+ * @property {string} value The value of the feature
  */
 export class FeatureEntitlement {
 	featureName: string;
@@ -563,7 +563,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetProductVersionName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -674,23 +674,14 @@ export class LexActivator {
 	 * 
 	 * @throws {LexActivatorException}
 	 */
-	static GetFeatureEntitlement(featureName: string): FeatureEntitlement | null {
-		const array = new Uint8Array(4096);
-		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array, array.length);
+	static GetFeatureEntitlement(featureName: string): FeatureEntitlement {
+		
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetHostFeatureEntitlement(featureName, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
 		}
-		let featureObject;
-		try {
-			featureObject = JSON.parse(arrayToString(array));
-		} catch {
-			featureObject = {};
-		}
-		let featureEntitlement = null;
-		if (Object.keys(featureObject).length > 0) {
-			featureEntitlement = new FeatureEntitlement(featureObject.featureName, featureObject.value);
-		}
-		return featureEntitlement;
+		return JSON.parse(arrayToString(array)) || {};
 	}
 	/**
 	 * Gets the license metadata as set in the dashboard.
