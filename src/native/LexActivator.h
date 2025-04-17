@@ -528,7 +528,7 @@ LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetName(STRTYPE name, uint32_t l
 /*
     FUNCTION: GetLicenseEntitlementSetDisplayName()
 
-    PURPOSE: Gets the entitlement set display name.
+    PURPOSE: Gets the license entitlement set display name.
 
     PARAMETERS:
     * displayName - pointer to a buffer that receives the value of the string

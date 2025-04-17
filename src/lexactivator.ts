@@ -663,7 +663,7 @@ export class LexActivator {
 	}
 
 	/**
-	 * Gets the feature entitlements associated with the license.
+	 * Gets the feature entitlement associated with the license.
 	 * 
 	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
 	 * or via entitlement sets. If a feature entitlement is defined in both, the value from 

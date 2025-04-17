@@ -379,7 +379,7 @@ export const LexStatusCodes = {
     LA_E_FEATURE_ENTITLEMENT_NOT_FOUND : 108,
 
     /**
-     * The entitlement set is not linked.
+     * The entitlement set is not linked to the license.
      */
     LA_E_ENTITLEMENT_SET_NOT_LINKED : 109,
 
