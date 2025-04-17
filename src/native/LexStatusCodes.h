@@ -523,7 +523,7 @@ enum LexStatusCodes
     /*
         CODE: LA_E_FEATURE_ENTITLEMENTS_INVALID
 
-        MESSAGE: The feature entitlements are invalid.
+        MESSAGE: Invalid feature entitlements.
     */
     LA_E_FEATURE_ENTITLEMENTS_INVALID = 107,
 

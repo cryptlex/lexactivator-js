@@ -261,7 +261,7 @@ export class LexActivatorException extends Error {
 			break;
 		
 		case LexStatusCodes.LA_E_FEATURE_ENTITLEMENTS_INVALID:
-			message = 'The feature entitlements are invalid.';
+			message = 'Invalid feature entitlements.';
 			break;
 
 		case LexStatusCodes.LA_E_FEATURE_ENTITLEMENT_NOT_FOUND:

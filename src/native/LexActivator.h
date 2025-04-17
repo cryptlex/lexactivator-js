@@ -583,6 +583,7 @@ LEXACTIVATOR_API int LA_CC GetFeatureEntitlementsInternal(STRTYPE featureEntitle
     PARAMETERS:
     * featureName - name of the feature
     * featureEntitlement - pointer to the struct that receives the values of the feature entitlement
+    * length - size of the buffer pointed to by the featureEntitlement parameter
 
     RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED,
     LA_E_BUFFER_SIZE, LA_E_FEATURE_ENTITLEMENT_NOT_FOUND, LA_E_FEATURE_ENTITLEMENTS_INVALID
