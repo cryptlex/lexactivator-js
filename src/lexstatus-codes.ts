@@ -369,7 +369,7 @@ export const LexStatusCodes = {
 	LA_E_FREE_PLAN_ACTIVATION_LIMIT_REACHED : 106,
 
     /**
-     * The feature entitlements are invalid.
+     *  Invalid feature entitlements.
      */
     LA_E_FEATURE_ENTITLEMENTS_INVALID : 107,
 
