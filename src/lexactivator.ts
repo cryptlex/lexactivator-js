@@ -108,6 +108,23 @@ export class ActivationMode {
 		this.currentMode = currentMode;
 	}
 }
+
+/**
+ * @class FeatureEntitlement
+ * @constructor
+ * @property {string} featureName The name of the feature
+ * @property {string} value The value of the feature
+ */
+export class FeatureEntitlement {
+	featureName: string;
+	value: string;
+
+	constructor(featureName: string, value: string) {
+		this.featureName = featureName;
+		this.value = value;
+	}
+}
+
 /** Types of licenses supported by LexActivator. Values returned by `GetLicenseType()` */
 export type LicenseType = 'node-locked' | 'hosted-floating';
 
@@ -130,6 +147,8 @@ export class LexActivator {
 	 *
 	 * This function must be called on every start of your program before any other
 	 * functions are called.
+	 * 
+	 * @deprecated This function is deprecated. Use SetProductData() instead.
 	 *
 	 * @param {string} filePath absolute path of the product file (Product.dat)
 	 * @throws {LexActivatorException}
@@ -294,6 +313,8 @@ export class LexActivator {
 	 * This function must be called before ActivateLicense() or IsLicenseGenuine()
 	 * function if requireAuthentication property of the license is set to true.
 	 *
+	 * @deprecated This function is deprecated. Use AuthenticateUser() instead.
+	 * 
 	 * @param {string} email user email address.
 	 * @param {string} password user password.
 	 * @throws {LexActivatorException}
@@ -382,6 +403,8 @@ export class LexActivator {
 	 * The app version appears along with the activation details in dashboard. It is
 	 * also used to generate app analytics.
 	 *
+	 * @deprecated This function is deprecated. Use SetReleaseVersion() instead.
+	 * 
 	 * @param {string} appVersion string of maximum length 256 characters with utf-8 encoding.
 	 * @throws {LexActivatorException}
 	 */
@@ -533,11 +556,14 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version name.
+	 * 
+	 * @deprecated This function is deprecated. Use GetLicenseEntitlementSetName() instead.
+	 * 
 	 * @return {string} name of the product version
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetProductVersionName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -547,11 +573,14 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version display name.
+	 * 
+	 * @deprecated This function is deprecated. Use GetLicenseEntitlementSetDisplayName() instead.
+	 * 
 	 * @return {string}  display name of the product version
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionDisplayName(): string {
-		const array = new Uint8Array(1024);
+		const array = new Uint8Array(256);
 		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -561,6 +590,9 @@ export class LexActivator {
 
 	/**
 	 * Gets the product version feature flag.
+	 * 
+	 * @deprecated This function is deprecated. Use GetFeatureEntitlement() instead.
+	 * 
 	 * @param {string} name name of the feature flag 
 	 * @returns {ProductVersionFeatureFlag} product version feature flag.
 	 * @throws {LexActivatorException}
@@ -575,6 +607,82 @@ export class LexActivator {
 		return new ProductVersionFeatureFlag(name, (enabled[0] ? enabled[0] : 0) > 0, arrayToString(array));
 	}
 
+
+	/**
+	 * Gets the license entitlement set name.
+	 * @return {string}  name of the license entitlement set
+	 * @throws {LexActivatorException} 
+	 */
+	static GetLicenseEntitlementSetName(): string {
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseEntitlementSetName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the license entitlement set display name.
+	 * @return {string}  display name of the license entitlement set
+	 * @throws {LexActivatorException} 
+	 */
+	static GetLicenseEntitlementSetDisplayName(): string {
+		const array = new Uint8Array(256);
+		const status = LexActivatorNative.GetLicenseEntitlementSetDisplayName(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return arrayToString(array);
+	}
+
+	/**
+	 * Gets the feature entitlements associated with the license.
+	 * 
+	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
+	 * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+	 * the license feature entitlement takes precedence, overriding the entitlement set value.
+	 * 
+	 * @return {FeatureEntitlement[]}  feature entitlements associated with the license.
+	 * 
+	 * @throws {LexActivatorException}
+	 */
+	static GetFeatureEntitlements(): FeatureEntitlement[] {
+		const array = new Uint8Array(4096);
+		const status = LexActivatorNative.GetFeatureEntitlements(array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		let featureEntitlements: FeatureEntitlement[];
+		try {
+			featureEntitlements = JSON.parse(arrayToString(array));
+		} catch {
+			featureEntitlements = [];
+		}
+		return featureEntitlements;
+	}
+
+	/**
+	 * Gets the feature entitlement associated with the license.
+	 * 
+	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
+	 * or via entitlement sets. If a feature entitlement is defined in both, the value from 
+	 * the license feature entitlement takes precedence, overriding the entitlement set value.
+	 * 
+	 * @param {string} featureName name of the feature
+	 * @return {FeatureEntitlement}  feature entitlement associated with the license.
+	 * 
+	 * @throws {LexActivatorException}
+	 */
+	static GetFeatureEntitlement(featureName: string): FeatureEntitlement {
+		
+		const array = new Uint8Array(1024);
+		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array, array.length);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return JSON.parse(arrayToString(array)) || {};
+	}
 	/**
 	 * Gets the license metadata as set in the dashboard.
 	 *
@@ -1170,6 +1278,8 @@ export class LexActivator {
 	 *
 	 * This function should only be used if you manage your releases through
 	 * Cryptlex release management API.
+	 * 
+	 * @deprecated This function is deprecated. Use CheckReleaseUpdate() instead.
 	 *
 	 * @param {string} platform release platform e.g. windows, macos, linux
 	 * @param {string} version current release version
