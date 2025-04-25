@@ -113,14 +113,17 @@ export class ActivationMode {
  * @class FeatureEntitlement
  * @constructor
  * @property {string} featureName The name of the feature
+ * @property {string} featureDisplayName The display name of the feature
  * @property {string} value The value of the feature
  */
 export class FeatureEntitlement {
 	featureName: string;
+	featureDisplayName: string;
 	value: string;
 
-	constructor(featureName: string, value: string) {
+	constructor(featureName: string, featureDisplayName: string, value: string) {
 		this.featureName = featureName;
+		this.featureDisplayName = featureDisplayName;
 		this.value = value;
 	}
 }
