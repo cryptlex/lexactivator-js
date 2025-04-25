@@ -383,4 +383,8 @@ export const LexStatusCodes = {
      */
     LA_E_ENTITLEMENT_SET_NOT_LINKED : 109,
 
+    /**
+     * The license cannot be activated before its effective date.
+     */
+    LA_E_LICENSE_NOT_EFFECTIVE : 110,
 };

@@ -272,6 +272,10 @@ export class LexActivatorException extends Error {
 			message = 'No entitlement set is linked to the license.';
 			break;
 
+		case LexStatusCodes.LA_E_LICENSE_NOT_EFFECTIVE:
+			message = 'The license cannot be activated before its effective date.';
+			break;
+
 		default:
 			message = 'Unknown error!';
 		}

@@ -540,6 +540,13 @@ enum LexStatusCodes
         MESSAGE: No entitlement set is linked to the license.
     */
     LA_E_ENTITLEMENT_SET_NOT_LINKED = 109,
+
+    /*
+        CODE: LA_E_LICENSE_NOT_EFFECTIVE
+
+        MESSAGE: The license cannot be activated before its effective date.
+    */
+    LA_E_LICENSE_NOT_EFFECTIVE = 110
 };
 
 #endif // LEX_STATUS_CODES_H
