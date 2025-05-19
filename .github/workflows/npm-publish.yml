@@ -57,6 +57,7 @@ jobs:
           docker run -t -v $PWD:$PWD -w $PWD cryptlex/gcc-4.9:1 ./scripts/build-linux.sh
           docker run -t -v $PWD:$PWD -w $PWD cryptlex/gcc-4.9-arm:1 ./scripts/build-linux-arm.sh
           docker run -t -v $PWD:$PWD -w $PWD cryptlex/alpine-builder:2 ./scripts/build-linux-musl.sh
+          docker run -t -v $PWD:$PWD -w $PWD cryptlex/alpine-builder-arm:1 ./scripts/build-linux-musl-arm.sh
 
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v4
