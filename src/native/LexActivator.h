@@ -642,6 +642,20 @@ LEXACTIVATOR_API int LA_CC GetLicenseActivationDate(uint32_t *activationDate);
 LEXACTIVATOR_API int LA_CC GetActivationCreationDate(uint32_t *activationCreationDate);
 
 /*
+    FUNCTION: GetActivationLastSyncedDate()
+
+    PURPOSE: Gets the activation last synced date timestamp.
+
+    Initially, this timestamp matches the activation creation date, and then updates with each successful server sync.
+
+    PARAMETERS:
+    * activationLastSyncedDate - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_LICENSE_KEY, LA_E_TIME, LA_E_TIME_MODIFIED
+*/
+LEXACTIVATOR_API int LA_CC GetActivationLastSyncedDate(uint32_t *activationLastSyncedDate);
+
+/*
     FUNCTION: GetLicenseExpiryDate()
 
     PURPOSE: Gets the license expiry date timestamp.
