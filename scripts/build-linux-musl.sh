@@ -1,5 +1,6 @@
 #!/bin/sh
-
+# exit when any command fails
+set -e
 # Clear existing repositories and add correct ones
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/main" > /etc/apk/repositories
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories
