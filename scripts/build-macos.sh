@@ -6,7 +6,7 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v3.32.3";
+VERSION="v3.33.0";
 curl ${URL}${VERSION}/LexActivator-Static-Mac.zip -o LexActivator-Static-Mac.zip
 mkdir -p ./tmp/macos
 unzip -o LexActivator-Static-Mac.zip -d ./tmp/macos
