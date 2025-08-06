@@ -9,7 +9,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13, windows-2019, windows-2022]
+        include:
+          - os: ubuntu-latest
+            job-type: linux
+          - os: macos-13
+            job-type: macos
+          - os: windows-2022
+            node-version: 10
+            job-type: windows-node10
+          - os: windows-2022
+            node-version: 20
+            job-type: windows-node20
     steps:
       - uses: actions/checkout@v2
 
@@ -25,21 +35,27 @@ jobs:
       #   if: matrix.os == 'windows-2019'
       #   run: npm i --global windows-build-tools --vs2015
 
-      - name: Build for Windows 2019
-        if: matrix.os == 'windows-2019'
+      - name: Windows 2022 Node 10 installation
+        if: matrix.os == 'windows-2022' && matrix.job-type == 'windows-node10'
+        uses: actions/setup-node@v1
+        with:
+            node-version: 10
+
+      - name: Build for Windows 32bit and 64bit (Node 10)
+        if: matrix.os == 'windows-2022' && matrix.job-type == 'windows-node10'
         shell: powershell
         run: |
           npm i -g node-gyp@8
           .\scripts\build-windows.ps1
       
-      - name: Setup Node.js v4
-        if: matrix.os == 'windows-2022'
+      - name: Windows 2022 Node 20 installation
+        if: matrix.os == 'windows-2022' && matrix.job-type == 'windows-node20'
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+            node-version: 20
 
-      - name: Build for Windows 2022
-        if: matrix.os == 'windows-2022'
+      - name: Build for Windows ARM64 (Node 20)
+        if: matrix.os == 'windows-2022' && matrix.job-type == 'windows-node20'
         shell: powershell
         run: |
           npm i -g node-gyp@10
@@ -62,7 +78,7 @@ jobs:
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-${{matrix.os}}
+          name: artifacts-${{matrix.job-type}}
           path: |
             ./lib/bindings/linux/**/**/*.node
             ./lib/bindings/macos/**/*.node
