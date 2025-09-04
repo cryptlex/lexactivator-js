@@ -8,7 +8,7 @@ trap 'echo "\"${last_command}\" finished with exit code $?."' EXIT
 source ~/.bashrc
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v3.34.0";
+VERSION="v3.34.1";
 wget ${URL}${VERSION}/LexActivator-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexActivator-Static-Linux.zip -d ./tmp/linux
