@@ -12,7 +12,7 @@
     "lexactivator",
     "licensing library"
   ],
-  "author": "Cryptlex, LLP",
+  "author": "Cryptlex LLP",
   "license": "MIT",
   "dependencies": {
     "detect-libc": "~2.0.1",
