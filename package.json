@@ -1,6 +1,6 @@
 {
   "name": "@cryptlex/lexactivator",
-  "version": "3.35.1",
+  "version": "3.35.2",
   "description": "LexActivator API wrapper for Node.js.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,7 +12,7 @@
     "lexactivator",
     "licensing library"
   ],
-  "author": "Cryptlex, LLC",
+  "author": "Cryptlex LLP",
   "license": "MIT",
   "dependencies": {
     "detect-libc": "~2.0.1",
