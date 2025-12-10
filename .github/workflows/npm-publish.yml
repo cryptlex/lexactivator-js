@@ -3,6 +3,9 @@ name: Build @cryptlex/lexactivator package
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+
 jobs:
   # Link LexActivator static libs to Node
   build-addons:
@@ -109,6 +112,5 @@ jobs:
           npm ci
           npm run build
 
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: 'Publish to NPM'
+        run: npm publish --access public
