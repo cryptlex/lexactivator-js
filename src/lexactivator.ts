@@ -1170,6 +1170,23 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the error code that caused the activation data to be cleared.
+	 *
+	 * @return {number} the error code
+	 * @throws {LexActivatorException}
+	 */
+	static GetLastActivationError(): number {
+		const errorCode = new Uint32Array(1);
+		const status = LexActivatorNative.GetLastActivationError(errorCode);
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return errorCode[0] ? errorCode[0] : 0;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Gets the trial activation metadata.
 	 *
 	 * @param {string} key metadata key to retrieve the value

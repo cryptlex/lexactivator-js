@@ -945,6 +945,19 @@ LEXACTIVATOR_API int LA_CC GetActivationMeterAttributeUses(CSTRTYPE name, uint32
 LEXACTIVATOR_API int LA_CC GetServerSyncGracePeriodExpiryDate(uint32_t *expiryDate);
 
 /*
+    FUNCTION: GetLastActivationError()
+
+    PURPOSE: Gets the error code that caused the activation data to be cleared.
+
+    PARAMETERS:
+    * errorPtr - pointer to the integer that receives the value.
+      A value of 0 indicates that no error has been recorded since last successful activation.
+
+    RETURN CODES: LA_OK, LA_E_PRODUCT_ID
+*/
+LEXACTIVATOR_API int LA_CC GetLastActivationError(uint32_t *errorPtr);
+
+/*
     FUNCTION: GetTrialActivationMetadata()
 
     PURPOSE: Gets the trial activation metadata.

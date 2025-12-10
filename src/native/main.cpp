@@ -1211,6 +1211,24 @@ Napi::Value getServerSyncGracePeriodExpiryDate(const Napi::CallbackInfo &info)
     return Napi::Number::New(env, GetServerSyncGracePeriodExpiryDate(arg0));
 }
 
+Napi::Value getLastActivationError(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsTypedArray())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    Napi::Uint32Array array = info[0].As<Napi::Uint32Array>();
+    uint32_t *arg0 = reinterpret_cast<uint32_t *>(array.ArrayBuffer().Data());
+    return Napi::Number::New(env, GetLastActivationError(arg0));
+}
+
 Napi::Value getTrialActivationMetadata(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -1707,6 +1725,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GetActivationMode"] = Napi::Function::New(env, getActivationMode);
     exports["GetActivationMeterAttributeUses"] = Napi::Function::New(env, getActivationMeterAttributeUses);
     exports["GetServerSyncGracePeriodExpiryDate"] = Napi::Function::New(env, getServerSyncGracePeriodExpiryDate);
+    exports["GetLastActivationError"] = Napi::Function::New(env, getLastActivationError);
     exports["GetTrialActivationMetadata"] = Napi::Function::New(env, getTrialActivationMetadata);
     exports["GetTrialExpiryDate"] = Napi::Function::New(env, getTrialExpiryDate);
     exports["GetTrialId"] = Napi::Function::New(env, getTrialId);
