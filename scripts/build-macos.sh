@@ -13,6 +13,9 @@ unzip -o LexActivator-Static-Mac.zip -d ./tmp/macos
 
 cp ./tmp/macos/libs/clang/universal/libLexActivator.a ./
 npm i
+# Create and activate virtual environment
+python3 -m venv ~/gyp-env
+source ~/gyp-env/bin/activate
 python3 -m pip install setuptools
 node-gyp rebuild 
 cp ./build/Release/lexactivator.node ./lib/bindings/macos/x64
