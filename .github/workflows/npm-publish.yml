@@ -113,9 +113,15 @@ jobs:
           npm ci
           npm run build
 
-      # Ensure npm 11.5.1 or later is installed (required for OIDC authentication)
+      # Switch to Node 22 and update npm for publishing
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Ensure npm 11.5.1+ is installed (required for OIDC authentication)
       - name: Update npm
-        run: npm install -g npm@11.5.1
+        run: npm install -g npm@latest
 
       - name: 'Publish to NPM'
         run: npm publish --access public
