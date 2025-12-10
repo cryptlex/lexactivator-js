@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write
+  id-token: write  # Required for OIDC
+  contents: read
 
 jobs:
   # Link LexActivator static libs to Node
@@ -111,6 +112,10 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      # Ensure npm 11.5.1 or later is installed (required for OIDC authentication)
+      - name: Update npm
+        run: npm install -g npm@11.5.1
 
       - name: 'Publish to NPM'
         run: npm publish --access public
