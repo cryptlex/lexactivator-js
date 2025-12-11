@@ -3,7 +3,7 @@
 set -e
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v3.36.0";
+VERSION="v3.37.0";
 wget ${URL}${VERSION}/LexActivator-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexActivator-Static-Linux.zip -d ./tmp/linux
