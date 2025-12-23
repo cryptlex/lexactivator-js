@@ -1,7 +1,7 @@
 import { LexActivatorNative } from "./lexactivator-native.js";
 import { LexStatusCodes } from "./lexstatus-codes.js";
 import { LexActivatorException } from "./lexactivator-exception.js";
-import { arrayToString } from "./lexactivator-native.js";
+import { arrayToString, getCArray } from "./lexactivator-native.js";
 import { Release } from "./release.js";
 
 /**
@@ -556,7 +556,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetProductMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetProductMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -573,7 +573,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexActivatorNative.GetProductVersionName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -590,7 +590,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetProductVersionDisplayName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexActivatorNative.GetProductVersionDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -609,7 +609,7 @@ export class LexActivator {
 	 */
 	static GetProductVersionFeatureFlag(name: string): ProductVersionFeatureFlag {
 		const enabled = new Uint32Array(1);
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetProductVersionFeatureFlag(name, enabled, array, array.length);
 		if (status !== LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -624,7 +624,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetLicenseEntitlementSetName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexActivatorNative.GetLicenseEntitlementSetName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -638,7 +638,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException} 
 	 */
 	static GetLicenseEntitlementSetDisplayName(): string {
-		const array = new Uint8Array(256);
+		const array = getCArray(256);
 		const status = LexActivatorNative.GetLicenseEntitlementSetDisplayName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -658,7 +658,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetFeatureEntitlements(): FeatureEntitlement[] {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetFeatureEntitlements(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -686,7 +686,7 @@ export class LexActivator {
 	 */
 	static GetFeatureEntitlement(featureName: string): FeatureEntitlement {
 		
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetFeatureEntitlement(featureName, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -701,7 +701,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetLicenseMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -736,7 +736,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseKey(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseKey(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -942,7 +942,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseMaxAllowedReleaseVersion(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseMaxAllowedReleaseVersion(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -957,7 +957,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserEmail(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseUserEmail(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -972,7 +972,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserName(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseUserName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -987,7 +987,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserCompany(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseUserCompany(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1003,7 +1003,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseUserMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetLicenseUserMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1018,7 +1018,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseOrganizationName(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseOrganizationName(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1033,7 +1033,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseOrganizationAddress(): OrganizationAddress | null {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseOrganizationAddress(array, array.length)
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1063,7 +1063,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetUserLicenses(): UserLicense[] {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetUserLicenses(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1084,7 +1084,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLicenseType(): LicenseType {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLicenseType(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1099,7 +1099,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetActivationId(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetActivationId(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1115,7 +1115,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetActivationMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1130,8 +1130,8 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetActivationMode(): ActivationMode {
-		const array1 = new Uint8Array(4096);
-		const array2 = new Uint8Array(4096);
+		const array1 = getCArray(4096);
+		const array2 = getCArray(4096);
 		const status = LexActivatorNative.GetActivationMode(array1, array1.length, array2, array2.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1201,7 +1201,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetTrialActivationMetadata(key: string): string {
-		const array = new Uint8Array(4096);
+		const array = getCArray(4096);
 		const status = LexActivatorNative.GetTrialActivationMetadata(key, array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1235,7 +1235,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetTrialId(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetTrialId(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
@@ -1269,7 +1269,7 @@ export class LexActivator {
 	 * @throws {LexActivatorException}
 	 */
 	static GetLibraryVersion(): string {
-		const array = new Uint8Array(1024);
+		const array = getCArray(1024);
 		const status = LexActivatorNative.GetLibraryVersion(array, array.length);
 		if (status != LexStatusCodes.LA_OK) {
 			throw new LexActivatorException(status);
