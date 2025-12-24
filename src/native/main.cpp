@@ -46,10 +46,13 @@ void licenseCallback(uint32_t status)
     {
         return;
     }
-    auto it = LicenseCallbacks.find(STRING(licenseKey));
-    if (it != LicenseCallbacks.end() && it->second != nullptr)
     {
-        it->second->Call(status);
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = LicenseCallbacks.find(STRING(licenseKey));
+        if (it != LicenseCallbacks.end() && it->second != nullptr)
+        {
+            it->second->Call(status);
+        }
     }
 }
 
@@ -60,10 +63,13 @@ void softwareReleaseUpdateCallback(uint32_t status)
     {
         return;
     }
-    auto it = ReleaseCallbacks.find(STRING(licenseKey));
-    if (it != ReleaseCallbacks.end() && it->second != nullptr)
     {
-        it->second->Call(status);
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = ReleaseCallbacks.find(STRING(licenseKey));
+        if (it != ReleaseCallbacks.end() && it->second != nullptr)
+        {
+            it->second->Call(status);
+        }
     }
 }
 
@@ -74,10 +80,13 @@ void releaseUpdateCallback(uint32_t status, CONST_CHARTYPE releaseJson, void* us
     {
         return;
     }
-    auto it = ReleaseUpdateCallbacks.find(STRING(licenseKey));
-    if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
     {
-        it->second->Call(status, STRING(releaseJson), userData);
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = ReleaseUpdateCallbacks.find(STRING(licenseKey));
+        if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
+        {
+            it->second->Call(status, STRING(releaseJson), userData);
+        }
     }
 }
 

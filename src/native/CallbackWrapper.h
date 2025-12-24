@@ -56,6 +56,7 @@ public:
     ~CallbackWrapper()
     {
         tsfn.Abort();
+        tsfn.Release();
     }
 
     void Call(uint32_t status)
