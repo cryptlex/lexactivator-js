@@ -23,7 +23,7 @@ const char *MISSING_LICENSE_KEY = "License key not set";
 
 map<STRING, CallbackWrapper *> LicenseCallbacks;
 map<STRING, CallbackWrapper *> ReleaseCallbacks;
-map<STRING, ReleaseUpdateCallbackWrapper *> ReleaseUpdateCallbacks;
+map<STRING, CallbackWrapper *> ReleaseUpdateCallbacks;
 
 
 STRING toEncodedString(Napi::String input)
@@ -44,8 +44,11 @@ void licenseCallback(uint32_t status)
     {
         return;
     }
-    LicenseCallbacks[STRING(licenseKey)]->status = status;
-    LicenseCallbacks[STRING(licenseKey)]->Queue();
+    auto it = LicenseCallbacks.find(STRING(licenseKey));
+    if (it != LicenseCallbacks.end() && it->second != nullptr)
+    {
+        it->second->Call(status);
+    }
 }
 
 void softwareReleaseUpdateCallback(uint32_t status)
@@ -55,21 +58,25 @@ void softwareReleaseUpdateCallback(uint32_t status)
     {
         return;
     }
-    ReleaseCallbacks[STRING(licenseKey)]->status = status;
-    ReleaseCallbacks[STRING(licenseKey)]->Queue();
+    auto it = ReleaseCallbacks.find(STRING(licenseKey));
+    if (it != ReleaseCallbacks.end() && it->second != nullptr)
+    {
+        it->second->Call(status);
+    }
 }
 
 void releaseUpdateCallback(uint32_t status, CONST_CHARTYPE releaseJson, void* userData)
-{   
+{
     CHARTYPE licenseKey[256];
     if (GetLicenseKey(licenseKey, 256) != LA_OK)
     {
         return;
     }
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->status = status;
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->releaseJson.assign(releaseJson);
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->userData = NULL;
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->Queue();
+    auto it = ReleaseUpdateCallbacks.find(STRING(licenseKey));
+    if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
+    {
+        it->second->Call(status, STRING(releaseJson), userData);
+    }
 }
 
 Napi::Value setProductFile(const Napi::CallbackInfo &info)
@@ -257,8 +264,14 @@ Napi::Value setLicenseCallback(const Napi::CallbackInfo &info)
         Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
         return env.Null();
     }
-    LicenseCallbacks[STRING(licenseKey)] = new CallbackWrapper(callback);
-    LicenseCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    STRING key(licenseKey);
+    // Clean up existing callback if present
+    auto it = LicenseCallbacks.find(key);
+    if (it != LicenseCallbacks.end() && it->second != nullptr)
+    {
+        delete it->second;
+    }
+    LicenseCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, SetLicenseCallback(licenseCallback));
 }
 
@@ -1355,8 +1368,14 @@ Napi::Value checkReleaseUpdate(const Napi::CallbackInfo &info)
         Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
         return env.Null();
     }
-    ReleaseUpdateCallbacks[STRING(licenseKey)] = new ReleaseUpdateCallbackWrapper(callback);
-    ReleaseUpdateCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    STRING key(licenseKey);
+    // Clean up existing callback if present
+    auto it = ReleaseUpdateCallbacks.find(key);
+    if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
+    {
+        delete it->second;
+    }
+    ReleaseUpdateCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, CheckReleaseUpdateInternal(releaseUpdateCallback, arg1, NULL));
 }
 
@@ -1399,8 +1418,14 @@ Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
         Napi::Error::New(env, MISSING_LICENSE_KEY).ThrowAsJavaScriptException();
         return env.Null();
     }
-    ReleaseCallbacks[STRING(licenseKey)] = new CallbackWrapper(callback);
-    ReleaseCallbacks[STRING(licenseKey)]->SuppressDestruct();
+    STRING key(licenseKey);
+    // Clean up existing callback if present
+    auto it = ReleaseCallbacks.find(key);
+    if (it != ReleaseCallbacks.end() && it->second != nullptr)
+    {
+        delete it->second;
+    }
+    ReleaseCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, CheckForReleaseUpdate(arg0.c_str(), arg1.c_str(), arg2.c_str(), softwareReleaseUpdateCallback));
 }
 
