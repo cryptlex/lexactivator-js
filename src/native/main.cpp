@@ -3,6 +3,7 @@
 #include <string>
 #include <locale>
 #include <map>
+#include <mutex>
 
 using namespace ::std;
 
@@ -25,6 +26,7 @@ map<STRING, CallbackWrapper *> LicenseCallbacks;
 map<STRING, CallbackWrapper *> ReleaseCallbacks;
 map<STRING, CallbackWrapper *> ReleaseUpdateCallbacks;
 
+std::mutex callbackMutex;
 
 STRING toEncodedString(Napi::String input)
 {
@@ -266,12 +268,15 @@ Napi::Value setLicenseCallback(const Napi::CallbackInfo &info)
     }
     STRING key(licenseKey);
     // Clean up existing callback if present
-    auto it = LicenseCallbacks.find(key);
-    if (it != LicenseCallbacks.end() && it->second != nullptr)
     {
-        delete it->second;
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = LicenseCallbacks.find(key);
+        if (it != LicenseCallbacks.end() && it->second != nullptr)
+        {
+            delete it->second;
+        }
+        LicenseCallbacks[key] = new CallbackWrapper(env, callback);
     }
-    LicenseCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, SetLicenseCallback(licenseCallback));
 }
 
@@ -1370,12 +1375,15 @@ Napi::Value checkReleaseUpdate(const Napi::CallbackInfo &info)
     }
     STRING key(licenseKey);
     // Clean up existing callback if present
-    auto it = ReleaseUpdateCallbacks.find(key);
-    if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
     {
-        delete it->second;
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = ReleaseUpdateCallbacks.find(key);
+        if (it != ReleaseUpdateCallbacks.end() && it->second != nullptr)
+        {
+            delete it->second;
+        }
+        ReleaseUpdateCallbacks[key] = new CallbackWrapper(env, callback);
     }
-    ReleaseUpdateCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, CheckReleaseUpdateInternal(releaseUpdateCallback, arg1, NULL));
 }
 
@@ -1420,12 +1428,15 @@ Napi::Value checkForReleaseUpdate(const Napi::CallbackInfo &info)
     }
     STRING key(licenseKey);
     // Clean up existing callback if present
-    auto it = ReleaseCallbacks.find(key);
-    if (it != ReleaseCallbacks.end() && it->second != nullptr)
     {
-        delete it->second;
+        std::lock_guard<std::mutex> lock(callbackMutex);
+        auto it = ReleaseCallbacks.find(key);
+        if (it != ReleaseCallbacks.end() && it->second != nullptr)
+        {
+            delete it->second;
+        }
+        ReleaseCallbacks[key] = new CallbackWrapper(env, callback);
     }
-    ReleaseCallbacks[key] = new CallbackWrapper(env, callback);
     return Napi::Number::New(env, CheckForReleaseUpdate(arg0.c_str(), arg1.c_str(), arg2.c_str(), softwareReleaseUpdateCallback));
 }
 
