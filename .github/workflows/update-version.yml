@@ -16,29 +16,33 @@ jobs:
   # Set version in package.json, git tag
   update-version:
     runs-on: ubuntu-latest
+    env:
+      LIBRARY_VERSION: ${{ github.event.inputs.libraryVersion }}
+      PACKAGE_VERSION: ${{ github.event.inputs.packageVersion }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create new branch
-        run: git checkout -b release/${{ github.event.inputs.packageVersion }}
+        uses: actions/checkout@v4
       
       - name: Update Library Version
         run: |
-          sed -i '/VERSION=/!b;cVERSION=\"v${{ github.event.inputs.libraryVersion }}";' scripts/*.sh
-          sed -i '/lexactivator_version =/!b;c$lexactivator_version ="v${{ github.event.inputs.libraryVersion }}"' scripts/*.ps1
+          sed -i -E 's/^([[:space:]]*)VERSION="[^"]*"/\1VERSION="v${{ env.LIBRARY_VERSION }}"/' scripts/*.sh
+          sed -i -E 's/^([[:space:]]*\$lexactivator_version[[:space:]]*=[[:space:]]*)"[^"]*"/\1"v${{ env.LIBRARY_VERSION }}"/' scripts/*.ps1
+
 
       - name: Update Package Version
         run: |
-          sed -i '/"version":/!b;c \ \ "version": "${{ github.event.inputs.packageVersion }}",' package.json
+          jq --arg v "${{ env.PACKAGE_VERSION }}" '.version = $v' package.json > package.json.new && mv package.json.new package.json
      
-      - name: Commit, Tag and Push
-        run: |
-          git add package.json
-          git add scripts/*.*
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit -m "chore(package version): updated version" | exit 0
-          git tag ${{ github.event.inputs.packageVersion }}
-          git push --set-upstream origin release/${{ github.event.inputs.packageVersion }} 
-          git push --tags
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: release/${{ env.PACKAGE_VERSION }}
+          title: "chore: bump package version to ${{ env.PACKAGE_VERSION }}"
+          commit-message: "chore(package version): updated version"
+          body: |
+            Automated package version bump.
+          base: master
+          add-paths: |
+            package.json
+            scripts/*.*
+
