@@ -5,7 +5,7 @@ on:
 
 permissions:
   id-token: write  # Required for OIDC
-  contents: read
+  contents: write  # To create tags
 
 jobs:
   # Link LexActivator static libs to Node
