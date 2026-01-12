@@ -1750,6 +1750,27 @@ export class LexActivator {
 	}
 
 	/**
+	 * Migrates existing license data to system-wide storage.
+	 *
+	 * Call this function after SetProductData().
+	 *
+	 * If you intend to use a custom data directory after migration,
+     * set it first using SetDataDirectory().
+	 *
+	 * @param {PermissionFlags} oldPermissionFlag permission flag used previously
+	 * @return {number} LA_OK
+	 * @throws {LexActivatorException}
+	 */
+	static MigrateToSystemWideActivation(oldPermissionFlag: typeof PermissionFlags[keyof typeof PermissionFlags]): number {
+		const status = LexActivatorNative.MigrateToSystemWideActivation(oldPermissionFlag);
+		if (status == LexStatusCodes.LA_OK) {
+			return LexStatusCodes.LA_OK;
+		} else {
+			throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Resets the activation and trial data stored in the machine.
 	 *
 	 * This function is meant for developer testing only.

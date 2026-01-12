@@ -1666,6 +1666,23 @@ Napi::Value reset(const Napi::CallbackInfo &info)
     return Napi::Number::New(info.Env(), Reset());
 }
 
+Napi::Value migrateToSystemWideActivation(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() < 1)
+    {
+        Napi::TypeError::New(env, MISSING_ARGUMENTS).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    if (!info[0].IsNumber())
+    {
+        Napi::TypeError::New(env, INVALID_ARGUMENT_TYPE).ThrowAsJavaScriptException();
+        return env.Null();
+    }
+    uint32_t arg0 = info[0].As<Napi::Number>().Uint32Value();
+    return Napi::Number::New(env, MigrateToSystemWideActivation(arg0));
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     exports["SetProductFile"] = Napi::Function::New(env, setProductFile);
@@ -1753,6 +1770,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["IncrementActivationMeterAttributeUses"] = Napi::Function::New(env, incrementActivationMeterAttributeUses);
     exports["DecrementActivationMeterAttributeUses"] = Napi::Function::New(env, decrementActivationMeterAttributeUses);
     exports["ResetActivationMeterAttributeUses"] = Napi::Function::New(env, resetActivationMeterAttributeUses);
+    exports["MigrateToSystemWideActivation"] = Napi::Function::New(env, migrateToSystemWideActivation);
     exports["Reset"] = Napi::Function::New(env, reset);
     return exports;
 }
