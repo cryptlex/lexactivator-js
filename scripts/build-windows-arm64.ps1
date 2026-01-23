@@ -16,3 +16,4 @@ node-gyp rebuild --arch=arm64
 
 Copy-Item -Path ".\build\Release\lexactivator.node" -Destination ".\lib\bindings\windows\arm64\lexactivator.node"
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc17\arm64\LexActivator.dll" -Destination ".\lib\bindings\windows\arm64\LexActivator.dll"
+Copy-Item -Path ".\tmp\windows\LexActivator-Win\THIRD_PARTY_NOTICES.txt" -Destination ".\lib\bindings\windows\THIRD_PARTY_NOTICES.txt"

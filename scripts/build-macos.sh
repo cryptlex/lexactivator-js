@@ -22,4 +22,5 @@ cp ./build/Release/lexactivator.node ./lib/bindings/macos/x64
 
 SDKROOT=$(xcrun --sdk macosx --show-sdk-path) node-gyp rebuild --arch=arm64
 cp ./build/Release/lexactivator.node ./lib/bindings/macos/arm64
+cp ./tmp/macos/THIRD_PARTY_NOTICES.txt ./lib/bindings/macos/
 rm -f LexActivator-Static-Mac.zip
