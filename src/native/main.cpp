@@ -37,6 +37,19 @@ STRING toEncodedString(Napi::String input)
 #endif
 }
 
+size_t getCharCount(Napi::Env env, size_t byteLength)
+{
+#ifdef _WIN32
+    if (byteLength % sizeof(CHARTYPE) != 0) {
+        Napi::TypeError::New(env, "Invalid UTF-16 buffer length").ThrowAsJavaScriptException();
+        return 0;
+    }
+    return byteLength / sizeof(CHARTYPE);
+#else
+    return byteLength;
+#endif
+}
+
 void licenseCallback(uint32_t status)
 {
     CHARTYPE licenseKey[256];
@@ -503,7 +516,10 @@ Napi::Value getProductMetadata(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetProductMetadata(arg0.c_str(), arg1, length));
 }
@@ -522,7 +538,10 @@ Napi::Value getProductVersionName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetProductVersionName(arg0, length));
 }
@@ -541,7 +560,10 @@ Napi::Value getProductVersionDisplayName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetProductVersionDisplayName(arg0, length));
 }
@@ -574,7 +596,10 @@ Napi::Value getProductVersionFeatureFlag(const Napi::CallbackInfo &info)
     uint32_t *arg1 = reinterpret_cast<uint32_t *>(array1.ArrayBuffer().Data());
     Napi::Uint8Array array2 = info[2].As<Napi::Uint8Array>();
     CHARTYPE *arg2 = reinterpret_cast<CHARTYPE *>(array2.ArrayBuffer().Data());
-    size_t length = array2.ElementLength();
+    size_t length = getCharCount(env, array2.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     return Napi::Number::New(env, GetProductVersionFeatureFlag(arg0.c_str(), arg1, arg2, length));
 }
 
@@ -592,7 +617,10 @@ Napi::Value getLicenseEntitlementSetName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseEntitlementSetName(arg0, length));
 }
@@ -611,7 +639,10 @@ Napi::Value getLicenseEntitlementSetDisplayName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseEntitlementSetDisplayName(arg0, length));
 }
@@ -630,7 +661,10 @@ Napi::Value getFeatureEntitlements(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetFeatureEntitlementsInternal(arg0, length));
 }
@@ -655,7 +689,10 @@ Napi::Value getFeatureEntitlement(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetFeatureEntitlementInternal(arg0.c_str(), arg1, length));
 }
@@ -679,7 +716,10 @@ Napi::Value getLicenseMetadata(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseMetadata(arg0.c_str(), arg1, length));
 }
@@ -736,7 +776,10 @@ Napi::Value getLicenseKey(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseKey(arg0, length));
 }
@@ -935,7 +978,10 @@ Napi::Value getLicenseMaxAllowedReleaseVersion(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseMaxAllowedReleaseVersion(arg0, length));
 }
@@ -954,7 +1000,10 @@ Napi::Value getLicenseUserEmail(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserEmail(arg0, length));
 }
@@ -973,7 +1022,10 @@ Napi::Value getLicenseUserName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserName(arg0, length));
 }
@@ -992,7 +1044,10 @@ Napi::Value getLicenseUserCompany(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserCompany(arg0, length));
 }
@@ -1011,7 +1066,10 @@ Napi::Value getLicenseOrganizationName(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseOrganizationName(arg0, length));
 }
@@ -1030,7 +1088,10 @@ Napi::Value getLicenseOrganizationAddress(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseOrganizationAddressInternal(arg0, length));
 }
@@ -1055,7 +1116,10 @@ Napi::Value getLicenseUserMetadata(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseUserMetadata(arg0.c_str(), arg1, length));
 }
@@ -1074,7 +1138,10 @@ Napi::Value getUserLicenses(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetUserLicensesInternal(arg0, length));
 }
@@ -1093,7 +1160,10 @@ Napi::Value getLicenseType(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLicenseType(arg0, length));
 }
@@ -1112,7 +1182,10 @@ Napi::Value getActivationId(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetActivationId(arg0, length));
 }
@@ -1137,7 +1210,10 @@ Napi::Value getActivationMetadata(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetActivationMetadata(arg0.c_str(), arg1, length));
 }
@@ -1161,10 +1237,16 @@ Napi::Value getActivationMode(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array1 = info[0].As<Napi::Uint8Array>();
-    size_t length1 = array1.ElementLength();
+    size_t length1 = getCharCount(env, array1.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array1.ArrayBuffer().Data());
     Napi::Uint8Array array2 = info[2].As<Napi::Uint8Array>();
-    size_t length2 = array2.ElementLength();
+    size_t length2 = getCharCount(env, array2.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg2 = reinterpret_cast<CHARTYPE *>(array2.ArrayBuffer().Data());
     return Napi::Number::New(env, GetActivationMode(arg0, length1,  arg2, length2));
 }
@@ -1249,7 +1331,10 @@ Napi::Value getTrialActivationMetadata(const Napi::CallbackInfo &info)
     }
     STRING arg0 = toEncodedString(info[0].As<Napi::String>());
     Napi::Uint8Array array = info[1].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg1 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetTrialActivationMetadata(arg0.c_str(), arg1, length));
 }
@@ -1286,7 +1371,10 @@ Napi::Value getTrialId(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetTrialId(arg0, length));
 }
@@ -1323,7 +1411,10 @@ Napi::Value getLibraryVersion(const Napi::CallbackInfo &info)
         return env.Null();
     }
     Napi::Uint8Array array = info[0].As<Napi::Uint8Array>();
-    size_t length = array.ElementLength();
+    size_t length = getCharCount(env, array.ByteLength());
+    if (env.IsExceptionPending()) {
+        return env.Null();
+    }
     CHARTYPE *arg0 = reinterpret_cast<CHARTYPE *>(array.ArrayBuffer().Data());
     return Napi::Number::New(env, GetLibraryVersion(arg0, length));
 }
