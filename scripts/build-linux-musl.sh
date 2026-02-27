@@ -23,7 +23,7 @@ tar -xzf npm.tgz -C .npm-upgrade --strip-components=1
 node .npm-upgrade/bin/npm-cli.js install -g .npm-upgrade
 
 URL="https://dl.cryptlex.com/downloads/"
-VERSION="v3.37.0";
+VERSION="v3.38.1";
 wget ${URL}${VERSION}/LexActivator-Static-Linux.zip
 mkdir -p ./tmp/linux
 unzip -o LexActivator-Static-Linux.zip -d ./tmp/linux
