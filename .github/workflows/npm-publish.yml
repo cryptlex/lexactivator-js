@@ -35,6 +35,12 @@ jobs:
         with:
           node-version: 10
 
+      - name: Setup Python 3.11 (Required for node-gyp v8 on Node 10)
+        if: matrix.job-type == 'windows-node10' || matrix.job-type == 'macos'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       # - name: Install Windows 2015 build tools
       #   if: matrix.os == 'windows-2019'
       #   run: npm i --global windows-build-tools --vs2015
