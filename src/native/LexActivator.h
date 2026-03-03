@@ -540,6 +540,18 @@ LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetName(STRTYPE name, uint32_t l
 LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetDisplayName(STRTYPE displayName, uint32_t length);
 
 /*
+    FUNCTION: GetLicenseEntitlementSetTier()
+
+    PURPOSE: Gets the license entitlement set tier.
+
+    PARAMETERS:
+    * tier - pointer to the integer that receives the value
+
+    RETURN CODES: LA_OK, LA_FAIL, LA_E_PRODUCT_ID, LA_E_TIME, LA_E_TIME_MODIFIED, LA_E_ENTITLEMENT_SET_NOT_LINKED
+*/
+LEXACTIVATOR_API int LA_CC GetLicenseEntitlementSetTier(int64_t *tier);
+
+/*
     FUNCTION: GetFeatureEntitlementsInternal()
 
     PURPOSE: Gets the feature entitlements associated with the license.
