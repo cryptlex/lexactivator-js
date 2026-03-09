@@ -119,18 +119,21 @@ export class ActivationMode {
  * @property {string} featureName The name of the feature
  * @property {string} featureDisplayName The display name of the feature
  * @property {string} value The value of the feature
+ * @property {string} baseValue The default value of the feature inherited from the entitlement set.
  * @property {number} expiresAt Timestamp when the license feature entitlement will expire
  */
 export class FeatureEntitlement {
 	featureName: string;
 	featureDisplayName: string;
 	value: string;
+	baseValue: string;
 	expiresAt: number;
 
-	constructor(featureName: string, featureDisplayName: string, value: string, expiresAt: number) {
+	constructor(featureName: string, featureDisplayName: string, value: string, baseValue: string, expiresAt: number) {
 		this.featureName = featureName;
 		this.featureDisplayName = featureDisplayName;
 		this.value = value;
+		this.baseValue = baseValue;
 		this.expiresAt = expiresAt;
 	}
 }
