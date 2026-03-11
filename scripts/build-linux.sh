@@ -16,4 +16,5 @@ cp ./tmp/linux/libs/gcc/amd64/libLexActivator.a ./
 npm i
 node-gyp rebuild 
 cp ./build/Release/lexactivator.node ./lib/bindings/linux/gcc/x64
+cp ./tmp/linux/THIRD_PARTY_NOTICES.txt ./lib/bindings/linux/
 rm -f LexActivator-Static-Linux.zip

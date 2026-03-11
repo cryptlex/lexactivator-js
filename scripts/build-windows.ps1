@@ -23,4 +23,4 @@ node-gyp rebuild --arch=ia32
 
 Copy-Item -Path ".\build\Release\lexactivator.node" -Destination ".\lib\bindings\windows\x32\lexactivator.node"
 Copy-Item -Path ".\tmp\windows\LexActivator-Win\libs\vc14\x86\LexActivator.dll" -Destination ".\lib\bindings\windows\x32\LexActivator.dll"
-
+Copy-Item -Path ".\tmp\windows\LexActivator-Win\THIRD_PARTY_NOTICES.txt" -Destination ".\lib\bindings\windows\THIRD_PARTY_NOTICES.txt"
