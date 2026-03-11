@@ -647,6 +647,20 @@ export class LexActivator {
 	}
 
 	/**
+	 * Gets the license entitlement set tier.
+	 * @return {number}  tier of the license entitlement set
+	 * @throws {LexActivatorException}
+	 */
+	static GetLicenseEntitlementSetTier(): number {
+		const tier = new BigInt64Array(1);
+		const status = LexActivatorNative.GetLicenseEntitlementSetTier(tier);
+		if (status != LexStatusCodes.LA_OK) {
+			throw new LexActivatorException(status);
+		}
+		return Number(tier[0]) ? Number(tier[0]) : 0;
+	}
+
+	/**
 	 * Gets the feature entitlements associated with the license.
 	 * 
 	 * Feature entitlements can be linked directly to a license (license feature entitlements) 
