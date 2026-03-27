@@ -118,19 +118,22 @@ export class ActivationMode {
  * @constructor
  * @property {string} featureName The name of the feature
  * @property {string} featureDisplayName The display name of the feature
- * @property {string} value The value of the feature
+ * @property {string} value Effective value of the feature. Contains the overridden value if set at the license level; otherwise, the entitlement set value.
+ * @property {string} baseValue Default value of the feature defined in the entitlement set; empty for features not inherited from an entitlement set.
  * @property {number} expiresAt Timestamp when the license feature entitlement will expire
  */
 export class FeatureEntitlement {
 	featureName: string;
 	featureDisplayName: string;
 	value: string;
+	baseValue: string;
 	expiresAt: number;
 
-	constructor(featureName: string, featureDisplayName: string, value: string, expiresAt: number) {
+	constructor(featureName: string, featureDisplayName: string, value: string, baseValue: string, expiresAt: number) {
 		this.featureName = featureName;
 		this.featureDisplayName = featureDisplayName;
 		this.value = value;
+		this.baseValue = baseValue;
 		this.expiresAt = expiresAt;
 	}
 }
