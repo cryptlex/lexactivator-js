@@ -28,3 +28,10 @@ export function arrayToString(array: Uint8Array): string {
 		return Buffer.from(array).toString('utf8').replace(/\0.*$/g, '');
 	}
 }
+
+export function getCArray(length: number): Uint8Array {
+	if (process.platform == 'win32') {
+		return new Uint8Array(length * 2);
+	}
+	return new Uint8Array(length);
+}
