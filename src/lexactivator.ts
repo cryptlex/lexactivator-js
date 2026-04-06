@@ -1574,6 +1574,35 @@ export class LexActivator {
 	}
 
 	/**
+	 * Syncs the activation data with the Cryptlex server.
+	 *
+	 * This function should be called only if the license is already activated.
+	 * This is a blocking call that performs a one-time synchronization to refresh
+	 * the local license data.
+	 *
+	 * Note: For periodic validation, use IsLicenseGenuine() instead, which schedules background
+	 * sync at a defined interval.
+	 *
+	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
+	 * @throws {LexActivatorException}
+	 */
+	static SyncLicenseActivation(): number {
+		const status = LexActivatorNative.SyncLicenseActivation();
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Starts the verified trial in your application by contacting the Cryptlex
 	 * servers.
 	 *
@@ -1585,6 +1614,33 @@ export class LexActivator {
 	 */
 	static ActivateTrial(): number {
 		const status = LexActivatorNative.ActivateTrial();
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Syncs the trial activation data with the Cryptlex server.
+	 *
+	 * This function should be called only if the trial is already activated.
+	 * This is a blocking call that performs a one-time synchronization to refresh
+	 * the local trial data.
+	 *
+	 * Note: Unlike IsTrialGenuine(), which validates the trial activation locally only, this
+	 * function forces an immediate server check.
+	 *
+	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
+	 * @throws {LexActivatorException}
+	 */
+	static SyncTrialActivation(): number {
+		const status = LexActivatorNative.SyncTrialActivation();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
 				return LexStatusCodes.LA_OK;
