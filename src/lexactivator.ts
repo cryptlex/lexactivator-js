@@ -1574,6 +1574,39 @@ export class LexActivator {
 	}
 
 	/**
+	 * Synchronizes the activation data with the Cryptlex servers.
+	 *
+	 * The license must already be activated when this function is called.
+	 *
+	 * This is a blocking call that performs a one-time synchronization to refresh the
+	 * local license data.
+	 *
+	 * In most cases, rely on IsLicenseGenuine(), which automatically handles periodic
+	 * background synchronization based on the configured interval.
+	 *
+	 * Note: Do not use this function in regular application flow. Use it only when an
+	 * immediate synchronization is required.
+	 *
+	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
+	 * @throws {LexActivatorException}
+	 */
+	static SyncLicenseActivation(): number {
+		const status = LexActivatorNative.SyncLicenseActivation();
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_EXPIRED:
+				return LexStatusCodes.LA_EXPIRED;
+			case LexStatusCodes.LA_SUSPENDED:
+				return LexStatusCodes.LA_SUSPENDED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
 	 * Starts the verified trial in your application by contacting the Cryptlex
 	 * servers.
 	 *
@@ -1585,6 +1618,37 @@ export class LexActivator {
 	 */
 	static ActivateTrial(): number {
 		const status = LexActivatorNative.ActivateTrial();
+		switch (status) {
+			case LexStatusCodes.LA_OK:
+				return LexStatusCodes.LA_OK;
+			case LexStatusCodes.LA_TRIAL_EXPIRED:
+				return LexStatusCodes.LA_TRIAL_EXPIRED;
+			case LexStatusCodes.LA_FAIL:
+				return LexStatusCodes.LA_FAIL;
+			default:
+				throw new LexActivatorException(status);
+		}
+	}
+
+	/**
+	 * Synchronizes the trial activation data with the Cryptlex servers.
+	 *
+	 * The trial must already be activated when this function is called.
+	 *
+	 * This is a blocking call that performs a one-time synchronization to refresh
+	 * the local trial data.
+	 *
+	 * Unlike IsTrialGenuine(), which validates the trial activation data locally, this
+	 * function performs an immediate synchronization with the servers.
+	 *
+	 * Note: Use this function to immediately reflect server-side changes on the user's
+	 * machine, such as trial extensions.
+	 *
+	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
+	 * @throws {LexActivatorException}
+	 */
+	static SyncTrialActivation(): number {
+		const status = LexActivatorNative.SyncTrialActivation();
 		switch (status) {
 			case LexStatusCodes.LA_OK:
 				return LexStatusCodes.LA_OK;

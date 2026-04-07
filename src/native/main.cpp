@@ -1578,9 +1578,19 @@ Napi::Value isLicenseValid(const Napi::CallbackInfo &info)
     return Napi::Number::New(info.Env(), IsLicenseValid());
 }
 
+Napi::Value syncLicenseActivation(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), SyncLicenseActivation());
+}
+
 Napi::Value activateTrial(const Napi::CallbackInfo &info)
 {
     return Napi::Number::New(info.Env(), ActivateTrial());
+}
+
+Napi::Value syncTrialActivation(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), SyncTrialActivation());
 }
 
 Napi::Value activateTrialOffline(const Napi::CallbackInfo &info)
@@ -1824,7 +1834,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports["GenerateOfflineDeactivationRequest"] = Napi::Function::New(env, generateOfflineDeactivationRequest);
     exports["IsLicenseGenuine"] = Napi::Function::New(env, isLicenseGenuine);
     exports["IsLicenseValid"] = Napi::Function::New(env, isLicenseValid);
+    exports["SyncLicenseActivation"] = Napi::Function::New(env, syncLicenseActivation);
     exports["ActivateTrial"] = Napi::Function::New(env, activateTrial);
+    exports["SyncTrialActivation"] = Napi::Function::New(env, syncTrialActivation);
     exports["ActivateTrialOffline"] = Napi::Function::New(env, activateTrialOffline);
     exports["GenerateOfflineTrialActivationRequest"] = Napi::Function::New(env, generateOfflineTrialActivationRequest);
     exports["IsTrialGenuine"] = Napi::Function::New(env, isTrialGenuine);
