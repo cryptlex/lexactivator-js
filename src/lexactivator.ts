@@ -1574,14 +1574,18 @@ export class LexActivator {
 	}
 
 	/**
-	 * Syncs the activation data with the Cryptlex server.
+	 * Synchronizes the activation data with the Cryptlex servers.
 	 *
-	 * This function should be called only if the license is already activated.
-	 * This is a blocking call that performs a one-time synchronization to refresh
-	 * the local license data.
+	 * The license must already be activated when this function is called.
 	 *
-	 * Note: For periodic validation, use IsLicenseGenuine() instead, which schedules background
-	 * sync at a defined interval.
+	 * This is a blocking call that performs a one-time synchronization to refresh the
+	 * local license data.
+	 *
+	 * In most cases, rely on IsLicenseGenuine(), which automatically handles periodic
+	 * background synchronization based on the configured interval.
+	 *
+	 * Note: Do not use this function in regular application flow. Use it only when an
+	 * immediate synchronization is required.
 	 *
 	 * @return {number} LA_OK, LA_EXPIRED, LA_SUSPENDED, LA_FAIL
 	 * @throws {LexActivatorException}
@@ -1627,14 +1631,18 @@ export class LexActivator {
 	}
 
 	/**
-	 * Syncs the trial activation data with the Cryptlex server.
+	 * Synchronizes the trial activation data with the Cryptlex servers.
 	 *
-	 * This function should be called only if the trial is already activated.
+	 * The trial must already be activated when this function is called.
+	 *
 	 * This is a blocking call that performs a one-time synchronization to refresh
 	 * the local trial data.
 	 *
-	 * Note: Unlike IsTrialGenuine(), which validates the trial activation locally only, this
-	 * function forces an immediate server check.
+	 * Unlike IsTrialGenuine(), which validates the trial activation data locally, this
+	 * function performs an immediate synchronization with the servers.
+	 *
+	 * Note: Use this function to immediately reflect server-side changes on the user's
+	 * machine, such as trial extensions.
 	 *
 	 * @return {number} LA_OK, LA_TRIAL_EXPIRED, LA_FAIL
 	 * @throws {LexActivatorException}
